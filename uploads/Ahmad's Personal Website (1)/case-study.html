@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case study · Ahmad Majid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700;6..72,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: .55s;
+    animation-timing-function: cubic-bezier(.2,.8,.2,1);
+  }
+  ::view-transition-group(*) {
+    animation-duration: .7s;
+    animation-timing-function: cubic-bezier(.2,.8,.2,1);
+  }
+
+  :root {
+    --bg: #EFE6D6;
+    --hero-bg: #F6EFE0;
+    --ink: #163A2E;
+    --pill-dark: #15140F;
+    --line: rgba(20,40,30,.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(239,230,214,.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(20,40,30,.06);
+  }
+  .topbar__inner {
+    max-width: 1320px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px clamp(20px, 4vw, 56px);
+  }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 14px; font-weight: 600;
+    letter-spacing: -0.005em;
+    padding: 10px 14px 10px 12px;
+    border-radius: 999px;
+    background: rgba(20,40,30,.06);
+    transition: background .25s ease, transform .25s ease;
+  }
+  .back-link:hover { background: rgba(20,40,30,.12); transform: translateX(-2px); }
+
+  .topbar__name { font-weight: 600; font-size: 14px; opacity: .65; }
+  .topbar__nav {
+    display: flex; gap: 18px;
+    font-size: 13px; font-weight: 500; opacity: .65;
+  }
+  .topbar__nav a { color: var(--ink); text-decoration: none; }
+  .topbar__nav a:hover { opacity: 1; }
+
+  /* Hero */
+  .cs-hero {
+    max-width: 1320px; margin: 0 auto;
+    padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 56px) 0;
+  }
+  .cs-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink); opacity: .55;
+  }
+  .cs-eyebrow__dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--accent, #F4D24A);
+  }
+  .cs-title {
+    margin: 24px 0 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    font-size: clamp(48px, 7.4vw, 112px);
+    color: var(--ink);
+    max-width: 16ch;
+  }
+  .cs-title em { font-style: italic; font-weight: 500; opacity: .75; }
+  .cs-deck {
+    margin: 32px 0 0;
+    max-width: 720px;
+    font-size: clamp(17px, 1.4vw, 21px);
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--ink); opacity: .8;
+  }
+
+  .cs-meta {
+    margin: 48px 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+  }
+  .cs-meta__cell {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .cs-meta__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink); opacity: .5;
+  }
+  .cs-meta__val {
+    font-size: 15px; font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Hero image */
+  .cs-cover {
+    margin: 48px auto 0;
+    max-width: 1320px;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .cs-cover__frame {
+    border-radius: 28px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    background: #1A1612;
+    box-shadow: 0 30px 60px -30px rgba(20,40,30,.3);
+  }
+  .cs-cover__frame img {
+    display: block; width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  /* Body */
+  .cs-body {
+    max-width: 760px; margin: 80px auto 0;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .cs-h2 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.025em;
+    margin: 64px 0 16px;
+    color: var(--ink);
+  }
+  .cs-h2:first-child { margin-top: 0; }
+  .cs-body p {
+    margin: 0 0 20px;
+    font-size: 17px;
+    line-height: 1.65;
+    font-weight: 500;
+    color: var(--ink); opacity: .82;
+  }
+  .cs-body p strong { font-weight: 700; opacity: 1; }
+  .cs-pull {
+    margin: 40px 0;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500; font-style: italic;
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 36px 0;
+  }
+  .cs-stat {
+    background: var(--hero-bg);
+    border-radius: 18px;
+    padding: 22px 22px 24px;
+    border: 1px solid rgba(20,40,30,.06);
+  }
+  .cs-stat__num {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(34px, 3.5vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .cs-stat__num em { font-style: italic; font-weight: 500; opacity: .7; }
+  .cs-stat__label {
+    margin-top: 10px;
+    font-size: 13px; font-weight: 500;
+    color: var(--ink); opacity: .65;
+  }
+
+  /* Next case */
+  .cs-next {
+    max-width: 1320px;
+    margin: 100px auto 0;
+    padding: 0 clamp(20px, 4vw, 56px) 80px;
+  }
+  .cs-next__inner {
+    background: var(--hero-bg);
+    border-radius: 28px;
+    padding: 48px clamp(28px, 4vw, 56px);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cs-next__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink); opacity: .55;
+  }
+  .cs-next__title {
+    margin: 8px 0 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(28px, 3vw, 42px);
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .cs-next__cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--pill-dark); color: #F4ECDC;
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 4px;
+    font-size: 15px; font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  @media (max-width: 800px) {
+    .cs-meta { grid-template-columns: repeat(2, 1fr); }
+    .cs-stats { grid-template-columns: 1fr; }
+  }
+
+  /* page reveal animation when no view-transition support */
+  .cs-fade {
+    animation: csFade .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes csFade {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="back-link" href="index.html#work">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M11 7H4M7 4L4 7l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      Back to work
+    </a>
+    <span class="topbar__name">Ahmad Majid</span>
+    <nav class="topbar__nav">
+      <a href="index.html">Home</a>
+      <a href="index.html#work">Case Studies</a>
+      <a href="index.html#about">About Me</a>
+    </nav>
+  </div>
+</header>
+
+<main class="cs-fade" id="main"></main>
+
+<script>
+const CASES = {
+  "miro-ai": {
+    year: "2025",
+    company: "Miro",
+    role: "Senior Product Designer",
+    duration: "8 months",
+    team: "4 designers, 11 engineers",
+    title: "AI-first Miro",
+    sub: "Turning the blank-board moment into an AI-guided starting point for collaboration.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=85",
+    accent: "#F4D24A",
+    sections: [
+      { h: "The brief", p: "Miro wanted AI to feel native — not a sidebar tool bolted on, but the way you start. The bet: most boards die at \"blank canvas.\" Get past that moment and people stay forever." },
+      { h: "What we built", p: "A prompt-to-board flow that interprets intent and lays out the right frames, stickies, and structure for the first 80%. Users edit the last 20%, the way they always have. The trick was making AI suggestions feel like scaffolding, not finished work." },
+      { pull: "We stopped designing the AI and started designing the handoff between AI and human." },
+      { h: "Outcomes", stats: [
+        { num: "−86%", label: "time to first useful frame" },
+        { num: "3.4×", label: "first-week activation" },
+        { num: "+42%", label: "weekly active boards" }
+      ]},
+      { p: "Shipped to 100% of Free and Starter plans Q4 2025. Now the default new-board experience for ~6M users." }
+    ],
+    next: "miro-templates"
+  },
+  "miro-templates": {
+    year: "2024",
+    company: "Miro",
+    role: "Senior Product Designer",
+    duration: "5 months",
+    team: "2 designers, 7 engineers",
+    title: "Templates, reborn",
+    sub: "Rebuilding the template gallery as a personal recommendation engine.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=85",
+    accent: "#9B8DE8",
+    sections: [
+      { h: "The problem", p: "12,000 templates. Most users saw the same 30. The gallery was a flat list, sorted by what marketing pinned that month — not by what would help you." },
+      { h: "The shift", p: "We rebuilt the gallery around three signals: what your team uses, what's trending in your industry, and what fits the time of week. Eleven categories collapsed into four, and the surface area shrank by 60%." },
+      { pull: "Less choice, more relevance. The right two templates beat a wall of sixty every time." },
+      { h: "Outcomes", stats: [
+        { num: "2 clicks", label: "median to start (was 12)" },
+        { num: "+34%", label: "template-to-paid conversion" },
+        { num: "+18%", label: "templates published by users" }
+      ]}
+    ],
+    next: "composer"
+  },
+  "composer": {
+    year: "2023",
+    company: "Holloway",
+    role: "Product Design Lead",
+    duration: "11 months",
+    team: "5 designers, 14 engineers",
+    title: "Composer 2.0",
+    sub: "A ground-up redesign of the writing workspace 40k+ teams rely on.",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=85",
+    accent: "#F4A26B",
+    sections: [
+      { h: "Context", p: "Composer had drifted. Five years of feature additions, three product managers, and zero design system meant every screen had its own vocabulary. New hires took weeks to ship their first pixel." },
+      { h: "Approach", p: "We started by ripping things out. 240 components became 86. Three navigation paradigms became one. The motion language was written down for the first time, in a single page, and enforced via tokens." },
+      { pull: "Redesigns aren't won in Figma — they're won in the migration plan." },
+      { h: "Outcomes", stats: [
+        { num: "+34%", label: "week-1 retention" },
+        { num: "−61%", label: "support tickets re: nav" },
+        { num: "11 days", label: "average new-hire ramp" }
+      ]}
+    ],
+    next: "logistics"
+  },
+  "logistics": {
+    year: "2022",
+    company: "Northwind",
+    role: "Senior Designer",
+    duration: "9 months",
+    team: "3 designers, 22 engineers",
+    title: "Logistics OS",
+    sub: "The dispatch console that moves 11M packages a week.",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=85",
+    accent: "#5FA8C4",
+    sections: [
+      { h: "The work", p: "Dispatchers had been using a green-screen terminal since 2003. Replacing it wasn't a redesign — it was a craft transfer. Twenty-two field shadows across three depots came before a pixel was drawn." },
+      { h: "What changed", p: "Density first, beauty second. We measured pixel-per-decision and found the old terminal was 3.2× more information-dense than our first prototype. We rebuilt around that constraint." },
+      { pull: "The best dispatchers move 600 packages an hour. The UI's job is to disappear." },
+      { h: "Outcomes", stats: [
+        { num: "11M / wk", label: "packages dispatched" },
+        { num: "+28%", label: "decisions per minute" },
+        { num: "0", label: "training days needed" }
+      ]}
+    ],
+    next: "atlas"
+  },
+  "atlas": {
+    year: "2021",
+    company: "Holloway",
+    role: "Senior Designer",
+    duration: "7 months",
+    team: "2 designers, 4 engineers",
+    title: "Atlas, the design system",
+    sub: "Holloway's first cross-platform design system. Two themes, three rebrands, one survived.",
+    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=2000&q=85",
+    accent: "#86C5A4",
+    sections: [
+      { h: "The bet", p: "If we built tokens, components, and motion as a single pipeline, every brand refresh would cost a config swap — not a rebuild. Three rebrands later, that bet held." },
+      { h: "The pipeline", p: "240 components, 110 tokens, two themes, one source of truth. Figma, web, and iOS pulled from the same JSON every Monday morning." },
+      { pull: "A design system isn't components. It's the contract between design and every quarter you didn't expect." },
+      { h: "Outcomes", stats: [
+        { num: "240", label: "components shipped" },
+        { num: "3", label: "rebrands survived" },
+        { num: "−72%", label: "design QA time" }
+      ]}
+    ],
+    next: "miro-ai"
+  }
+};
+
+function getSlug() {
+  const params = new URLSearchParams(location.search);
+  return params.get("slug") || "miro-ai";
+}
+
+function render() {
+  const slug = getSlug();
+  const c = CASES[slug] || CASES["miro-ai"];
+  document.title = c.title + " · Ahmad Majid";
+  document.documentElement.style.setProperty("--accent", c.accent);
+
+  const next = CASES[c.next];
+  const main = document.getElementById("main");
+
+  let bodyHtml = "";
+  c.sections.forEach(sec => {
+    if (sec.h) bodyHtml += `<h2 class="cs-h2">${sec.h}</h2>`;
+    if (sec.p) bodyHtml += `<p>${sec.p}</p>`;
+    if (sec.pull) bodyHtml += `<div class="cs-pull">"${sec.pull}"</div>`;
+    if (sec.stats) {
+      bodyHtml += '<div class="cs-stats">';
+      sec.stats.forEach(s => {
+        bodyHtml += `<div class="cs-stat"><div class="cs-stat__num">${s.num}</div><div class="cs-stat__label">${s.label}</div></div>`;
+      });
+      bodyHtml += '</div>';
+    }
+  });
+
+  main.innerHTML = `
+    <section class="cs-hero">
+      <div class="cs-eyebrow"><span class="cs-eyebrow__dot"></span><span>Case study · ${c.year}</span></div>
+      <h1 class="cs-title">${c.title}</h1>
+      <p class="cs-deck">${c.sub}</p>
+      <div class="cs-meta">
+        <div class="cs-meta__cell"><div class="cs-meta__label">Company</div><div class="cs-meta__val">${c.company}</div></div>
+        <div class="cs-meta__cell"><div class="cs-meta__label">Role</div><div class="cs-meta__val">${c.role}</div></div>
+        <div class="cs-meta__cell"><div class="cs-meta__label">Duration</div><div class="cs-meta__val">${c.duration}</div></div>
+        <div class="cs-meta__cell"><div class="cs-meta__label">Team</div><div class="cs-meta__val">${c.team}</div></div>
+      </div>
+    </section>
+
+    <section class="cs-cover">
+      <div class="cs-cover__frame">
+        <img src="${c.image}" alt="${c.title}" style="view-transition-name: case-img-${slug};">
+      </div>
+    </section>
+
+    <article class="cs-body">${bodyHtml}</article>
+
+    <section class="cs-next">
+      <div class="cs-next__inner">
+        <div>
+          <div class="cs-next__label">Next case study · ${next.year}</div>
+          <h3 class="cs-next__title">${next.title}</h3>
+        </div>
+        <a class="cs-next__cta" href="case-study.html?slug=${c.next}">
+          Continue
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
