@@ -233,7 +233,8 @@ function Hero() {
       </main>
 
       <AboutSection />
-      <SideSection />
+      <BooksSection />
+      <TestsSection />
       <FooterSection />
 
       <div className="floater" aria-hidden="true">

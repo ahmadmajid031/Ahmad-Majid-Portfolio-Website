@@ -1,0 +1,399 @@
+/* global React */
+const { useState: useStateB } = React;
+
+// Reuse useInView from sections.jsx (loaded before this file)
+// But provide a fallback in case of load order issues.
+const useInViewB = (window.__useInView) || function (threshold) {
+  const ref = React.useRef(null);
+  const [shown, setShown] = React.useState(false);
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setShown(true); io.disconnect(); }
+    }, { threshold: 0, rootMargin: "0px 0px -80px 0px" });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  return [ref, shown];
+};
+
+// ---------- Books I Read ----------
+const BOOKS = [
+  {
+    id: "b1",
+    title: "Range",
+    author: "David Epstein",
+    year: "2019",
+    note: "Generalists win the long game.",
+    tag: "Mindset",
+    color: "peach",
+    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "b2",
+    title: "Shape Up",
+    author: "Ryan Singer",
+    year: "2019",
+    note: "How Basecamp ships without burning out.",
+    tag: "Product",
+    color: "lilac",
+    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "b3",
+    title: "The Design of Everyday Things",
+    author: "Don Norman",
+    year: "1988",
+    note: "Why doors are still confusing.",
+    tag: "Design",
+    color: "sky",
+    image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "b4",
+    title: "Creative Selection",
+    author: "Ken Kocienda",
+    year: "2018",
+    note: "Inside Apple's demo-driven culture.",
+    tag: "Craft",
+    color: "sun",
+    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "b5",
+    title: "A Pattern Language",
+    author: "Christopher Alexander",
+    year: "1977",
+    note: "The original design system.",
+    tag: "Design",
+    color: "sky",
+    image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "b6",
+    title: "Working Backwards",
+    author: "Bryar & Carr",
+    year: "2021",
+    note: "Amazon's PR/FAQ in the wild.",
+    tag: "Product",
+    color: "lilac",
+    image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80",
+  },
+];
+
+function BooksSection() {
+  const [ref, inView] = useInViewB();
+  const [hoverId, setHoverId] = useStateB(null);
+  const col1 = BOOKS.filter((_, i) => i % 3 === 0);
+  const col2 = BOOKS.filter((_, i) => i % 3 === 1);
+  const col3 = BOOKS.filter((_, i) => i % 3 === 2);
+
+  return (
+    <section ref={ref} className={"slab slab--books " + (inView ? "is-in" : "")} id="books" data-screen-label="04 Books">
+      <div className="slab__inner">
+        <div className="work-head">
+          <div>
+            <div className="slab__eyebrow">
+              <span>Always reading</span>
+              <span className="eyebrow-chip eyebrow-chip--peach">currently · 3</span>
+              <span className="eyebrow-chip eyebrow-chip--lilac">2025 · 11</span>
+            </div>
+            <h2 className="slab__h2">Books I keep <em>coming back</em> to.</h2>
+          </div>
+          <p className="work-head__lede">
+            A small shelf I'd hand a younger version of me. Hover any title to bring its cover to life.
+          </p>
+        </div>
+
+        <div className="books">
+          <div className="books__grid">
+            <div className="books__col books__col--1">
+              {col1.map(b => <BookCover key={b.id} book={b} size="sm" hoverId={hoverId} onHover={setHoverId} />)}
+            </div>
+            <div className="books__col books__col--2">
+              {col2.map(b => <BookCover key={b.id} book={b} size="lg" hoverId={hoverId} onHover={setHoverId} />)}
+            </div>
+            <div className="books__col books__col--3">
+              {col3.map(b => <BookCover key={b.id} book={b} size="md" hoverId={hoverId} onHover={setHoverId} />)}
+            </div>
+          </div>
+
+          <ul className="books__list">
+            {BOOKS.map((b, i) => <BookRow key={b.id} book={b} index={i + 1} hoverId={hoverId} onHover={setHoverId} />)}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BookCover({ book, size, hoverId, onHover }) {
+  const active = hoverId === book.id;
+  const dimmed = hoverId !== null && !active;
+  return (
+    <div
+      className={
+        "book-cover book-cover--" + size +
+        " book-cover--" + book.color +
+        (dimmed ? " is-dim" : "") +
+        (active ? " is-active" : "")
+      }
+      onMouseEnter={() => onHover(book.id)}
+      onMouseLeave={() => onHover(null)}
+    >
+      <div className="book-cover__frame">
+        <img src={book.image} alt={book.title} />
+      </div>
+      <span className={"book-cover__tag book-cover__tag--" + book.color}>{book.tag}</span>
+    </div>
+  );
+}
+
+function BookRow({ book, index, hoverId, onHover }) {
+  const active = hoverId === book.id;
+  const dimmed = hoverId !== null && !active;
+  return (
+    <li
+      className={"book-row book-row--" + book.color + (dimmed ? " is-dim" : "") + (active ? " is-active" : "")}
+      onMouseEnter={() => onHover(book.id)}
+      onMouseLeave={() => onHover(null)}
+    >
+      <div className="book-row__top">
+        <span className="book-row__num">{String(index).padStart(2, "0")}</span>
+        <span className={"book-row__chip book-row__chip--" + book.color}>{book.tag}</span>
+        <span className="book-row__title">{book.title}</span>
+        <a
+          className="book-row__arrow"
+          href="#books"
+          aria-label={"Open " + book.title}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      <div className="book-row__meta">
+        <span className="book-row__author">{book.author}</span>
+        <span className="book-row__dot">·</span>
+        <span className="book-row__year">{book.year}</span>
+        <span className="book-row__note"> — {book.note}</span>
+      </div>
+    </li>
+  );
+}
+
+// ---------- Styles ----------
+const booksCss = `
+.slab--books { background: var(--bg); }
+
+.work-head__lede {
+  margin: 14px 0 0;
+  max-width: 460px;
+  font-size: 15px; line-height: 1.55;
+  color: var(--ink); opacity: .7;
+  font-weight: 500;
+}
+
+.eyebrow-chip {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .04em;
+  color: var(--ink);
+  margin-left: 8px;
+  vertical-align: 2px;
+  text-transform: lowercase;
+  border: 1px solid rgba(20,40,30,.12);
+  white-space: nowrap;
+}
+.eyebrow-chip--peach { background: var(--peach); }
+.eyebrow-chip--lilac { background: var(--lilac); }
+
+.books {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(360px, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+.books__grid { display: flex; gap: 12px; flex-shrink: 0; }
+.books__col { display: flex; flex-direction: column; gap: 14px; }
+.books__col--2 { margin-top: 60px; }
+.books__col--3 { margin-top: 28px; }
+
+.book-cover {
+  position: relative;
+  cursor: pointer;
+  transition: opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.book-cover--sm { width: 142px; }
+.book-cover--md { width: 152px; }
+.book-cover--lg { width: 164px; }
+
+.book-cover__frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 10px 22px -12px rgba(20,30,20,.45);
+  transition: box-shadow .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+  /* color overlay */
+}
+.book-cover--sm .book-cover__frame { height: 178px; }
+.book-cover--md .book-cover__frame { height: 192px; }
+.book-cover--lg .book-cover__frame { height: 206px; }
+
+.book-cover__frame::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--cover-tint, transparent);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity .5s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+.book-cover--peach .book-cover__frame { --cover-tint: #F8C495; }
+.book-cover--lilac .book-cover__frame { --cover-tint: #C7C2F0; }
+.book-cover--sky   .book-cover__frame { --cover-tint: #B8DBEC; }
+.book-cover--sun   .book-cover__frame { --cover-tint: #F8E45A; }
+
+.book-cover__frame img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  filter: grayscale(1) brightness(.78) contrast(1.05);
+  transition: filter .5s ease, transform .8s ease;
+}
+.book-cover.is-active .book-cover__frame img {
+  filter: grayscale(0) brightness(1);
+  transform: scale(1.04);
+}
+.book-cover.is-active .book-cover__frame::before { opacity: .35; }
+.book-cover.is-active .book-cover__frame {
+  box-shadow: 0 18px 32px -14px rgba(20,30,20,.55);
+  transform: translateY(-3px);
+}
+.book-cover.is-dim { opacity: .5; }
+
+.book-cover__tag {
+  position: absolute;
+  left: 8px; top: 8px;
+  z-index: 3;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .08em;
+  font-weight: 600;
+  color: var(--ink);
+  text-transform: uppercase;
+  box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 4px 10px rgba(0,0,0,.18);
+  transform: rotate(-4deg);
+  transition: transform .35s cubic-bezier(.4,1.6,.4,1), opacity .35s ease;
+  opacity: 0;
+}
+.book-cover.is-active .book-cover__tag { opacity: 1; transform: rotate(-7deg) translateY(-2px); }
+.book-cover__tag--peach { background: var(--peach); }
+.book-cover__tag--lilac { background: var(--lilac); }
+.book-cover__tag--sky   { background: var(--sky); }
+.book-cover__tag--sun   { background: var(--sun); }
+
+.books__list {
+  list-style: none; margin: 4px 0 0; padding: 0;
+  display: flex; flex-direction: column;
+  gap: 22px;
+}
+.book-row {
+  cursor: pointer;
+  transition: opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.book-row.is-dim { opacity: .42; }
+.book-row.is-active { transform: translateX(4px); }
+
+.book-row__top {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap;
+}
+.book-row__num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--ink); opacity: .35;
+  font-weight: 500;
+  letter-spacing: .04em;
+  width: 22px;
+  transition: opacity .3s ease;
+}
+.book-row.is-active .book-row__num { opacity: .7; }
+
+.book-row__chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .08em; font-weight: 600;
+  color: var(--ink);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
+  transform: rotate(-1deg);
+  transition: transform .35s cubic-bezier(.4,1.6,.4,1);
+}
+.book-row.is-active .book-row__chip { transform: rotate(-3deg) scale(1.04); }
+.book-row__chip--peach { background: var(--peach); }
+.book-row__chip--lilac { background: var(--lilac); }
+.book-row__chip--sky   { background: var(--sky); }
+.book-row__chip--sun   { background: var(--sun); }
+
+.book-row__title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 700; font-style: italic;
+  font-size: clamp(22px, 2.1vw, 30px);
+  color: var(--ink); letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.book-row__arrow {
+  display: inline-grid; place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  background: var(--ink); color: #F4ECDC;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(-8px) rotate(-8deg);
+  transition: opacity .25s ease, transform .3s cubic-bezier(.4,1.6,.4,1), background .2s ease;
+  margin-left: 2px;
+}
+.book-row.is-active .book-row__arrow {
+  opacity: 1;
+  transform: translateX(0) rotate(0);
+}
+.book-row__arrow:hover { transform: translateX(3px) rotate(0); }
+
+.book-row__meta {
+  margin: 8px 0 0 34px;
+  font-size: 13px;
+  color: var(--ink); opacity: .6;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.book-row__meta > span + span { margin-left: 6px; }
+.book-row__author { font-weight: 600; opacity: .85; white-space: nowrap; }
+.book-row__dot { opacity: .4; }
+.book-row__year { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .04em; }
+.book-row__note { font-style: italic; opacity: .75; }
+
+@media (max-width: 880px) {
+  .books { grid-template-columns: 1fr; }
+  .books__grid { overflow-x: auto; padding-bottom: 4px; }
+  .book-cover--sm { width: 116px; }
+  .book-cover--md { width: 124px; }
+  .book-cover--lg { width: 132px; }
+  .book-cover--sm .book-cover__frame { height: 144px; }
+  .book-cover--md .book-cover__frame { height: 156px; }
+  .book-cover--lg .book-cover__frame { height: 166px; }
+}
+`;
+const booksStyleEl = document.createElement('style');
+booksStyleEl.textContent = booksCss;
+document.head.appendChild(booksStyleEl);
+
+Object.assign(window, { BooksSection });
