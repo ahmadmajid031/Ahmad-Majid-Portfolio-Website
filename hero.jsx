@@ -232,7 +232,6 @@ function Hero() {
         <CardDeck animateOnLoad={t.animateOnLoad && mounted} />
       </main>
 
-      <AboutSection />
       <BooksSection />
       <TestsSection />
       <FooterSection />

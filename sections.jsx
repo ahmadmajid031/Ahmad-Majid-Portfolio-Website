@@ -21,60 +21,66 @@ function AboutSection() {
   const [ref, inView] = useInView();
   return (
     <section ref={ref} className={"slab slab--about " + (inView ? "is-in" : "")} id="about">
-      <div className="slab__inner">
-        <div className="slab__eyebrow">A bit about me</div>
-        <h2 className="slab__h2">
-          Design is how I think.
-          <br />
-          Building is how I <em>prove</em> it.
-        </h2>
+      <div className="slab__inner about-layout">
 
-        <div className="about-row">
-          <div className="about-card">
-            <div className="about-card__media" aria-label="Photo: Ahmad on stage">
-              <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-                <defs>
-                  <linearGradient id="abg" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stopColor="#3D3329"/>
-                    <stop offset="1" stopColor="#1A1612"/>
-                  </linearGradient>
-                  <radialGradient id="screen" cx="50%" cy="45%" r="35%">
-                    <stop offset="0" stopColor="#B8DBEC" stopOpacity=".95"/>
-                    <stop offset="1" stopColor="#1F4A6A" stopOpacity=".15"/>
-                  </radialGradient>
-                </defs>
-                <rect width="600" height="360" fill="url(#abg)"/>
-                {/* projector screen */}
-                <rect x="170" y="80" width="260" height="150" rx="6" fill="url(#screen)"/>
-                <rect x="170" y="80" width="260" height="150" rx="6" fill="none" stroke="rgba(255,255,255,.18)"/>
-                {/* audience silhouettes */}
-                {[...Array(28)].map((_, i) => (
-                  <circle key={i} cx={20 + i * 21 + (i % 3) * 4} cy={310 + (i % 4) * 6} r={14 + (i % 3) * 2} fill="#0E0B08" opacity=".85"/>
-                ))}
-                <text x="300" y="160" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="11" fill="rgba(255,255,255,.55)" letterSpacing="2">CONFERENCE TALK</text>
-                <text x="300" y="178" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="rgba(255,255,255,.4)" letterSpacing="1">drop your photo</text>
-              </svg>
-            </div>
+        <div className="about-left">
+          <h2 className="about-headline">
+            Design is how I think.<br />
+            Building is how I prove it.
+          </h2>
+          <div className="about-bio">
+            <p>I grew up in a family where success usually meant becoming an engineer or a doctor. So for a long time, I followed the expected path and studied Computer Science and Data Science.</p>
+            <p>Along the way, I realized I was not only interested in how systems worked. I cared just as much about how people experienced them, where they felt stuck, and what made a product feel intuitive.</p>
+            <p>That curiosity is what pulled me into design. But what kept me going was building things and shipping them into the world.</p>
+            <p>I taught myself at night, freelanced while working part-time, and gradually built my way into product design. Along the way I shipped indie apps, made every kind of mistake — marketing, engineering, positioning — and learned more from those than anything else. Over the years, I have helped launch products from scratch across multiple startups, turning early ideas into experiences people actually use.</p>
+            <p>My background in engineering and data still shapes how I work. I believe strong product design sits at the intersection of collaboration, experimentation, and evidence, so I use workshops, rapid prototyping, and data-informed thinking to help teams make better decisions.</p>
+            <p>Today, I work as a Staff Product Designer at Miro, focused on Growth and AI. Most of my work is about helping powerful products feel easier to understand, easier to adopt, and more meaningful in people's daily workflows.</p>
           </div>
-
-          <div className="about-copy">
-            <p>
-              Being a designer with an engineering and data background, I've always
-              felt like I'm in a different room. Now that's my superpower.
-            </p>
-            <p className="about-copy__small">
-              Twelve years across product, growth, and ML tooling. I think in flows,
-              ship in pixels, and write the code when the prototype needs to feel
-              real.
-            </p>
-            <a className="dark-cta" href="#about">
-              Learn more about Ahmad
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          <div className="about-actions">
+            <a className="about-btn" href="#">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2v8M5 8l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
+              Download resume
+            </a>
+            <a className="about-btn" href="#">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M5.5 11.5v-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="5.5" cy="5.5" r=".75" fill="currentColor"/>
+                <path d="M8 11.5V8.75A1.75 1.75 0 0 1 11.5 8.75v2.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              LinkedIn
             </a>
           </div>
         </div>
+
+        <div className="about-right">
+          <div className="about-photo">
+            <img
+              src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=600&q=80"
+              alt="Ahmad Majid"
+            />
+          </div>
+          <div className="about-edu">
+            <h3 className="about-edu__label">Education</h3>
+            <ul className="about-edu__list">
+              <li>
+                <span className="about-edu__school">Queen Mary University of London</span>
+                <span className="about-edu__degree">BSc Computer Science</span>
+              </li>
+              <li>
+                <span className="about-edu__school">University of Twente</span>
+                <span className="about-edu__degree">MSc Interactive Technology</span>
+              </li>
+              <li>
+                <span className="about-edu__school">KTH Royal Institute of Technology</span>
+                <span className="about-edu__degree">MSc Human Computer Interaction</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -383,35 +389,105 @@ const sectionsCss = `
 .slab.is-in > .slab__inner > *:nth-child(2) { transition-delay: .08s; }
 .slab.is-in > .slab__inner > *:nth-child(3) { transition-delay: .16s; }
 
-/* ---- About row ---- */
-.about-row {
+/* ---- About (two-column) ---- */
+.about-layout {
   display: grid;
-  grid-template-columns: minmax(280px, 1.15fr) 1fr;
-  gap: 36px;
-  margin-top: 40px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(48px, 7vw, 96px);
+  align-items: start;
+}
+
+.about-headline {
+  margin: 0;
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  font-size: clamp(36px, 5.4vw, 72px);
+  color: var(--ink);
+}
+
+.about-bio {
+  margin-top: 28px;
+}
+.about-bio p {
+  margin: 0 0 16px;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.65;
+  font-weight: 500;
+  color: var(--ink);
+  opacity: .78;
+  max-width: 64ch;
+}
+.about-bio p:last-child { margin-bottom: 0; }
+
+.about-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.about-btn {
+  display: inline-flex;
   align-items: center;
+  gap: 8px;
+  background: var(--pill-dark);
+  color: #F4ECDC;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  box-shadow: 0 4px 10px rgba(0,0,0,.16);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.about-card {
-  border-radius: 18px;
+.about-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0,0,0,.22); }
+
+.about-photo {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
   overflow: hidden;
-  background: #1A1612;
-  box-shadow: 0 18px 30px -16px rgba(20,30,20,.25);
-  aspect-ratio: 5/3;
+  box-shadow: 0 16px 32px -12px rgba(20,40,30,.22), 0 0 0 1px rgba(0,0,0,.06);
+  margin-bottom: 36px;
 }
-.about-card__media { width: 100%; height: 100%; }
-.about-copy {
-  padding: 4px 0;
+.about-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.about-copy p {
-  margin: 0 0 18px;
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.55; font-weight: 500;
-  color: var(--ink); letter-spacing: -0.005em;
+
+.about-edu__label {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
-.about-copy__small {
-  font-size: 15px !important; opacity: .68;
-  font-weight: 500 !important;
-  max-width: 460px;
+.about-edu__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.about-edu__list li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(20,40,30,.12);
+}
+.about-edu__school {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.about-edu__degree {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  opacity: .6;
 }
 
 .dark-cta {
@@ -759,7 +835,8 @@ const sectionsCss = `
 }
 
 @media (max-width: 880px) {
-  .about-row { grid-template-columns: 1fr; }
+  .about-layout { grid-template-columns: 1fr; }
+  .about-photo { width: 180px; height: 180px; }
   .work-card { grid-template-columns: 1fr; gap: 18px; }
   .work-card__visual { aspect-ratio: 16/8; }
   .side-row { grid-template-columns: 24px 1fr 32px; }

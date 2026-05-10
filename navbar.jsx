@@ -1,13 +1,14 @@
 /* global React, ReactDOM */
 const { useState: useNavState, useEffect: useNavEffect, useRef: useNavRef } = React;
 
-const NAV_ITEMS = ["Home", "Case Studies", "About Me"];
-const NAV_HREFS = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
+const NAV_ITEMS = ["Home", "Case Studies", "About"];
+const NAV_HREFS = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 
 function Navbar({ active, backHref }) {
   active = active || "Home";
   const pillRef = useNavRef(null);
-  const [ind, setInd] = useNavState({ left: 0, width: 0, ok: false });
+  const [ind, setInd] = useNavState({ left: 0, width: 0, ok: false, instant: true });
+  const firstRun = useNavRef(true);
 
   useNavEffect(() => {
     const pill = pillRef.current;
@@ -16,7 +17,9 @@ function Navbar({ active, backHref }) {
     if (!el) return;
     const pr = pill.getBoundingClientRect();
     const er = el.getBoundingClientRect();
-    setInd({ left: er.left - pr.left, width: er.width, ok: true });
+    const instant = firstRun.current;
+    firstRun.current = false;
+    setInd({ left: er.left - pr.left, width: er.width, ok: true, instant });
   }, [active]);
 
   function go(item) {
@@ -39,6 +42,7 @@ function Navbar({ active, backHref }) {
               transform: 'translateX(' + ind.left + 'px)',
               width: ind.width,
               opacity: ind.ok ? 1 : 0,
+              transition: ind.instant ? 'none' : undefined,
             }}
           />
           {backHref ? (
@@ -82,11 +86,6 @@ const snavCss = `
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(20,40,30,.06);
-  view-transition-name: site-nav;
-}
-::view-transition-group(site-nav) {
-  animation-duration: .55s;
-  animation-timing-function: cubic-bezier(.2,.8,.2,1);
 }
 .snav__inner {
   max-width: 1320px; margin: 0 auto;

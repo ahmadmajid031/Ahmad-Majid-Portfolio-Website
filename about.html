@@ -36,159 +36,6 @@
     overflow-x: hidden;
   }
 
-  /* Hero */
-  .ab-hero {
-    max-width: 1320px; margin: 0 auto;
-    padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 56px) 0;
-  }
-  .ab-eyebrow {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--ink); opacity: .55;
-  }
-  .ab-eyebrow__dot { width: 8px; height: 8px; border-radius: 999px; background: var(--sun); }
-
-  .ab-title {
-    margin: 24px 0 0;
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 0.96;
-    font-size: clamp(48px, 7.4vw, 112px);
-    color: var(--ink);
-    max-width: 14ch;
-  }
-  .ab-title em { font-style: italic; font-weight: 500; opacity: .75; }
-
-  .ab-meta {
-    margin: 56px 0 0;
-    display: grid;
-    grid-template-columns: 2.2fr 1fr 1fr 1fr;
-    gap: 32px;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: 28px 0;
-  }
-  .ab-meta__cell { display: flex; flex-direction: column; gap: 10px; }
-  .ab-meta__label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
-    color: var(--ink); opacity: .55;
-  }
-  .ab-meta__val {
-    font-size: 15px; font-weight: 500; line-height: 1.55;
-    color: var(--ink);
-  }
-  .ab-meta__val strong { font-weight: 700; }
-  .ab-team-stack {
-    display: flex; align-items: center;
-    margin-top: 2px;
-  }
-  .ab-team-stack span {
-    width: 28px; height: 28px; border-radius: 999px;
-    margin-left: -8px;
-    border: 2px solid var(--bg);
-    display: grid; place-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 600; color: #15140F;
-  }
-  .ab-team-stack span:first-child { margin-left: 0; }
-
-  /* Cover image */
-  .ab-cover {
-    margin: 48px auto 0;
-    max-width: 1320px;
-    padding: 0 clamp(20px, 4vw, 56px);
-  }
-  .ab-cover__frame {
-    border-radius: 28px;
-    overflow: hidden;
-    aspect-ratio: 16/9;
-    background: #1A1612;
-    box-shadow: 0 30px 60px -30px rgba(20,40,30,.3);
-    position: relative;
-  }
-  .ab-cover__frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-  /* Body */
-  .ab-body {
-    max-width: 760px; margin: 80px auto 0;
-    padding: 0 clamp(20px, 4vw, 56px);
-  }
-  .ab-h2 {
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 700;
-    font-size: clamp(28px, 3vw, 40px);
-    letter-spacing: -0.025em;
-    margin: 64px 0 16px;
-    color: var(--ink);
-  }
-  .ab-h2:first-child { margin-top: 0; }
-  .ab-h2 em { font-style: italic; font-weight: 500; opacity: .75; }
-  .ab-body p {
-    margin: 0 0 20px;
-    font-size: 17px;
-    line-height: 1.65;
-    font-weight: 500;
-    color: var(--ink); opacity: .82;
-  }
-  .ab-body p strong { font-weight: 700; opacity: 1; }
-
-  .ab-pull {
-    margin: 40px 0;
-    padding: 28px 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 500; font-style: italic;
-    font-size: clamp(22px, 2vw, 28px);
-    line-height: 1.35;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-
-  /* Timeline */
-  .ab-timeline {
-    list-style: none; margin: 24px 0 0; padding: 0;
-    display: flex; flex-direction: column;
-  }
-  .ab-timeline li {
-    display: grid;
-    grid-template-columns: 90px 1fr auto;
-    gap: 24px;
-    align-items: baseline;
-    padding: 18px 0;
-    border-top: 1px solid var(--line);
-    font-size: 16px; font-weight: 500;
-    color: var(--ink);
-  }
-  .ab-timeline li:last-child { border-bottom: 1px solid var(--line); }
-  .ab-timeline__year {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; opacity: .55; letter-spacing: .04em;
-  }
-  .ab-timeline__role { font-weight: 600; }
-  .ab-timeline__co { opacity: .7; font-size: 14px; }
-
-  /* Stack chips */
-  .ab-chips {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin: 16px 0 28px;
-  }
-  .ab-chip {
-    background: rgba(20,40,30,.06);
-    color: var(--ink);
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 13px; font-weight: 600;
-    letter-spacing: -0.005em;
-  }
-  .ab-chip--peach { background: var(--peach); }
-  .ab-chip--lilac { background: var(--lilac); }
-  .ab-chip--sky { background: var(--sky); }
-  .ab-chip--sun { background: var(--sun); }
-
   /* CTA */
   .ab-cta-row {
     max-width: 1320px; margin: 100px auto 0;
@@ -224,10 +71,6 @@
     cursor: pointer; border: 0; font-family: inherit;
   }
 
-  @media (max-width: 800px) {
-    .ab-meta { grid-template-columns: 1fr 1fr; }
-  }
-
   .ab-fade { animation: abFade .7s cubic-bezier(.2,.8,.2,1) both; }
   @keyframes abFade { from { opacity: 0; transform: translateY(8px); } }
 </style>
@@ -237,110 +80,7 @@
 <div id="snav-root"></div>
 
 <main class="ab-fade">
-  <section class="ab-hero">
-    <div class="ab-eyebrow"><span class="ab-eyebrow__dot"></span><span>About · Ahmad Majid</span></div>
-    <h1 class="ab-title">Designer with an <em>engineer's</em> brain.</h1>
-
-    <div class="ab-meta">
-      <div class="ab-meta__cell">
-        <div class="ab-meta__label">Overview</div>
-        <div class="ab-meta__val">
-          Senior product designer with a 12-year background spanning engineering, ML tooling, and growth. I think in flows, ship in pixels, and write the code when the prototype needs to feel real.
-        </div>
-      </div>
-      <div class="ab-meta__cell">
-        <div class="ab-meta__label">Currently</div>
-        <div class="ab-meta__val"><strong>Senior PD</strong><br/>Lumen · AI tools</div>
-      </div>
-      <div class="ab-meta__cell">
-        <div class="ab-meta__label">Stack</div>
-        <div class="ab-team-stack" aria-label="Tools I reach for">
-          <span style="background:#F8C495;">Fg</span>
-          <span style="background:#C7C2F0;">Rx</span>
-          <span style="background:#B8DBEC;">Ts</span>
-          <span style="background:#F8E45A;">Py</span>
-          <span style="background:#15140F;color:#F4ECDC;">+5</span>
-        </div>
-      </div>
-      <div class="ab-meta__cell">
-        <div class="ab-meta__label">Based</div>
-        <div class="ab-meta__val">Brooklyn, NY<br/><span style="opacity:.6;">Open to advisory</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="ab-cover">
-    <div class="ab-cover__frame">
-      <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=2000&q=85" alt="Workspace" />
-    </div>
-  </section>
-
-  <article class="ab-body">
-    <h2 class="ab-h2">The short version</h2>
-    <p>
-      I'm a product designer who spent the first half of my career writing code. That doesn't make me a better designer — it makes me a different one. I obsess over the seams: the moment a click becomes an animation becomes a network call becomes a state. Most design problems hide there.
-    </p>
-    <p>
-      Today I lead design on AI tools at <strong>Lumen</strong>. By night I build <strong>Notebook.fm</strong>, an audio journal for builders, plus eight other indie apps that exist mostly because I can't stop shipping.
-    </p>
-
-    <div class="ab-pull">"Design is how I think. Building is how I prove it."</div>
-
-    <h2 class="ab-h2">How I work</h2>
-    <p>
-      I start with the messy artifact — a screenshot, a Loom, a transcript, a SQL query — never with a Figma file. I ship rough things fast and let real usage tell me where the edges are. The polish comes after the bet has paid off.
-    </p>
-    <p>
-      I write a lot of words. Most projects start as a memo. If the memo isn't sharp, the design won't be either.
-    </p>
-
-    <h2 class="ab-h2">Tools I reach for</h2>
-    <div class="ab-chips">
-      <span class="ab-chip ab-chip--peach">Figma</span>
-      <span class="ab-chip ab-chip--lilac">React</span>
-      <span class="ab-chip ab-chip--sky">TypeScript</span>
-      <span class="ab-chip ab-chip--sun">Python</span>
-      <span class="ab-chip">Framer Motion</span>
-      <span class="ab-chip">Linear</span>
-      <span class="ab-chip">Notion</span>
-      <span class="ab-chip">Rive</span>
-      <span class="ab-chip">SwiftUI</span>
-    </div>
-
-    <h2 class="ab-h2">The <em>longer</em> version</h2>
-    <ul class="ab-timeline">
-      <li>
-        <span class="ab-timeline__year">2024 — now</span>
-        <span><span class="ab-timeline__role">Senior Product Designer</span><br/><span class="ab-timeline__co">Lumen · AI tools for the enterprise</span></span>
-        <span class="ab-timeline__year">NYC</span>
-      </li>
-      <li>
-        <span class="ab-timeline__year">2021 — 2024</span>
-        <span><span class="ab-timeline__role">Senior Product Designer</span><br/><span class="ab-timeline__co">Miro · AI canvas, templates</span></span>
-        <span class="ab-timeline__year">Remote</span>
-      </li>
-      <li>
-        <span class="ab-timeline__year">2018 — 2021</span>
-        <span><span class="ab-timeline__role">Product Design Lead</span><br/><span class="ab-timeline__co">Holloway · Composer, Atlas DS</span></span>
-        <span class="ab-timeline__year">SF</span>
-      </li>
-      <li>
-        <span class="ab-timeline__year">2015 — 2018</span>
-        <span><span class="ab-timeline__role">ML Engineer → Designer</span><br/><span class="ab-timeline__co">Northwind · Logistics OS</span></span>
-        <span class="ab-timeline__year">Boston</span>
-      </li>
-      <li>
-        <span class="ab-timeline__year">2012 — 2015</span>
-        <span><span class="ab-timeline__role">Software Engineer</span><br/><span class="ab-timeline__co">Various · The years before pixels</span></span>
-        <span class="ab-timeline__year">—</span>
-      </li>
-    </ul>
-
-    <h2 class="ab-h2">Outside of work</h2>
-    <p>
-      Long-distance running, slow-cooked coffee, and occasionally a synth I'm bad at. I read more books than I can fit on a shelf and I keep a list of every cafe in Brooklyn worth working from (it's 23 long).
-    </p>
-  </article>
+  <div id="about-section-root" style="padding: 0 clamp(20px, 4vw, 56px);"></div>
 
   <section class="ab-cta-row">
     <div class="ab-cta-card">
@@ -362,9 +102,11 @@
 </main>
 
 <script type="text/babel" src="navbar.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Navbar */
-ReactDOM.createRoot(document.getElementById('snav-root')).render(<Navbar active="About Me" />);
+/* global React, ReactDOM, Navbar, AboutSection */
+ReactDOM.createRoot(document.getElementById('snav-root')).render(<Navbar active="About" />);
+ReactDOM.createRoot(document.getElementById('about-section-root')).render(<AboutSection />);
 </script>
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
