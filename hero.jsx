@@ -30,12 +30,19 @@ function Badge({ visible }) {
 }
 
 // ---------- Inline mini pill (for the subline) ----------
-function InlinePill({ tone = "dark", icon, children }) {
+function InlinePill({ tone = "dark", icon, children, href }) {
+  const Tag = href ? "a" : "span";
   return (
-    <span className={"inline-pill inline-pill--" + tone}>
+    <Tag
+      className={"inline-pill inline-pill--" + tone}
+      href={href || undefined}
+      target={href ? "_blank" : undefined}
+      rel={href ? "noopener noreferrer" : undefined}
+      style={href ? { textDecoration: "none" } : undefined}
+    >
       {icon ? <span className="inline-pill__icon" aria-hidden>{icon}</span> : null}
       <span>{children}</span>
-    </span>
+    </Tag>
   );
 }
 
@@ -211,20 +218,20 @@ function Hero() {
         <h1 className={headlineClass}>
           <span className={"hero__line " + (mounted ? "is-in" : "")} style={{ transitionDelay: "60ms" }}>Hi, I'm Ahmad.</span>
           <span className={"hero__line " + (mounted ? "is-in" : "")} style={{ transitionDelay: "180ms" }}>
-            Designer <em>&amp;</em> Engineer.
+            Designer <em>&amp;</em> Creator.
           </span>
         </h1>
 
         <p className={"hero__sub " + (mounted ? "is-in" : "")} style={{ transitionDelay: "320ms" }}>
-          Senior product designer with an engineering background.
+          Product Designer with a business analytics background
           <br />
-          Shipping AI tools at{" "}
+          Shipping product features with{" "}
           <HoverPeek
             imageSrc="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop&auto=format"
             width={200}
             height={125}
           >
-            <InlinePill tone="dark" icon={
+            <InlinePill tone="dark" href="https://dal.ai" icon={
               <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" fill="#F4A26B"/></svg>
             }>Dal</InlinePill>
           </HoverPeek>
@@ -234,7 +241,7 @@ function Hero() {
             width={200}
             height={125}
           >
-            <InlinePill tone="dark" icon={
+            <InlinePill tone="dark" href="#" icon={
               <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" rx="1.6" fill="#C7C2F0"/></svg>
             }>Omnia</InlinePill>
           </HoverPeek>
