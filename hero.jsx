@@ -53,9 +53,9 @@ const CARDS = [
   {
     id: "recent",
     color: "peach",
-    title: "Recent work",
-    body: "See how I turn messy product problems into shipped experiences.",
-    cta: "Read case studies",
+    title: "Use Cases",
+    body: "See how I turn problems into solutions.",
+    cta: "View Use Cases",
     rotate: -8,
     z: 1,
     leftPct: 0.18,
@@ -75,9 +75,9 @@ const CARDS = [
   {
     id: "indie",
     color: "lilac",
-    title: "Indie apps",
-    body: "I've shipped 9 apps over the last decade — mostly because I can't stop building.",
-    cta: "Apps I've shipped",
+    title: "Building Omnia",
+    body: "Creating educational content on Instagram since January, over 2 million views.",
+    cta: "View page",
     rotate: 4,
     z: 3,
     leftPct: 0.60,
@@ -86,9 +86,10 @@ const CARDS = [
   {
     id: "talks",
     color: "sky",
-    title: "Public talks",
-    body: "Conference talks and workshops on design, AI, and the craft behind shipping better products.",
-    cta: "Explore my talks",
+    label: "Current job",
+    title: "Ayn by Dal",
+    body: "Ayn is an all-in-one compliance platform for the Saudi market.",
+    cta: "Visit Dal's website",
     rotate: 9,
     z: 4,
     leftPct: 0.82,
@@ -144,6 +145,7 @@ function Card({ data, hovered, anyHovered, onHover, onLeave, animateOnLoad }) {
         </div>
       ) : (
         <>
+          {data.label && <span className="card__label">{data.label}</span>}
           <h3 className="card__title">{data.title}</h3>
           <p className="card__body">{data.body}</p>
           <button className="card__cta">
@@ -449,6 +451,14 @@ const css = `
 .card--photo {
   background: #1A1612;
   padding: 10px;
+}
+
+.card__label {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--pill-dark); opacity: .5;
+  margin-bottom: 4px;
 }
 
 .card__title {
