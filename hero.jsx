@@ -56,7 +56,7 @@ const CARDS = [
     id: "recent",
     color: "peach",
     title: "Use Cases",
-    body: "See how I turn problems into solutions.",
+    body: "See how I solve problems for the companies I work with. Fair warning: the case studies run long. There's a TL;DR at the end.",
     cta: "View Use Cases",
     rotate: -8,
     z: 1,
@@ -77,8 +77,8 @@ const CARDS = [
   {
     id: "indie",
     color: "lilac",
-    title: "Building Omnia",
-    body: "Creating educational content on Instagram since January, over 2 million views.",
+    title: "Creating Content",
+    body: "This year I set a resolution to make educational reels about the small things we never stop to notice. Two million views later, it seems to be working.",
     cta: "View page",
     rotate: 4,
     z: 3,
@@ -88,9 +88,9 @@ const CARDS = [
   {
     id: "talks",
     color: "sky",
-    label: "Current job",
+    label: "Current work",
     title: "Ayn by Dal",
-    body: "Ayn is an all-in-one compliance platform for the Saudi market.",
+    body: "I'm currently a product designer at Dal, where we're building Ayn — an all-in-one KYC and compliance platform. Lucky to be working alongside some of the sharpest people in the industry.",
     cta: "Visit Dal's website",
     rotate: 9,
     z: 4,
@@ -222,7 +222,7 @@ function Hero() {
         <h1 className={headlineClass}>
           <span className={"hero__line " + (mounted ? "is-in" : "")} style={{ transitionDelay: "60ms" }}>Hi, I'm Ahmad.</span>
           <span className={"hero__line " + (mounted ? "is-in" : "")} style={{ transitionDelay: "180ms" }}>
-            Designer <em>&amp;</em> Creator.
+            Designer <em>&amp;</em> thinker.
           </span>
         </h1>
 

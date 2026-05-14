@@ -21,61 +21,61 @@ const useInViewB = (window.__useInView) || function (threshold) {
 const BOOKS = [
   {
     id: "b1",
-    title: "Range",
-    author: "David Epstein",
-    year: "2019",
-    note: "Generalists win the long game.",
-    tag: "Mindset",
+    title: "Influence",
+    author: "Robert Cialdini",
+    year: "1984",
+    note: "The six levers of persuasion.",
+    tag: "Psychology",
     color: "peach",
     image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "b2",
-    title: "Shape Up",
-    author: "Ryan Singer",
-    year: "2019",
-    note: "How Basecamp ships without burning out.",
-    tag: "Product",
+    title: "101 Essays",
+    author: "Brianna Wiest",
+    year: "2016",
+    note: "Short, sharp, and genuinely uncomfortable.",
+    tag: "Philosophy",
     color: "lilac",
     image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "b3",
-    title: "The Design of Everyday Things",
-    author: "Don Norman",
-    year: "1988",
-    note: "Why doors are still confusing.",
-    tag: "Design",
+    title: "Deep Work",
+    author: "Cal Newport",
+    year: "2016",
+    note: "The case for undistracted focus.",
+    tag: "Productivity",
     color: "sky",
     image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "b4",
-    title: "Creative Selection",
-    author: "Ken Kocienda",
-    year: "2018",
-    note: "Inside Apple's demo-driven culture.",
-    tag: "Craft",
+    title: "Magnificent Delusions",
+    author: "Husain Haqqani",
+    year: "2013",
+    note: "How two allies misread each other for decades.",
+    tag: "History",
     color: "sun",
     image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "b5",
-    title: "A Pattern Language",
-    author: "Christopher Alexander",
-    year: "1977",
-    note: "The original design system.",
-    tag: "Design",
+    title: "Twilight of the Idols",
+    author: "Friedrich Nietzsche",
+    year: "1889",
+    note: "Philosophy with a hammer.",
+    tag: "Philosophy",
     color: "sky",
     image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "b6",
-    title: "Working Backwards",
-    author: "Bryar & Carr",
-    year: "2021",
-    note: "Amazon's PR/FAQ in the wild.",
-    tag: "Product",
+    title: "Poor Charlie's Almanack",
+    author: "Charlie Munger",
+    year: "2005",
+    note: "Mental models from one of the sharpest minds alive.",
+    tag: "Thinking",
     color: "lilac",
     image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80",
   },
@@ -93,15 +93,11 @@ function BooksSection() {
       <div className="slab__inner">
         <div className="work-head">
           <div>
-            <div className="slab__eyebrow">
-              <span>Always reading</span>
-              <span className="eyebrow-chip eyebrow-chip--peach">currently · 3</span>
-              <span className="eyebrow-chip eyebrow-chip--lilac">2025 · 11</span>
-            </div>
-            <h2 className="slab__h2">Books I keep <em>coming back</em> to.</h2>
+            <div className="slab__eyebrow">The Shelf</div>
+            <h2 className="slab__h2">The last six books <em>I finished.</em></h2>
           </div>
           <p className="work-head__lede">
-            A small shelf I'd hand a younger version of me. Hover any title to bring its cover to life.
+            The shelf keeps growing, so this list won't stay still for long. Hover any title to bring its cover to life.
           </p>
         </div>
 
