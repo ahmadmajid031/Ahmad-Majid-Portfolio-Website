@@ -233,9 +233,10 @@
 
 <script type="text/babel" src="navbar.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Navbar */
+/* global React, ReactDOM, Nav */
+const _csHrefs = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
-  <Navbar active="Case Studies" backHref="work.html" />
+  <Nav active="Case Studies" onChange={function(it) { window.location.href = _csHrefs[it]; }} />
 );
 </script>
 

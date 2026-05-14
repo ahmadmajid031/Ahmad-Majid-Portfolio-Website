@@ -14,7 +14,9 @@ const PALETTES = {
   bold:   { peach: "#F4A26B", lilac: "#B8A9F0", sky: "#7CC5D9", bg: "#1A1A18", hero: "#22221F", ink: "#F4ECDC", sun: "#F8E45A" },
 };
 
-/* global Navbar */
+/* global Nav */
+const NAV_HREFS = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
+function navChange(item) { if (item !== "Home") window.location.href = NAV_HREFS[item]; }
 
 // ---------- Sticker Badge ----------
 function Badge({ visible }) {
@@ -211,7 +213,7 @@ function Hero() {
 
   return (
     <>
-      <Navbar active="Home" />
+      <Nav active="Home" onChange={navChange} />
       <div className="page">
 
       <main className="hero" data-screen-label="01 Hero">
@@ -480,14 +482,16 @@ const css = `
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--pill-dark); color: #F4ECDC;
   border: 0; cursor: pointer;
-  padding: 10px 14px 10px 16px;
+  padding: 9px 14px;
   border-radius: 999px;
   font: inherit; font-size: 13px; font-weight: 600;
+  line-height: 1;
   letter-spacing: -0.005em;
   box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 4px 10px rgba(0,0,0,.14);
   transition: transform .2s ease;
 }
 .card__cta:hover { transform: translateX(2px); }
+.card__cta:active { transform: none; }
 
 .card__photo { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; }
 .card__photo-img { width: 100%; height: 100%; }
