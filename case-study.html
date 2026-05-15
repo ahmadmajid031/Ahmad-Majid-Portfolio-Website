@@ -219,21 +219,11 @@
     .cs-stats { grid-template-columns: 1fr; }
   }
 
-  /* ── Password gate ── */
-  #pw-gate {
-    position: fixed; inset: 0; z-index: 200;
+  /* ── Password gate (full page — no content behind it) ── */
+  #main.is-gate {
+    min-height: calc(100vh - 62px);
     display: flex; align-items: center; justify-content: center;
-    background: rgba(21,20,15,.76);
-    backdrop-filter: blur(18px) saturate(.65);
-    -webkit-backdrop-filter: blur(18px) saturate(.65);
-    padding: clamp(20px, 5vw, 40px);
-  }
-  #pw-gate.is-unlocked {
-    animation: gateOut .55s cubic-bezier(.2,.8,.2,1) forwards;
-    pointer-events: none;
-  }
-  @keyframes gateOut {
-    to { opacity: 0; transform: scale(.97) translateY(-6px); }
+    padding: clamp(20px, 5vw, 48px);
   }
 
   .pw-card {
@@ -242,12 +232,19 @@
     border: 1px solid rgba(0,0,0,.06);
     box-shadow:
       0 1px 0 rgba(255,255,255,.65) inset,
-      0 48px 96px -32px rgba(20,40,30,.52),
-      0 8px 24px rgba(20,40,30,.14);
+      0 24px 56px -20px rgba(20,40,30,.22),
+      0 4px 12px rgba(20,40,30,.08);
     padding: clamp(32px, 4vw, 52px) clamp(28px, 4vw, 48px);
     max-width: 400px; width: 100%;
     text-align: center;
     animation: cardIn .5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .pw-card.is-leaving {
+    animation: cardOut .45s cubic-bezier(.2,.8,.2,1) forwards;
+    pointer-events: none;
+  }
+  @keyframes cardOut {
+    to { opacity: 0; transform: scale(.96) translateY(-10px); }
   }
   @keyframes cardIn {
     from { opacity: 0; transform: translateY(20px) scale(.96); }
@@ -371,6 +368,17 @@
   }
   .pw-contact:hover { opacity: .9; }
 
+  .pw-back {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 18px;
+    font-size: 12px; font-weight: 600;
+    color: var(--ink); opacity: .3;
+    text-decoration: none;
+    letter-spacing: -0.005em;
+    transition: opacity .2s;
+  }
+  .pw-back:hover { opacity: .65; }
+
   .cs-fade {
     animation: csFade .7s cubic-bezier(.2,.8,.2,1) both;
   }
@@ -394,276 +402,229 @@ ReactDOM.createRoot(document.getElementById('snav-root')).render(
 </script>
 
 <script>
-const CASES = {
-  "miro-ai": {
-    year: "2025",
-    company: "Miro",
-    role: "Senior Product Designer",
-    duration: "8 months",
-    team: "4 designers, 11 engineers",
-    title: "AI-first Miro",
-    sub: "Turning the blank-board moment into an AI-guided starting point for collaboration.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=85",
-    accent: "#F4D24A",
-    sections: [
-      { h: "The brief", p: "Miro wanted AI to feel native — not a sidebar tool bolted on, but the way you start. The bet: most boards die at \"blank canvas.\" Get past that moment and people stay forever." },
-      { h: "What we built", p: "A prompt-to-board flow that interprets intent and lays out the right frames, stickies, and structure for the first 80%. Users edit the last 20%, the way they always have. The trick was making AI suggestions feel like scaffolding, not finished work." },
-      { pull: "We stopped designing the AI and started designing the handoff between AI and human." },
-      { h: "Outcomes", stats: [
-        { num: "−86%", label: "time to first useful frame" },
-        { num: "3.4×", label: "first-week activation" },
-        { num: "+42%", label: "weekly active boards" }
-      ]},
-      { p: "Shipped to 100% of Free and Starter plans Q4 2025. Now the default new-board experience for ~6M users." }
-    ],
-    next: "miro-templates"
-  },
-  "miro-templates": {
-    year: "2024",
-    company: "Miro",
-    role: "Senior Product Designer",
-    duration: "5 months",
-    team: "2 designers, 7 engineers",
-    title: "Templates, reborn",
-    sub: "Rebuilding the template gallery as a personal recommendation engine.",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=85",
-    accent: "#9B8DE8",
-    sections: [
-      { h: "The problem", p: "12,000 templates. Most users saw the same 30. The gallery was a flat list, sorted by what marketing pinned that month — not by what would help you." },
-      { h: "The shift", p: "We rebuilt the gallery around three signals: what your team uses, what's trending in your industry, and what fits the time of week. Eleven categories collapsed into four, and the surface area shrank by 60%." },
-      { pull: "Less choice, more relevance. The right two templates beat a wall of sixty every time." },
-      { h: "Outcomes", stats: [
-        { num: "2 clicks", label: "median to start (was 12)" },
-        { num: "+34%", label: "template-to-paid conversion" },
-        { num: "+18%", label: "templates published by users" }
-      ]}
-    ],
-    next: "composer"
-  },
-  "composer": {
-    year: "2023",
-    company: "Holloway",
-    role: "Product Design Lead",
-    duration: "11 months",
-    team: "5 designers, 14 engineers",
-    title: "Composer 2.0",
-    sub: "A ground-up redesign of the writing workspace 40k+ teams rely on.",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=85",
-    accent: "#F4A26B",
-    sections: [
-      { h: "Context", p: "Composer had drifted. Five years of feature additions, three product managers, and zero design system meant every screen had its own vocabulary. New hires took weeks to ship their first pixel." },
-      { h: "Approach", p: "We started by ripping things out. 240 components became 86. Three navigation paradigms became one. The motion language was written down for the first time, in a single page, and enforced via tokens." },
-      { pull: "Redesigns aren't won in Figma — they're won in the migration plan." },
-      { h: "Outcomes", stats: [
-        { num: "+34%", label: "week-1 retention" },
-        { num: "−61%", label: "support tickets re: nav" },
-        { num: "11 days", label: "average new-hire ramp" }
-      ]}
-    ],
-    next: "logistics"
-  },
-  "logistics": {
-    year: "2022",
-    company: "Northwind",
-    role: "Senior Designer",
-    duration: "9 months",
-    team: "3 designers, 22 engineers",
-    title: "Logistics OS",
-    sub: "The dispatch console that moves 11M packages a week.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=85",
-    accent: "#5FA8C4",
-    sections: [
-      { h: "The work", p: "Dispatchers had been using a green-screen terminal since 2003. Replacing it wasn't a redesign — it was a craft transfer. Twenty-two field shadows across three depots came before a pixel was drawn." },
-      { h: "What changed", p: "Density first, beauty second. We measured pixel-per-decision and found the old terminal was 3.2× more information-dense than our first prototype. We rebuilt around that constraint." },
-      { pull: "The best dispatchers move 600 packages an hour. The UI's job is to disappear." },
-      { h: "Outcomes", stats: [
-        { num: "11M / wk", label: "packages dispatched" },
-        { num: "+28%", label: "decisions per minute" },
-        { num: "0", label: "training days needed" }
-      ]}
-    ],
-    next: "atlas"
-  },
-  "atlas": {
-    year: "2021",
-    company: "Holloway",
-    role: "Senior Designer",
-    duration: "7 months",
-    team: "2 designers, 4 engineers",
-    title: "Atlas, the design system",
-    sub: "Holloway's first cross-platform design system. Two themes, three rebrands, one survived.",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=2000&q=85",
-    accent: "#86C5A4",
-    sections: [
-      { h: "The bet", p: "If we built tokens, components, and motion as a single pipeline, every brand refresh would cost a config swap — not a rebuild. Three rebrands later, that bet held." },
-      { h: "The pipeline", p: "240 components, 110 tokens, two themes, one source of truth. Figma, web, and iOS pulled from the same JSON every Monday morning." },
-      { pull: "A design system isn't components. It's the contract between design and every quarter you didn't expect." },
-      { h: "Outcomes", stats: [
-        { num: "240", label: "components shipped" },
-        { num: "3", label: "rebrands survived" },
-        { num: "−72%", label: "design QA time" }
-      ]}
-    ],
-    next: "miro-ai"
-  }
-};
+(function () {
+  'use strict';
 
-function getSlug() {
-  const params = new URLSearchParams(location.search);
-  return params.get("slug") || "miro-ai";
-}
-
-function render() {
-  const slug = getSlug();
-  const c = CASES[slug] || CASES["miro-ai"];
-  document.title = c.title + " · Ahmad Majid";
-  document.documentElement.style.setProperty("--accent", c.accent);
-
-  const next = CASES[c.next];
-  const main = document.getElementById("main");
-
-  let bodyHtml = "";
-  c.sections.forEach(sec => {
-    if (sec.h) bodyHtml += `<h2 class="cs-h2">${sec.h}</h2>`;
-    if (sec.p) bodyHtml += `<p>${sec.p}</p>`;
-    if (sec.pull) bodyHtml += `<div class="cs-pull">"${sec.pull}"</div>`;
-    if (sec.stats) {
-      bodyHtml += '<div class="cs-stats">';
-      sec.stats.forEach(s => {
-        bodyHtml += `<div class="cs-stat"><div class="cs-stat__num">${s.num}</div><div class="cs-stat__label">${s.label}</div></div>`;
-      });
-      bodyHtml += '</div>';
+  var CASES = {
+    "miro-ai": {
+      year: "2025", company: "Miro", role: "Senior Product Designer",
+      duration: "8 months", team: "4 designers, 11 engineers",
+      title: "AI-first Miro",
+      sub: "Turning the blank-board moment into an AI-guided starting point for collaboration.",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=85",
+      accent: "#F4D24A",
+      sections: [
+        { h: "The brief", p: "Miro wanted AI to feel native — not a sidebar tool bolted on, but the way you start. The bet: most boards die at \"blank canvas.\" Get past that moment and people stay forever." },
+        { h: "What we built", p: "A prompt-to-board flow that interprets intent and lays out the right frames, stickies, and structure for the first 80%. Users edit the last 20%, the way they always have. The trick was making AI suggestions feel like scaffolding, not finished work." },
+        { pull: "We stopped designing the AI and started designing the handoff between AI and human." },
+        { h: "Outcomes", stats: [
+          { num: "−86%", label: "time to first useful frame" },
+          { num: "3.4×", label: "first-week activation" },
+          { num: "+42%", label: "weekly active boards" }
+        ]},
+        { p: "Shipped to 100% of Free and Starter plans Q4 2025. Now the default new-board experience for ~6M users." }
+      ],
+      next: "miro-templates"
+    },
+    "miro-templates": {
+      year: "2024", company: "Miro", role: "Senior Product Designer",
+      duration: "5 months", team: "2 designers, 7 engineers",
+      title: "Templates, reborn",
+      sub: "Rebuilding the template gallery as a personal recommendation engine.",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=85",
+      accent: "#9B8DE8",
+      sections: [
+        { h: "The problem", p: "12,000 templates. Most users saw the same 30. The gallery was a flat list, sorted by what marketing pinned that month — not by what would help you." },
+        { h: "The shift", p: "We rebuilt the gallery around three signals: what your team uses, what's trending in your industry, and what fits the time of week. Eleven categories collapsed into four, and the surface area shrank by 60%." },
+        { pull: "Less choice, more relevance. The right two templates beat a wall of sixty every time." },
+        { h: "Outcomes", stats: [
+          { num: "2 clicks", label: "median to start (was 12)" },
+          { num: "+34%", label: "template-to-paid conversion" },
+          { num: "+18%", label: "templates published by users" }
+        ]}
+      ],
+      next: "composer"
+    },
+    "composer": {
+      year: "2023", company: "Holloway", role: "Product Design Lead",
+      duration: "11 months", team: "5 designers, 14 engineers",
+      title: "Composer 2.0",
+      sub: "A ground-up redesign of the writing workspace 40k+ teams rely on.",
+      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=85",
+      accent: "#F4A26B",
+      sections: [
+        { h: "Context", p: "Composer had drifted. Five years of feature additions, three product managers, and zero design system meant every screen had its own vocabulary. New hires took weeks to ship their first pixel." },
+        { h: "Approach", p: "We started by ripping things out. 240 components became 86. Three navigation paradigms became one. The motion language was written down for the first time, in a single page, and enforced via tokens." },
+        { pull: "Redesigns aren't won in Figma — they're won in the migration plan." },
+        { h: "Outcomes", stats: [
+          { num: "+34%", label: "week-1 retention" },
+          { num: "−61%", label: "support tickets re: nav" },
+          { num: "11 days", label: "average new-hire ramp" }
+        ]}
+      ],
+      next: "logistics"
+    },
+    "logistics": {
+      year: "2022", company: "Northwind", role: "Senior Designer",
+      duration: "9 months", team: "3 designers, 22 engineers",
+      title: "Logistics OS",
+      sub: "The dispatch console that moves 11M packages a week.",
+      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=85",
+      accent: "#5FA8C4",
+      sections: [
+        { h: "The work", p: "Dispatchers had been using a green-screen terminal since 2003. Replacing it wasn't a redesign — it was a craft transfer. Twenty-two field shadows across three depots came before a pixel was drawn." },
+        { h: "What changed", p: "Density first, beauty second. We measured pixel-per-decision and found the old terminal was 3.2× more information-dense than our first prototype. We rebuilt around that constraint." },
+        { pull: "The best dispatchers move 600 packages an hour. The UI's job is to disappear." },
+        { h: "Outcomes", stats: [
+          { num: "11M / wk", label: "packages dispatched" },
+          { num: "+28%", label: "decisions per minute" },
+          { num: "0", label: "training days needed" }
+        ]}
+      ],
+      next: "atlas"
+    },
+    "atlas": {
+      year: "2021", company: "Holloway", role: "Senior Designer",
+      duration: "7 months", team: "2 designers, 4 engineers",
+      title: "Atlas, the design system",
+      sub: "Holloway's first cross-platform design system. Two themes, three rebrands, one survived.",
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=2000&q=85",
+      accent: "#86C5A4",
+      sections: [
+        { h: "The bet", p: "If we built tokens, components, and motion as a single pipeline, every brand refresh would cost a config swap — not a rebuild. Three rebrands later, that bet held." },
+        { h: "The pipeline", p: "240 components, 110 tokens, two themes, one source of truth. Figma, web, and iOS pulled from the same JSON every Monday morning." },
+        { pull: "A design system isn't components. It's the contract between design and every quarter you didn't expect." },
+        { h: "Outcomes", stats: [
+          { num: "240", label: "components shipped" },
+          { num: "3", label: "rebrands survived" },
+          { num: "−72%", label: "design QA time" }
+        ]}
+      ],
+      next: "miro-ai"
     }
-  });
+  };
 
-  main.innerHTML = `
-    <section class="cs-hero">
-      <div class="cs-eyebrow"><span class="cs-eyebrow__dot"></span><span>Case study · ${c.year}</span></div>
-      <h1 class="cs-title">${c.title}</h1>
-      <p class="cs-deck">${c.sub}</p>
-      <div class="cs-meta">
-        <div class="cs-meta__cell"><div class="cs-meta__label">Company</div><div class="cs-meta__val">${c.company}</div></div>
-        <div class="cs-meta__cell"><div class="cs-meta__label">Role</div><div class="cs-meta__val">${c.role}</div></div>
-        <div class="cs-meta__cell"><div class="cs-meta__label">Duration</div><div class="cs-meta__val">${c.duration}</div></div>
-        <div class="cs-meta__cell"><div class="cs-meta__label">Team</div><div class="cs-meta__val">${c.team}</div></div>
-      </div>
-    </section>
-
-    <section class="cs-cover">
-      <div class="cs-cover__frame">
-        <img src="${c.image}" alt="${c.title}" style="view-transition-name: case-img-${slug};">
-      </div>
-    </section>
-
-    <article class="cs-body">${bodyHtml}</article>
-
-    <section class="cs-next">
-      <div class="cs-next__inner">
-        <div>
-          <div class="cs-next__label">Next case study · ${next.year}</div>
-          <h3 class="cs-next__title">${next.title}</h3>
-        </div>
-        <a class="cs-next__cta" href="case-study.html?slug=${c.next}">
-          Continue
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-        </a>
-      </div>
-    </section>
-  `;
-}
-
-render();
-
-function checkGate() {
-  if (getSlug() !== 'miro-ai') return;
-  if (localStorage.getItem('miro-ai-unlocked') === 'true') return;
-
-  const gate = document.createElement('div');
-  gate.id = 'pw-gate';
-  gate.innerHTML = `
-    <div class="pw-card" id="pw-card">
-      <div class="pw-icon" id="pw-icon">
-        <svg width="28" height="30" viewBox="0 0 28 30" fill="none">
-          <rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>
-          <path id="pw-shackle" d="M9 14V10a5 5 0 0 1 10 0v4" stroke="#15140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>
-          <circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>
-        </svg>
-      </div>
-      <h2 class="pw-title">Protected work</h2>
-      <p class="pw-desc">This case study sits behind an NDA. Drop me a line and I'll share the password — usually same day.</p>
-      <input type="password" class="pw-input" id="pw-input" placeholder="Enter password" autocomplete="off" spellcheck="false">
-      <p class="pw-error" id="pw-error">Wrong password — try again</p>
-      <button class="pw-btn" id="pw-btn">
-        Unlock
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <div class="pw-divider">or</div>
-      <a href="contact.html" class="pw-contact">
-        Contact me to get the password
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
-  `;
-  document.body.appendChild(gate);
-
-  const input  = gate.querySelector('#pw-input');
-  const btn    = gate.querySelector('#pw-btn');
-  const error  = gate.querySelector('#pw-error');
-  const card   = gate.querySelector('#pw-card');
-  const icon   = gate.querySelector('#pw-icon');
-
-  function triggerWrong() {
-    input.classList.add('is-error');
-    error.classList.add('is-visible');
-    card.classList.remove('is-shaking');
-    void card.offsetWidth;                   // force reflow to restart animation
-    card.classList.add('is-shaking');
-    input.select();
+  function getSlug() {
+    return new URLSearchParams(location.search).get('slug') || 'miro-ai';
   }
 
-  function triggerUnlock() {
-    input.classList.remove('is-error');
-    error.classList.remove('is-visible');
-    icon.classList.add('is-open');
-    icon.innerHTML = `
-      <svg width="28" height="30" viewBox="0 0 28 30" fill="none">
-        <rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>
-        <path d="M9 14V10a5 5 0 0 1 10 0V7" stroke="#15140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>
-        <circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>
-      </svg>`;
-    localStorage.setItem('miro-ai-unlocked', 'true');
-    setTimeout(() => {
-      gate.classList.add('is-unlocked');
-      setTimeout(() => gate.remove(), 560);
-    }, 520);
+  function buildBodyHtml(c) {
+    var html = '';
+    c.sections.forEach(function (sec) {
+      if (sec.h) html += '<h2 class="cs-h2">' + sec.h + '</h2>';
+      if (sec.p) html += '<p>' + sec.p + '</p>';
+      if (sec.pull) html += '<div class="cs-pull">"' + sec.pull + '"</div>';
+      if (sec.stats) {
+        html += '<div class="cs-stats">';
+        sec.stats.forEach(function (s) {
+          html += '<div class="cs-stat"><div class="cs-stat__num">' + s.num + '</div><div class="cs-stat__label">' + s.label + '</div></div>';
+        });
+        html += '</div>';
+      }
+    });
+    return html;
   }
 
-  function attempt() {
-    if (input.value === 'Miroxahmad2025') {
-      triggerUnlock();
-    } else {
-      triggerWrong();
+  function showCase(slug) {
+    var c = CASES[slug] || CASES['miro-ai'];
+    var next = CASES[c.next];
+    document.title = c.title + ' · Ahmad Majid';
+    document.documentElement.style.setProperty('--accent', c.accent);
+    var main = document.getElementById('main');
+    main.className = 'cs-fade';
+    main.innerHTML =
+      '<section class="cs-hero">' +
+        '<div class="cs-eyebrow"><span class="cs-eyebrow__dot"></span><span>Case study · ' + c.year + '</span></div>' +
+        '<h1 class="cs-title">' + c.title + '</h1>' +
+        '<p class="cs-deck">' + c.sub + '</p>' +
+        '<div class="cs-meta">' +
+          '<div class="cs-meta__cell"><div class="cs-meta__label">Company</div><div class="cs-meta__val">' + c.company + '</div></div>' +
+          '<div class="cs-meta__cell"><div class="cs-meta__label">Role</div><div class="cs-meta__val">' + c.role + '</div></div>' +
+          '<div class="cs-meta__cell"><div class="cs-meta__label">Duration</div><div class="cs-meta__val">' + c.duration + '</div></div>' +
+          '<div class="cs-meta__cell"><div class="cs-meta__label">Team</div><div class="cs-meta__val">' + c.team + '</div></div>' +
+        '</div>' +
+      '</section>' +
+      '<section class="cs-cover"><div class="cs-cover__frame"><img src="' + c.image + '" alt="' + c.title + '" style="view-transition-name: case-img-' + slug + ';"></div></section>' +
+      '<article class="cs-body">' + buildBodyHtml(c) + '</article>' +
+      '<section class="cs-next"><div class="cs-next__inner">' +
+        '<div><div class="cs-next__label">Next case study · ' + next.year + '</div><h3 class="cs-next__title">' + next.title + '</h3></div>' +
+        '<a class="cs-next__cta" href="case-study.html?slug=' + c.next + '">Continue <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>' +
+      '</div></section>';
+  }
+
+  function showGate(slug) {
+    document.title = 'Protected · Ahmad Majid';
+    document.documentElement.style.setProperty('--accent', '#F4D24A');
+    var main = document.getElementById('main');
+    main.className = 'is-gate';
+    main.innerHTML =
+      '<div class="pw-card" id="pw-card">' +
+        '<div class="pw-icon" id="pw-icon">' +
+          '<svg width="28" height="30" viewBox="0 0 28 30" fill="none">' +
+            '<rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>' +
+            '<path d="M9 14V10a5 5 0 0 1 10 0v4" stroke="#15140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>' +
+            '<circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>' +
+          '</svg>' +
+        '</div>' +
+        '<h2 class="pw-title">Protected work</h2>' +
+        '<p class="pw-desc">This case study is covered by an NDA. Contact me directly and I\'ll share the password.</p>' +
+        '<input type="password" class="pw-input" id="pw-input" placeholder="Enter password" autocomplete="off" spellcheck="false">' +
+        '<p class="pw-error" id="pw-error">Wrong password — try again</p>' +
+        '<button class="pw-btn" id="pw-btn">Unlock <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+        '<div class="pw-divider">or</div>' +
+        '<a href="contact.html" class="pw-contact">Contact me to get the password <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>' +
+        '<a href="work.html" class="pw-back"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 6H2M5 3l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to case studies</a>' +
+      '</div>';
+
+    var input = main.querySelector('#pw-input');
+    var btn   = main.querySelector('#pw-btn');
+    var error = main.querySelector('#pw-error');
+    var card  = main.querySelector('#pw-card');
+    var icon  = main.querySelector('#pw-icon');
+
+    function markWrong() {
+      input.classList.add('is-error');
+      error.classList.add('is-visible');
+      card.classList.remove('is-shaking');
+      void card.offsetWidth;
+      card.classList.add('is-shaking');
+      input.select();
     }
+
+    function unlock() {
+      input.classList.remove('is-error');
+      error.classList.remove('is-visible');
+      icon.classList.add('is-open');
+      icon.innerHTML =
+        '<svg width="28" height="30" viewBox="0 0 28 30" fill="none">' +
+          '<rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>' +
+          '<path d="M9 14V10a5 5 0 0 1 10 0V7" stroke="#15140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>' +
+          '<circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>' +
+        '</svg>';
+      card.classList.add('is-leaving');
+      setTimeout(function () { showCase(slug); }, 480);
+    }
+
+    function attempt() {
+      if (input.value === 'Miroxahmad2025') { unlock(); } else { markWrong(); }
+    }
+
+    btn.addEventListener('click', attempt);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { attempt(); return; }
+      input.classList.remove('is-error');
+      error.classList.remove('is-visible');
+    });
+    setTimeout(function () { input.focus(); }, 400);
   }
 
-  btn.addEventListener('click', attempt);
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { attempt(); return; }
-    input.classList.remove('is-error');
-    error.classList.remove('is-visible');
-  });
+  /* Add slugs here to gate additional case studies */
+  var LOCKED = { 'miro-ai': true };
 
-  // Focus after card animates in
-  setTimeout(() => input.focus(), 520);
-}
+  var slug = getSlug();
+  if (LOCKED[slug]) { showGate(slug); } else { showCase(slug); }
 
-checkGate();
+}());
 </script>
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");

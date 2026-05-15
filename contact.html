@@ -7,9 +7,9 @@
 <link rel="icon" type="image/png" href="Images/favicon.png">
 <style>
   @view-transition { navigation: auto; }
-  ::view-transition-old(root),
-  ::view-transition-new(root) { animation-duration: .55s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
-  ::view-transition-group(*) { animation-duration: .65s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: .55s; animation-timing-function: cubic-bezier(.2,.8,.2,1);
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,282 +18,309 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <style>
-  :root {
-    --bg:       #EFE6D6;
-    --hero-bg:  #F6EFE0;
-    --ink:      #163A2E;
-    --pill-dark:#15140F;
-    --peach:    #F8C495;
-    --lilac:    #C7C2F0;
-    --sky:      #B8DBEC;
-    --sun:      #F8E45A;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+/* ── Variables ── */
+:root {
+  --bg:       #EFE6D6;
+  --hero-bg:  #F6EFE0;
+  --ink:      #163A2E;
+  --pill-dark:#15140F;
+  --peach:    #F8C495;
+  --lilac:    #C7C2F0;
+  --sky:      #B8DBEC;
+  --sun:      #F8E45A;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-  /* ── Page shell ── */
-  .cpage { padding: 22px clamp(20px, 4vw, 56px) 80px; }
-  .cpage__inner { max-width: 1320px; margin: 22px auto 0; }
+/* ── Page ── */
+.cpage { padding: 22px clamp(20px, 4vw, 56px) 80px; }
+.cpage__wrap { max-width: 1320px; margin: 22px auto 0; }
 
-  /* ── Main slab ── */
-  .cslab {
-    background: var(--hero-bg);
-    border-radius: 36px;
-    border: 1px solid rgba(0,0,0,.05);
-    box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 30px 60px -40px rgba(20,40,30,.18);
-    padding: 72px clamp(28px, 5vw, 72px) 80px;
-  }
+/* ── Slab — no overflow:hidden so 3D tilt isn't clipped ── */
+.cslab {
+  background: var(--hero-bg);
+  border-radius: 36px;
+  border: 1px solid rgba(0,0,0,.05);
+  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 30px 60px -40px rgba(20,40,30,.2);
+  padding: 72px clamp(28px, 5vw, 72px) 80px;
+  position: relative;
+  transition: transform .08s ease-out;
+  transform-origin: center center;
+  /* soft radial colour hints that tie the two columns together */
+  background-image:
+    radial-gradient(ellipse 70% 55% at 18% 18%, rgba(248,196,149,.10), transparent 60%),
+    radial-gradient(ellipse 55% 50% at 82% 82%, rgba(184,219,236,.08), transparent 55%);
+}
 
-  /* ── Two-column grid ── */
-  .cslab__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    gap: clamp(48px, 7vw, 96px);
-    align-items: start;
-  }
+/* ── Grid ── */
+.cslab__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: clamp(48px, 7vw, 96px);
+  align-items: start;
+  position: relative; z-index: 1;
+}
 
-  /* ─────────── LEFT: Info ─────────── */
-  .cinfo__eyebrow {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--ink); opacity: .55;
-    margin-bottom: 26px;
-  }
-  .cinfo__eyebrow-dot {
-    width: 8px; height: 8px; border-radius: 999px;
-    background: var(--peach);
-    box-shadow: 0 0 0 3px rgba(248,196,149,.3);
-  }
+/* ─────────── LEFT ─────────── */
+.cinfo { position: relative; }
 
-  .cinfo__headline {
-    margin: 0;
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.0;
-    font-size: clamp(36px, 4.8vw, 68px);
-    color: var(--ink);
-  }
-  .cinfo__headline em { font-style: italic; font-weight: 500; opacity: .72; }
+/* Animated eyebrow dot */
+.cinfo__eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink); opacity: .55;
+  margin-bottom: 26px;
+}
+.cinfo__eyebrow-dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: var(--peach);
+  animation: dotPulse 2.6s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%,100% { box-shadow: 0 0 0 2px rgba(248,196,149,.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(248,196,149,.12); }
+}
 
-  .cinfo__desc {
-    margin: 22px 0 0;
-    font-size: clamp(14px, 1.05vw, 16px);
-    line-height: 1.68; font-weight: 500;
-    color: var(--ink); opacity: .7;
-    max-width: 44ch;
-  }
+.cinfo__headline {
+  margin: 0;
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1.0; font-size: clamp(36px, 4.8vw, 68px);
+  color: var(--ink);
+}
+.cinfo__headline em { font-style: italic; font-weight: 500; opacity: .7; }
 
-  /* ── Colorful cards ── */
-  .cinfo__cards {
-    margin-top: 32px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+.cinfo__desc {
+  margin: 22px 0 0;
+  font-size: clamp(14px, 1.05vw, 16px); line-height: 1.7;
+  font-weight: 500; color: var(--ink); opacity: .65; max-width: 42ch;
+}
 
-  /* Base card */
-  .ccard {
-    border-radius: 20px;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.65) inset,
-      0 14px 28px -14px rgba(20,30,20,.22),
-      0 2px 5px rgba(20,30,20,.08);
-    color: var(--pill-dark);
-    text-decoration: none;
-    display: flex;
-    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
-  }
-  .ccard:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.65) inset,
-      0 22px 40px -18px rgba(20,30,20,.28),
-      0 4px 8px rgba(20,30,20,.10);
-  }
-  .ccard--peach { background: var(--peach); }
-  .ccard--sky   { background: var(--sky); }
-  .ccard--lilac { background: var(--lilac); }
-  .ccard--sun   { background: var(--sun); }
+/* ── Contact cards (scattered, tilted) ── */
+.cinfo__cards {
+  margin-top: 38px;
+  display: flex; gap: 14px;
+}
 
-  /* Compact contact cards (email, phone) */
-  .ccard--contact {
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 18px 18px 16px;
-    gap: 20px;
-  }
-  .ccard__contact-icon {
-    width: 34px; height: 34px;
-    border-radius: 9px;
-    background: rgba(20,40,30,.12);
-    display: grid; place-items: center;
-    flex-shrink: 0;
-  }
-  .ccard__contact-body { display: flex; flex-direction: column; gap: 3px; }
-  .ccard__contact-label {
-    font-size: 12px; font-weight: 600;
-    color: var(--pill-dark); opacity: .55;
-    letter-spacing: -0.005em;
-  }
-  .ccard__contact-value {
-    font-size: 14px; font-weight: 700;
-    letter-spacing: -0.01em;
-    word-break: break-all;
-  }
+/* Hero-deck card base */
+.ccard {
+  border-radius: 20px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.65) inset,
+    0 14px 28px -12px rgba(20,30,20,.24),
+    0 2px 6px rgba(20,30,20,.09);
+  color: var(--pill-dark);
+  text-decoration: none;
+  display: flex;
+  will-change: transform;
+}
+.ccard--peach { background: var(--peach); }
+.ccard--sky   { background: var(--sky);   }
+.ccard--lilac { background: var(--lilac); }
 
-  /* Book a call card */
-  .ccard--book {
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 22px 22px 20px;
-    gap: 0;
-    cursor: pointer;
-    border: 0;
-    font-family: inherit;
-    text-align: left;
-  }
-  .ccard__book-top { display: flex; flex-direction: column; }
-  .ccard__book-label {
-    font-size: 12px; font-weight: 600;
-    color: var(--pill-dark); opacity: .5;
-    letter-spacing: -0.005em;
-  }
-  .ccard__book-title {
-    margin: 6px 0 0;
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 700; font-style: italic;
-    font-size: 26px; line-height: 1.0;
-    letter-spacing: -0.02em;
-    color: var(--pill-dark);
-  }
-  .ccard__book-body {
-    margin: 8px 0 0;
-    font-size: 13px; line-height: 1.48;
-    color: var(--pill-dark); opacity: .72;
-    font-weight: 500;
-    max-width: 38ch;
-  }
-  .ccard__book-cta {
-    align-self: flex-start;
-    margin-top: 18px;
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--pill-dark); color: #F4ECDC;
-    border: 0; cursor: pointer;
-    padding: 9px 16px;
-    border-radius: 999px;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    letter-spacing: -0.005em;
-    box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 4px 10px rgba(0,0,0,.18);
-    transition: transform .2s ease;
-  }
-  .ccard--book:hover .ccard__book-cta { transform: translateX(3px); }
-  .ccard--book { cursor: default; }
+/* Compact contact cards */
+.ccard--contact {
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px 18px 16px;
+  gap: 22px; min-height: 115px;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease;
+}
+/* tilted by default — like cards casually placed on a desk */
+.ccard--email { transform: rotate(-5.5deg) translateY(2px); transform-origin: 28% 85%; }
+.ccard--phone { transform: rotate(4.5deg)  translateY(10px); transform-origin: 72% 85%; }
+/* hover: snap straight, lift up */
+.ccard--contact:hover {
+  transform: rotate(0deg) translateY(-10px) scale(1.03) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.65) inset,
+    0 32px 56px -18px rgba(20,30,20,.32),
+    0 6px 16px rgba(20,30,20,.12);
+}
 
-  /* ─────────── RIGHT: Form + book card ─────────── */
-  .cright { display: flex; flex-direction: column; gap: 14px; }
+.ccard__icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(20,40,30,.12);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.ccard__contact-body { display: flex; flex-direction: column; gap: 4px; }
+.ccard__contact-label { font-size: 12px; font-weight: 600; opacity: .52; }
+.ccard__contact-value { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; word-break: break-all; }
 
-  .cform-panel {
-    background: #ffffff;
-    border-radius: 24px;
-    border: 1px solid rgba(20,40,30,.07);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.9) inset,
-      0 20px 44px -22px rgba(20,40,30,.16);
-    padding: clamp(28px, 3.5vw, 44px);
-  }
+/* ── Book a call card (hero-deck style, placed below form) ── */
+.ccard--book {
+  flex-direction: column; justify-content: space-between;
+  padding: 22px 22px 20px; gap: 0;
+  border: 0; font-family: inherit; text-align: left;
+  cursor: default;
+  transform: rotate(-1.5deg);
+  transform-origin: 50% 100%;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease;
+}
+.ccard--book:hover {
+  transform: rotate(0deg) translateY(-6px) scale(1.01) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.65) inset,
+    0 24px 44px -16px rgba(20,30,20,.28),
+    0 4px 10px rgba(20,30,20,.10);
+}
+.ccard__book-eyebrow {
+  font-size: 11px; font-weight: 600;
+  opacity: .48; letter-spacing: -.005em;
+  margin-bottom: 6px;
+}
+.ccard__book-title {
+  margin: 0;
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 700; font-style: italic;
+  font-size: 27px; line-height: 1; letter-spacing: -0.02em;
+}
+.ccard__book-body {
+  margin: 9px 0 0; font-size: 13px; line-height: 1.5;
+  opacity: .7; font-weight: 500; max-width: 36ch;
+}
+.ccard__book-btn {
+  align-self: flex-start; margin-top: 20px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--pill-dark); color: #F4ECDC;
+  border: 0; cursor: pointer; padding: 9px 16px;
+  border-radius: 999px; font-family: inherit;
+  font-size: 13px; font-weight: 600; letter-spacing: -0.005em;
+  box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 4px 12px rgba(0,0,0,.2);
+  transition: gap .25s ease, transform .25s ease;
+}
+.ccard--book:hover .ccard__book-btn { gap: 12px; transform: translateX(3px); }
 
-  .cform-panel__heading {
-    margin: 0 0 6px;
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 700; font-size: 22px;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .cform-panel__sub {
-    margin: 0 0 28px;
-    font-size: 14px; font-weight: 500;
-    color: var(--ink); opacity: .5;
-    letter-spacing: -0.005em;
-  }
+/* ─────────── RIGHT ─────────── */
+.cright { display: flex; flex-direction: column; gap: 14px; }
 
-  /* Form */
-  .cform { display: flex; flex-direction: column; gap: 18px; }
-  .cform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .cform__field { display: flex; flex-direction: column; gap: 6px; }
+/* ── Form panel ── */
+.cform-panel {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid rgba(20,40,30,.07);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 22px 48px -22px rgba(20,40,30,.16);
+  padding: clamp(28px, 3.5vw, 44px);
+}
+.cform-panel__heading {
+  margin: 0 0 5px;
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 700; font-size: 22px;
+  letter-spacing: -0.02em; color: var(--ink);
+}
+.cform-panel__sub {
+  margin: 0 0 26px; font-size: 14px; font-weight: 500;
+  color: var(--ink); opacity: .42; letter-spacing: -0.005em;
+}
 
-  .cform__label {
-    font-size: 13px; font-weight: 600;
-    color: var(--ink); opacity: .65;
-    letter-spacing: -0.005em;
-  }
+/* Form */
+.cform { display: flex; flex-direction: column; gap: 18px; }
+.cform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-  .cform__input {
-    width: 100%;
-    padding: 12px 14px;
-    background: var(--hero-bg);
-    border: 1.5px solid rgba(20,40,30,.10);
-    border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: 15px; font-weight: 500;
-    color: var(--ink);
-    outline: none;
-    transition: border-color .18s, box-shadow .18s;
-    -webkit-appearance: none;
-  }
-  .cform__input::placeholder { color: var(--ink); opacity: .28; }
-  .cform__input:focus {
-    border-color: rgba(22,58,46,.5);
-    box-shadow: 0 0 0 3px rgba(22,58,46,.09);
-  }
-  .cform__input--ta {
-    min-height: 144px;
-    resize: vertical;
-    line-height: 1.58;
-  }
+/* Floating-label field */
+.cform__field { position: relative; padding-top: 20px; }
 
-  .cform__actions {
-    display: flex; align-items: center; gap: 14px;
-    flex-wrap: wrap; padding-top: 4px;
-  }
-  .cform__submit {
-    display: inline-flex; align-items: center; gap: 9px;
-    background: var(--pill-dark); color: #F4ECDC;
-    border: 0; cursor: pointer;
-    padding: 13px 22px; border-radius: 8px;
-    font-family: inherit; font-size: 14px; font-weight: 600;
-    letter-spacing: -0.01em;
-    box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 6px 18px rgba(0,0,0,.22);
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .cform__submit:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 10px 24px rgba(0,0,0,.26);
-  }
-  .cform__note {
-    font-size: 12px; font-weight: 500;
-    color: var(--ink); opacity: .36;
-    letter-spacing: -0.005em;
-  }
+/* Label sits inside the input zone and floats up on focus/fill */
+.cform__label {
+  position: absolute;
+  top: 32px; left: 15px;
+  font-size: 15px; font-weight: 500;
+  color: var(--ink); opacity: .36;
+  pointer-events: none;
+  transform-origin: left;
+  transition: top .18s ease, font-size .18s ease, opacity .18s ease, letter-spacing .18s ease;
+}
+/* triggered by CSS sibling selector: label comes AFTER input in DOM */
+.cform__input:focus      ~ .cform__label,
+.cform__input:not(:placeholder-shown) ~ .cform__label {
+  top: 4px;
+  font-size: 10px; letter-spacing: .07em;
+  opacity: .55; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+}
 
-  /* ── Responsive ── */
-  @media (max-width: 840px) {
-    .cslab__grid { grid-template-columns: 1fr; }
-    .cinfo__desc  { max-width: 100%; }
-    .cform__row   { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 480px) {
-    .cinfo__cards { grid-template-columns: 1fr; }
-    .cinfo__cards .ccard--book { grid-column: auto; }
-  }
+.cform__input {
+  display: block; width: 100%;
+  padding: 12px 14px;
+  background: #F8F4EE;
+  border: 1.5px solid rgba(20,40,30,.10);
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 15px; font-weight: 500; color: var(--ink);
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+  -webkit-appearance: none; appearance: none;
+}
+.cform__input::placeholder { opacity: 0; } /* hidden — floating label takes its place */
+.cform__input:focus {
+  border-color: rgba(22,58,46,.4);
+  box-shadow: 0 0 0 3px rgba(22,58,46,.08);
+  background: #fff;
+}
+.cform__input--ta {
+  min-height: 144px; resize: vertical; line-height: 1.6;
+}
+
+/* Actions row */
+.cform__actions {
+  display: flex; align-items: center; gap: 14px;
+  flex-wrap: wrap; padding-top: 4px;
+}
+.cform__submit {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--pill-dark); color: #F4ECDC;
+  border: 0; cursor: pointer;
+  padding: 13px 22px; border-radius: 8px;
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  letter-spacing: -0.01em; min-width: 158px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 6px 20px rgba(0,0,0,.24);
+  transition: transform .2s ease, box-shadow .2s ease, gap .2s ease, background .3s ease;
+  overflow: hidden;
+}
+.cform__submit:not(:disabled):hover {
+  transform: translateY(-2px); gap: 14px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 12px 28px rgba(0,0,0,.28);
+}
+.cform__submit.is-sent { background: #2E6B48; cursor: default; }
+.cform__note {
+  font-size: 12px; font-weight: 500;
+  color: var(--ink); opacity: .3; letter-spacing: -.005em;
+  transition: opacity .3s;
+}
+
+/* Confetti burst dot */
+.c-dot {
+  position: fixed; pointer-events: none; z-index: 9999;
+  width: 8px; height: 8px; border-radius: 50%;
+  animation: cDotBurst .75s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes cDotBurst {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx),var(--dy)) scale(0); opacity: 0; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .cslab__grid   { grid-template-columns: 1fr; }
+  .cinfo__desc   { max-width: 100%; }
+  .cform__row    { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .cinfo__cards  { flex-direction: column; }
+  .ccard--email  { transform: rotate(-4deg); }
+  .ccard--phone  { transform: rotate(3deg); }
+}
 </style>
 </head>
 <body>
@@ -301,32 +328,28 @@
 <div id="snav-root"></div>
 
 <main class="cpage">
-  <div class="cpage__inner">
-    <section class="cslab">
+  <div class="cpage__wrap">
+    <section class="cslab" id="cslab">
       <div class="cslab__grid">
 
-        <!-- ── Left: info + cards ── -->
+        <!-- ── LEFT: info + tilted contact cards ── -->
         <div class="cinfo">
           <div class="cinfo__eyebrow">
             <span class="cinfo__eyebrow-dot"></span>
             Get in touch
           </div>
-
           <h1 class="cinfo__headline">
-            Got something<br>
-            <em>worth designing?</em>
+            Got something<br><em>worth designing?</em>
           </h1>
-
           <p class="cinfo__desc">
             Have a project, an idea that won't quit, or just want to say hello?
             Drop a note — I read every message and reply within a day or two.
           </p>
 
           <div class="cinfo__cards">
-
-            <!-- Email card -->
-            <a href="mailto:hi@ahmadmajid.com" class="ccard ccard--peach ccard--contact">
-              <div class="ccard__contact-icon">
+            <!-- Peach: email — tilted -5.5° -->
+            <a href="mailto:hi@ahmadmajid.com" class="ccard ccard--peach ccard--contact ccard--email">
+              <div class="ccard__icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <rect x="1.5" y="3.5" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
                   <path d="M1.5 5.5L8 9.5l6.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -338,9 +361,9 @@
               </div>
             </a>
 
-            <!-- Phone card -->
-            <a href="tel:+12125550191" class="ccard ccard--sky ccard--contact">
-              <div class="ccard__contact-icon">
+            <!-- Sky: phone — tilted +4.5° -->
+            <a href="tel:+12125550191" class="ccard ccard--sky ccard--contact ccard--phone">
+              <div class="ccard__icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M5.2 2H3a1 1 0 0 0-1 1v.5a10.5 10.5 0 0 0 10.5 10.5H13a1 1 0 0 0 1-1v-2.2l-3-1.3-1.2 1.8C8 10.7 6.3 9 5.7 7.2l1.8-1.2L6.2 3l-1-.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -350,59 +373,60 @@
                 <span class="ccard__contact-value">+1 (212) 555-0191</span>
               </div>
             </a>
-
           </div>
         </div>
 
-        <!-- ── Right: form + book card ── -->
+        <!-- ── RIGHT: form + book card ── -->
         <div class="cright">
+
+          <!-- White form panel -->
           <div class="cform-panel">
             <p class="cform-panel__heading">Send a message</p>
-            <p class="cform-panel__sub">I'll get back to you within a day or two.</p>
+            <p class="cform-panel__sub">Usually replies within 24 hours.</p>
 
-            <form class="cform" novalidate>
+            <form class="cform" id="cform" novalidate>
               <div class="cform__row">
+                <!-- label AFTER input for CSS ~ sibling selector -->
                 <div class="cform__field">
-                  <label class="cform__label" for="fname">First name</label>
                   <input class="cform__input" type="text" id="fname" name="fname"
-                    placeholder="Ahmad" autocomplete="given-name">
+                    placeholder=" " autocomplete="given-name">
+                  <label class="cform__label" for="fname">First name</label>
                 </div>
                 <div class="cform__field">
-                  <label class="cform__label" for="lname">Last name</label>
                   <input class="cform__input" type="text" id="lname" name="lname"
-                    placeholder="Majid" autocomplete="family-name">
+                    placeholder=" " autocomplete="family-name">
+                  <label class="cform__label" for="lname">Last name</label>
                 </div>
               </div>
 
               <div class="cform__field">
-                <label class="cform__label" for="msg">What's on your mind?</label>
                 <textarea class="cform__input cform__input--ta" id="msg" name="msg"
-                  placeholder="Tell me about your project, challenge, or idea…"></textarea>
+                  placeholder=" "></textarea>
+                <label class="cform__label" for="msg">What's on your mind?</label>
               </div>
 
               <div class="cform__actions">
-                <button type="submit" class="cform__submit">
-                  Send message
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <button type="submit" class="cform__submit" id="csub">
+                  <span id="csub-text">Send message</span>
+                  <!-- paper plane -->
+                  <svg id="csub-plane" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M13 1L1 6l5 2.5L13 1zm0 0L7.5 14 6 8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
-                <span class="cform__note">Usually replies within 24 h</span>
+                <span class="cform__note" id="cform-note">Usually replies within 24 h</span>
               </div>
             </form>
           </div>
 
-          <!-- Book a call card -->
+          <!-- Lilac: book a call — slightly tilted, hero-card style -->
           <div class="ccard ccard--lilac ccard--book">
-            <div class="ccard__book-top">
-              <span class="ccard__book-label">Prefer a chat?</span>
+            <div>
+              <div class="ccard__book-eyebrow">Prefer to chat?</div>
               <h3 class="ccard__book-title">Book a call</h3>
-              <p class="ccard__book-body">
-                A free 30 min session — let's talk through your project, idea, or challenge.
-              </p>
+              <p class="ccard__book-body">Free 30 min session — let's talk through your project, idea, or challenge.</p>
             </div>
             <button
-              class="ccard__book-cta"
+              class="ccard__book-btn"
               data-cal-link="ahmad-majid-7sgoyt/30min"
               data-cal-namespace="30min"
               data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>
@@ -412,12 +436,77 @@
               </svg>
             </button>
           </div>
-        </div>
 
+        </div>
       </div>
     </section>
   </div>
 </main>
+
+<script>
+(function () {
+
+  /* ── Confetti burst on submit ── */
+  var COLORS = ['#F8C495','#C7C2F0','#B8DBEC','#F8E45A','#6BD08A','#F4A26B','#163A2E'];
+
+  function burst(cx, cy) {
+    for (var i = 0; i < 22; i++) {
+      var dot   = document.createElement('div');
+      dot.className = 'c-dot';
+      var angle = (i / 22) * Math.PI * 2;
+      var dist  = 55 + Math.random() * 90;
+      var dx    = Math.cos(angle) * dist;
+      var dy    = Math.sin(angle) * dist - 35;
+      dot.style.cssText =
+        'left:' + cx + 'px;top:' + cy + 'px;' +
+        'background:' + COLORS[i % COLORS.length] + ';' +
+        '--dx:' + dx + 'px;--dy:' + dy + 'px;' +
+        'animation-delay:' + (i * 18) + 'ms;';
+      document.body.appendChild(dot);
+      setTimeout(function (d) { d.remove(); }, 950, dot);
+    }
+  }
+
+  var form  = document.getElementById('cform');
+  var btn   = document.getElementById('csub');
+  var label = document.getElementById('csub-text');
+  var plane = document.getElementById('csub-plane');
+  var note  = document.getElementById('cform-note');
+
+  if (form && btn) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (btn.disabled) return;
+
+      /* confetti origin = centre of button */
+      var r = btn.getBoundingClientRect();
+      burst(r.left + r.width / 2, r.top + r.height / 2);
+
+      /* paper plane flies off */
+      plane.style.transition = 'transform .35s ease, opacity .35s ease';
+      plane.style.transform  = 'translate(32px,-24px) rotate(20deg)';
+      plane.style.opacity    = '0';
+
+      label.textContent = 'Sent!';
+      btn.classList.add('is-sent');
+      btn.disabled = true;
+      note.style.opacity = '0';
+
+      /* after a beat: swap icon to a check */
+      setTimeout(function () {
+        plane.style.transition = 'none';
+        plane.style.transform  = 'none';
+        plane.style.opacity    = '1';
+        plane.innerHTML =
+          '<path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
+        note.style.opacity = '1';
+        note.textContent   = "I'll be in touch soon.";
+      }, 500);
+    });
+  }
+
+}());
+</script>
 
 <script type="text/babel" src="navbar.jsx"></script>
 <script type="text/babel">

@@ -104,6 +104,7 @@ const WORK = [
     blurb: "Redesigned how work begins in Miro, turning the blank-board moment into an AI-guided starting point for faster collaboration with AI.",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
     accent: "#F4D24A",
+    locked: true,
   },
   {
     slug: "miro-templates",
@@ -160,7 +161,11 @@ const Cursor = React.forwardRef(function Cursor({ overImage }, ref) {
 function WorkRow({ item }) {
   const [ref, inView] = useInView(0.08);
   return (
-    <article ref={ref} className={"wrow " + (inView ? "is-in" : "")}>
+    <article
+      ref={ref}
+      className={"wrow " + (inView ? "is-in" : "")}
+      style={{ '--row-accent': item.accent }}
+    >
       <aside className="wrow__year-col">
         <div className="wrow__year">
           <span className="wrow__bullet">·</span>
@@ -169,7 +174,18 @@ function WorkRow({ item }) {
       </aside>
 
       <div className="wrow__body">
-        <h3 className="wrow__title">{item.title}</h3>
+        <h3 className="wrow__title">
+          {item.title}
+          {item.locked && (
+            <span className="wrow__lock-tag">
+              <svg width="10" height="11" viewBox="0 0 10 11" fill="none">
+                <rect x="1" y="5" width="8" height="5.5" rx="1.5" fill="currentColor"/>
+                <path d="M3 5V3.5a2 2 0 0 1 4 0V5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" fill="none"/>
+              </svg>
+              NDA
+            </span>
+          )}
+        </h3>
         <p className="wrow__blurb">{item.blurb}</p>
         <a
           className="wrow__media"
@@ -544,6 +560,18 @@ const sectionsCss = `
 .wrow:first-child { border-top: 0; padding-top: 8px; }
 .wrow.is-in { opacity: 1; transform: none; }
 
+/* Coloured accent line that grows in on hover */
+.wrow::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 50%; bottom: 50%;
+  width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--row-accent, var(--ink));
+  opacity: 0;
+  transition: top .4s cubic-bezier(.2,.8,.2,1), bottom .4s cubic-bezier(.2,.8,.2,1), opacity .3s ease;
+}
+.wrow:hover::before { opacity: .6; top: 20px; bottom: 20px; }
+
 .wrow__year-col {
   position: relative;
   align-self: stretch;
@@ -557,12 +585,15 @@ const sectionsCss = `
   font-size: clamp(34px, 3.2vw, 56px);
   letter-spacing: -0.015em;
   color: var(--ink); opacity: .7;
-  transition: opacity .3s ease;
+  transition: opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1), color .3s ease;
   z-index: 5;
   width: max-content;
-  width: max-content;
 }
-.wrow:hover .wrow__year { opacity: 1; }
+.wrow:hover .wrow__year {
+  opacity: 1;
+  transform: translateX(6px);
+  color: var(--row-accent, var(--ink));
+}
 .wrow__bullet { font-size: 1.2em; line-height: 0; transform: translateY(-.18em); opacity: .8; }
 
 .wrow__body {
@@ -577,7 +608,26 @@ const sectionsCss = `
   letter-spacing: -0.025em;
   line-height: 1.0;
   color: var(--ink);
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  transition: color .3s ease;
 }
+.wrow:hover .wrow__title { color: var(--row-accent, var(--ink)); }
+
+/* NDA badge on locked titles */
+.wrow__lock-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  color: var(--pill-dark);
+  background: rgba(20,40,30,.09);
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.wrow:hover .wrow__lock-tag { background: rgba(20,40,30,.14); }
+
 .wrow__blurb {
   margin: 18px 0 0;
   font-size: clamp(15px, 1.15vw, 17px);
@@ -596,13 +646,18 @@ const sectionsCss = `
   box-shadow: 0 18px 38px -22px rgba(20,40,30,.32), 0 1px 0 rgba(255,255,255,.4) inset;
   aspect-ratio: 16/9;
   text-decoration: none;
+  transition: transform .55s cubic-bezier(.2,.8,.2,1), box-shadow .55s ease;
+}
+.wrow__media:hover {
+  transform: perspective(900px) rotateX(2deg) rotateY(-2deg) translateY(-8px);
+  box-shadow: 0 36px 60px -22px rgba(20,40,30,.38), 0 1px 0 rgba(255,255,255,.4) inset;
 }
 .wrow__media img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
-  transition: transform 1.2s cubic-bezier(.2,.7,.2,1);
+  transition: transform 1.0s cubic-bezier(.2,.7,.2,1);
 }
-.wrow__media:hover img { transform: scale(1.04); }
+.wrow__media:hover img { transform: scale(1.06); }
 .wrow__media-tint {
   position: absolute; inset: 0;
   pointer-events: none;
