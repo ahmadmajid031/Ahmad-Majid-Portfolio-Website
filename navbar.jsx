@@ -62,7 +62,7 @@ function Nav({ active, onChange }) {
     <header className="nav">
       <div className="nav__inner">
         <a className="nav__brand" href="index.html">
-          <img src="Images/navbar-logo.png" alt="Ahmad Majid" className="nav__logo" />
+          <img src="images/navbar-logo.png" alt="Ahmad Majid" className="nav__logo" />
           <span className="nav__name">Ahmad Majid</span>
         </a>
 
