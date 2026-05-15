@@ -233,28 +233,41 @@
   .cs-step p { font-size: 16px; line-height: 1.65; font-weight: 500; color: var(--ink); opacity: .78; margin: 0; }
 
   /* Finding cards */
-  .cs-findings { margin: 8px 0; display: flex; flex-direction: column; gap: 14px; }
+  .cs-findings { margin: 8px 0; display: flex; flex-direction: column; gap: 20px; }
   .cs-finding {
-    background: var(--hero-bg);
-    border-radius: 16px;
-    padding: 22px 24px 22px 20px;
-    border: 1px solid rgba(20,40,30,.06);
-    border-left: 3px solid var(--accent);
-    box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+    border-radius: 22px;
+    padding: 30px 30px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cs-finding--01 { background: rgba(248,196,149,.24); }
+  .cs-finding--02 { background: rgba(184,219,236,.30); }
+  .cs-finding--03 { background: rgba(199,194,240,.28); }
+  .cs-finding__ghost {
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800; font-size: 108px; line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--ink); opacity: .07;
+    pointer-events: none; user-select: none;
   }
   .cs-finding__tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
-    color: var(--accent); font-weight: 600;
-    margin-bottom: 8px;
-    opacity: .9;
+    color: var(--ink); font-weight: 600;
+    margin-bottom: 10px; opacity: .45;
   }
   .cs-finding__title {
-    font-weight: 700; font-size: 16px; margin: 0 0 10px;
-    color: var(--ink); letter-spacing: -0.01em;
+    font-weight: 700; font-size: clamp(17px, 1.5vw, 20px); margin: 0 0 12px;
+    color: var(--ink); letter-spacing: -0.02em;
   }
-  .cs-finding p { font-size: 15px; line-height: 1.62; color: var(--ink); opacity: .75; font-weight: 500; margin: 0 0 14px; }
+  .cs-finding p { font-size: 15px; line-height: 1.65; color: var(--ink); opacity: .75; font-weight: 500; margin: 0 0 14px; }
   .cs-finding p:last-child { margin-bottom: 0; }
+  .cs-finding .cs-quote {
+    background: rgba(20,40,30,.07); border-color: rgba(20,40,30,.25);
+  }
 
   /* User quote */
   .cs-quote {
@@ -341,19 +354,20 @@
   /* Reflections */
   .cs-reflections { list-style: none; padding: 0; margin: 8px 0; }
   .cs-reflection {
-    display: flex; gap: 18px; align-items: start;
-    padding: 24px 0;
+    display: grid; grid-template-columns: 72px 1fr;
+    gap: 28px; align-items: start;
+    padding: 36px 0;
     border-top: 1px solid var(--line);
   }
   .cs-reflection:last-child { border-bottom: 1px solid var(--line); }
-  .cs-reflection__icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: var(--hero-bg);
-    border: 1px solid rgba(20,40,30,.10);
-    display: grid; place-items: center; flex-shrink: 0; margin-top: 2px;
-    color: var(--ink);
+  .cs-reflection__num {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800; font-size: clamp(48px, 5vw, 68px);
+    line-height: 1; letter-spacing: -0.04em;
+    color: var(--accent); opacity: .2;
+    margin-top: -6px; user-select: none;
   }
-  .cs-reflection__title { font-weight: 700; font-size: 15px; margin: 0 0 5px; color: var(--ink); }
+  .cs-reflection__title { font-weight: 700; font-size: clamp(15px, 1.35vw, 18px); margin: 0 0 8px; color: var(--ink); letter-spacing: -0.01em; }
   .cs-reflection__text { font-size: 15px; opacity: .72; margin: 0; font-weight: 500; line-height: 1.6; }
 
   /* Next case */
@@ -558,7 +572,8 @@
     <h2 class="cs-h2">What we found — three core frictions</h2>
 
     <div class="cs-findings">
-      <div class="cs-finding">
+      <div class="cs-finding cs-finding--01">
+        <div class="cs-finding__ghost">01</div>
         <div class="cs-finding__tag">Finding 01</div>
         <div class="cs-finding__title">Invisible state</div>
         <p>When a user triggered an AI property, the cell showed a small spinner — or sometimes nothing at all if the row was off-screen. Users had no idea whether the AI was running, queued, failed, or done. Several testers refreshed the page mid-generation, killing the request.</p>
@@ -568,13 +583,15 @@
         </div>
       </div>
 
-      <div class="cs-finding">
+      <div class="cs-finding cs-finding--02">
+        <div class="cs-finding__ghost">02</div>
         <div class="cs-finding__tag">Finding 02</div>
         <div class="cs-finding__title">No mental model for "what is the AI looking at?"</div>
         <p>AI properties pull from other properties in the same row — but the UI never told users that. When the AI returned something irrelevant or hallucinated, users blamed the AI itself rather than realising the source column was empty or wrong. Once a user got a bad output they couldn't explain, they stopped trusting the feature entirely. This was the trust killer.</p>
       </div>
 
-      <div class="cs-finding">
+      <div class="cs-finding cs-finding--03">
+        <div class="cs-finding__ghost">03</div>
         <div class="cs-finding__tag">Finding 03</div>
         <div class="cs-finding__title">Destructive-feeling actions with no safety net</div>
         <p>The "Re-generate" button replaced the existing AI output instantly with no undo affordance. Users hovered, hesitated, and often didn't click — preferring to leave a bad output in place rather than risk losing it. Configuration changes had the same problem: editing the prompt silently invalidated every row in the database.</p>
@@ -753,35 +770,21 @@
 
     <ul class="cs-reflections">
       <li class="cs-reflection">
-        <div class="cs-reflection__icon">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M8 5.5v3l2 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="cs-reflection__num">01</div>
         <div>
           <div class="cs-reflection__title">AI usability is mostly about state and provenance</div>
           <p class="cs-reflection__text">Users don't need to understand the model — they need to understand what it's reading, what it's doing right now, and how to undo it. Once those three things were legible, trust followed almost automatically.</p>
         </div>
       </li>
       <li class="cs-reflection">
-        <div class="cs-reflection__icon">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <rect x="2.5" y="4.5" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M5.5 4.5V3a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="cs-reflection__num">02</div>
         <div>
           <div class="cs-reflection__title">Dogfooding catches things analytics never will</div>
           <p class="cs-reflection__text">The "is it broken or just slow?" problem was invisible in the funnel data. It only showed up when I sat with the feature for a week. You can't design for confusion you haven't experienced.</p>
         </div>
       </li>
       <li class="cs-reflection">
-        <div class="cs-reflection__icon">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 2l1.8 3.6L14 6.6l-3 2.9.7 4.1L8 11.5l-3.7 2.1.7-4.1L2 6.6l4.2-.8L8 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-          </svg>
-        </div>
+        <div class="cs-reflection__num">03</div>
         <div>
           <div class="cs-reflection__title">Trust is the real metric</div>
           <p class="cs-reflection__text">Adoption numbers were the headline, but the deeper win was that users started treating AI properties as a dependable part of their workflow — not a magic trick they tried once. Trust, once earned, compounds.</p>

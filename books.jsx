@@ -181,7 +181,7 @@ function BookRow({ book, index, hoverId, onHover }) {
 
 // ---------- Styles ----------
 const booksCss = `
-.slab--books { background: var(--bg); }
+.slab--books { background: var(--hero-bg); }
 
 .work-head__lede {
   margin: 14px 0 0;

@@ -205,10 +205,12 @@ body {
 
 /* ── Form panel ── */
 .cform-panel {
-  background: #fff;
+  background: rgba(255,255,255,.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 24px;
-  border: 1px solid rgba(20,40,30,.07);
-  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 22px 48px -22px rgba(20,40,30,.16);
+  border: 1px solid rgba(255,255,255,.7);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 22px 48px -22px rgba(20,40,30,.12);
   padding: clamp(28px, 3.5vw, 44px);
 }
 .cform-panel__heading {
@@ -252,7 +254,7 @@ body {
 .cform__input {
   display: block; width: 100%;
   padding: 12px 14px;
-  background: #F8F4EE;
+  background: rgba(255,255,255,.82);
   border: 1.5px solid rgba(20,40,30,.10);
   border-radius: 10px;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -263,9 +265,9 @@ body {
 }
 .cform__input::placeholder { opacity: 0; } /* hidden — floating label takes its place */
 .cform__input:focus {
-  border-color: rgba(22,58,46,.4);
-  box-shadow: 0 0 0 3px rgba(22,58,46,.08);
-  background: #fff;
+  border-color: rgba(22,58,46,.35);
+  box-shadow: 0 0 0 3px rgba(22,58,46,.07);
+  background: rgba(255,255,255,.96);
 }
 .cform__input--ta {
   min-height: 144px; resize: vertical; line-height: 1.6;

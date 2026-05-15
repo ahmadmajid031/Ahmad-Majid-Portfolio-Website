@@ -147,7 +147,7 @@ function TestCard({ data, hovered, anyHovered, onHover, onLeave }) {
 }
 
 const testsCss = `
-.slab--tests { background: var(--bg); padding-bottom: clamp(80px, 9vw, 140px); }
+.slab--tests { background: var(--hero-bg); padding-bottom: clamp(80px, 9vw, 140px); }
 
 .tests-wrap {
   margin-top: 56px;
