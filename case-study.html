@@ -219,6 +219,158 @@
     .cs-stats { grid-template-columns: 1fr; }
   }
 
+  /* ── Password gate ── */
+  #pw-gate {
+    position: fixed; inset: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(21,20,15,.76);
+    backdrop-filter: blur(18px) saturate(.65);
+    -webkit-backdrop-filter: blur(18px) saturate(.65);
+    padding: clamp(20px, 5vw, 40px);
+  }
+  #pw-gate.is-unlocked {
+    animation: gateOut .55s cubic-bezier(.2,.8,.2,1) forwards;
+    pointer-events: none;
+  }
+  @keyframes gateOut {
+    to { opacity: 0; transform: scale(.97) translateY(-6px); }
+  }
+
+  .pw-card {
+    background: var(--hero-bg);
+    border-radius: 28px;
+    border: 1px solid rgba(0,0,0,.06);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.65) inset,
+      0 48px 96px -32px rgba(20,40,30,.52),
+      0 8px 24px rgba(20,40,30,.14);
+    padding: clamp(32px, 4vw, 52px) clamp(28px, 4vw, 48px);
+    max-width: 400px; width: 100%;
+    text-align: center;
+    animation: cardIn .5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px) scale(.96); }
+  }
+  .pw-card.is-shaking {
+    animation: shake .42s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0) rotate(0); }
+    15%     { transform: translateX(-9px) rotate(-.4deg); }
+    30%     { transform: translateX(8px) rotate(.4deg); }
+    45%     { transform: translateX(-7px) rotate(-.3deg); }
+    60%     { transform: translateX(6px) rotate(.3deg); }
+    78%     { transform: translateX(-3px); }
+  }
+
+  .pw-icon {
+    width: 68px; height: 68px; border-radius: 20px;
+    background: #F8E45A;
+    display: grid; place-items: center;
+    margin: 0 auto 26px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.55) inset,
+      0 10px 24px rgba(248,228,90,.45);
+    animation: breathe 3.2s ease-in-out infinite;
+    transition: background .4s ease, box-shadow .4s ease;
+  }
+  .pw-icon.is-open {
+    background: #6BD08A;
+    box-shadow: 0 1px 0 rgba(255,255,255,.55) inset, 0 10px 24px rgba(107,208,138,.45);
+    animation: popIn .35s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  @keyframes breathe {
+    0%,100% { transform: scale(1); }
+    50%     { transform: scale(1.05); }
+  }
+  @keyframes popIn {
+    from { transform: scale(.7) rotate(-8deg); }
+    to   { transform: scale(1) rotate(0); }
+  }
+
+  .pw-title {
+    margin: 0 0 10px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800; font-size: clamp(22px, 3vw, 30px);
+    letter-spacing: -0.025em; color: var(--ink);
+  }
+  .pw-desc {
+    margin: 0 auto 28px;
+    max-width: 30ch;
+    font-size: 15px; line-height: 1.6; font-weight: 500;
+    color: var(--ink); opacity: .65;
+  }
+
+  .pw-input {
+    display: block; width: 100%;
+    padding: 13px 16px;
+    background: rgba(22,58,46,.045);
+    border: 1.5px solid rgba(20,40,30,.14);
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--ink); letter-spacing: .10em;
+    text-align: center; outline: none;
+    transition: border-color .18s, box-shadow .18s, background .18s;
+    -webkit-appearance: none; appearance: none;
+    margin-bottom: 8px;
+  }
+  .pw-input::placeholder { letter-spacing: 0; font-weight: 500; opacity: .35; }
+  .pw-input:focus {
+    border-color: rgba(22,58,46,.45);
+    box-shadow: 0 0 0 3px rgba(22,58,46,.08);
+  }
+  .pw-input.is-error {
+    border-color: #D95040;
+    box-shadow: 0 0 0 3px rgba(217,80,64,.12);
+    background: rgba(217,80,64,.04);
+  }
+
+  .pw-error {
+    height: 18px; margin: 0 0 14px;
+    font-size: 12px; font-weight: 600; letter-spacing: .01em;
+    color: #D95040; opacity: 0;
+    font-family: 'JetBrains Mono', monospace;
+    transition: opacity .2s;
+  }
+  .pw-error.is-visible { opacity: 1; }
+
+  .pw-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 14px 20px;
+    background: var(--pill-dark); color: #F4ECDC;
+    border: 0; border-radius: 10px; cursor: pointer;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+    box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 6px 20px rgba(0,0,0,.26);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .pw-btn:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 10px 26px rgba(0,0,0,.3); }
+  .pw-btn:active { transform: none; }
+
+  .pw-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 20px 0; color: var(--ink); opacity: .2;
+    font-size: 11px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .08em;
+  }
+  .pw-divider::before, .pw-divider::after {
+    content: ""; flex: 1; height: 1px;
+    background: rgba(20,40,30,.18);
+  }
+
+  .pw-contact {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600;
+    color: var(--ink); opacity: .5;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(20,40,30,.18);
+    padding-bottom: 1px;
+    transition: opacity .2s;
+  }
+  .pw-contact:hover { opacity: .9; }
+
   .cs-fade {
     animation: csFade .7s cubic-bezier(.2,.8,.2,1) both;
   }
@@ -235,7 +387,7 @@
 <script type="text/babel" src="navbar.jsx"></script>
 <script type="text/babel">
 /* global React, ReactDOM, Nav */
-const _csHrefs = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
+const _csHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="Case Studies" onChange={function(it) { window.location.href = _csHrefs[it]; }} />
 );
@@ -423,6 +575,95 @@ function render() {
 }
 
 render();
+
+function checkGate() {
+  if (getSlug() !== 'miro-ai') return;
+  if (localStorage.getItem('miro-ai-unlocked') === 'true') return;
+
+  const gate = document.createElement('div');
+  gate.id = 'pw-gate';
+  gate.innerHTML = `
+    <div class="pw-card" id="pw-card">
+      <div class="pw-icon" id="pw-icon">
+        <svg width="28" height="30" viewBox="0 0 28 30" fill="none">
+          <rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>
+          <path id="pw-shackle" d="M9 14V10a5 5 0 0 1 10 0v4" stroke="#15140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>
+          <circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>
+        </svg>
+      </div>
+      <h2 class="pw-title">Protected work</h2>
+      <p class="pw-desc">This case study sits behind an NDA. Drop me a line and I'll share the password — usually same day.</p>
+      <input type="password" class="pw-input" id="pw-input" placeholder="Enter password" autocomplete="off" spellcheck="false">
+      <p class="pw-error" id="pw-error">Wrong password — try again</p>
+      <button class="pw-btn" id="pw-btn">
+        Unlock
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="pw-divider">or</div>
+      <a href="contact.html" class="pw-contact">
+        Contact me to get the password
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  `;
+  document.body.appendChild(gate);
+
+  const input  = gate.querySelector('#pw-input');
+  const btn    = gate.querySelector('#pw-btn');
+  const error  = gate.querySelector('#pw-error');
+  const card   = gate.querySelector('#pw-card');
+  const icon   = gate.querySelector('#pw-icon');
+
+  function triggerWrong() {
+    input.classList.add('is-error');
+    error.classList.add('is-visible');
+    card.classList.remove('is-shaking');
+    void card.offsetWidth;                   // force reflow to restart animation
+    card.classList.add('is-shaking');
+    input.select();
+  }
+
+  function triggerUnlock() {
+    input.classList.remove('is-error');
+    error.classList.remove('is-visible');
+    icon.classList.add('is-open');
+    icon.innerHTML = `
+      <svg width="28" height="30" viewBox="0 0 28 30" fill="none">
+        <rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>
+        <path d="M9 14V10a5 5 0 0 1 10 0V7" stroke="#15140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>
+        <circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>
+      </svg>`;
+    localStorage.setItem('miro-ai-unlocked', 'true');
+    setTimeout(() => {
+      gate.classList.add('is-unlocked');
+      setTimeout(() => gate.remove(), 560);
+    }, 520);
+  }
+
+  function attempt() {
+    if (input.value === 'Miroxahmad2025') {
+      triggerUnlock();
+    } else {
+      triggerWrong();
+    }
+  }
+
+  btn.addEventListener('click', attempt);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { attempt(); return; }
+    input.classList.remove('is-error');
+    error.classList.remove('is-visible');
+  });
+
+  // Focus after card animates in
+  setTimeout(() => input.focus(), 520);
+}
+
+checkGate();
 </script>
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");

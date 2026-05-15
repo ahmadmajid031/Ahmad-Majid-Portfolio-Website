@@ -89,6 +89,15 @@ function AboutSection() {
 // ---------- Work section ----------
 const WORK = [
   {
+    slug: "notion-ai",
+    year: "2023",
+    title: "Redesigning AI in Databases",
+    blurb: "Bringing trust, clarity, and control to Notion's AI properties — turning a feature with 67% drop-off into one teams could actually adopt.",
+    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1400&q=80",
+    accent: "#9B8DE8",
+    href: "notion-ai.html",
+  },
+  {
     slug: "miro-ai",
     year: "2025",
     title: "AI-first Miro",
@@ -164,7 +173,7 @@ function WorkRow({ item }) {
         <p className="wrow__blurb">{item.blurb}</p>
         <a
           className="wrow__media"
-          href={`case-study.html?slug=${item.slug}`}
+          href={item.href || `case-study.html?slug=${item.slug}`}
           data-case-link
           aria-label={"Open case study: " + item.title}
         >

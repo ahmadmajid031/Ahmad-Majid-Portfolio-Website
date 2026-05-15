@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redesigning Notion AI in Databases · Ahmad Majid</title>
+<link rel="icon" type="image/png" href="Images/favicon.png">
+<style>
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: .55s;
+    animation-timing-function: cubic-bezier(.2,.8,.2,1);
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700;6..72,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg:       #EFE6D6;
+    --hero-bg:  #F6EFE0;
+    --ink:      #163A2E;
+    --pill-dark:#15140F;
+    --line:     rgba(20,40,30,.12);
+    --accent:   #9B8DE8;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .cs-hero {
+    max-width: 1320px; margin: 0 auto;
+    padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 56px) 0;
+  }
+  .cs-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink); opacity: .55;
+  }
+  .cs-eyebrow__dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--accent);
+  }
+  .cs-title {
+    margin: 24px 0 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    font-size: clamp(48px, 7.4vw, 108px);
+    color: var(--ink);
+    max-width: 18ch;
+  }
+  .cs-title em { font-style: italic; font-weight: 500; opacity: .72; }
+  .cs-deck {
+    margin: 28px 0 0;
+    max-width: 680px;
+    font-size: clamp(16px, 1.35vw, 20px);
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--ink); opacity: .78;
+  }
+  .cs-meta {
+    margin: 48px 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+  }
+  .cs-meta__cell { display: flex; flex-direction: column; gap: 5px; }
+  .cs-meta__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink); opacity: .45;
+  }
+  .cs-meta__val { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+
+  /* ── Cover image ── */
+  .cs-cover {
+    margin: 48px auto 0;
+    max-width: 1320px;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .cs-cover__frame {
+    border-radius: 28px; overflow: hidden;
+    aspect-ratio: 16/9; background: #1A1612;
+    box-shadow: 0 30px 60px -30px rgba(20,40,30,.3);
+  }
+  .cs-cover__frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* ── Body ── */
+  .cs-body {
+    max-width: 760px; margin: 80px auto 0;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .cs-h2 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(26px, 2.8vw, 36px);
+    letter-spacing: -0.025em;
+    margin: 72px 0 18px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .cs-h2:first-child { margin-top: 0; }
+  .cs-h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(20px, 2vw, 26px);
+    letter-spacing: -0.02em;
+    margin: 44px 0 14px;
+    color: var(--ink);
+  }
+  .cs-body p, .cs-p {
+    margin: 0 0 20px;
+    font-size: 17px; line-height: 1.68;
+    font-weight: 500;
+    color: var(--ink); opacity: .82;
+  }
+  .cs-body p strong { font-weight: 700; color: var(--ink); opacity: 1; }
+
+  /* Pull quote */
+  .cs-pull {
+    margin: 44px 0;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500; font-style: italic;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.38;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  /* Stats grid */
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 36px 0;
+  }
+  .cs-stat {
+    background: var(--hero-bg);
+    border-radius: 18px;
+    padding: 22px 22px 24px;
+    border: 1px solid rgba(20,40,30,.06);
+    box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+  }
+  .cs-stat__num {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(30px, 3.2vw, 44px);
+    line-height: 1; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .cs-stat__num em { font-style: italic; font-weight: 500; opacity: .7; color: var(--accent); }
+  .cs-stat__label {
+    margin-top: 10px;
+    font-size: 13px; font-weight: 500;
+    color: var(--ink); opacity: .6;
+    line-height: 1.4;
+  }
+
+  /* Wide image (breaks out) */
+  .cs-wide {
+    max-width: 1320px; margin: 56px auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .cs-wide__frame {
+    border-radius: 22px; overflow: hidden;
+    background: #1A1612;
+    box-shadow: 0 18px 44px -22px rgba(20,40,30,.26);
+  }
+  .cs-wide__frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .cs-wide__frame--tall { aspect-ratio: 16/7; }
+  .cs-wide__frame--medium { aspect-ratio: 16/8; }
+  .cs-caption {
+    text-align: center; margin-top: 12px;
+    font-size: 13px; font-weight: 500; font-style: italic;
+    color: var(--ink); opacity: .42;
+    max-width: 760px; margin-left: auto; margin-right: auto;
+  }
+
+  /* Inline image */
+  .cs-img {
+    border-radius: 16px; overflow: hidden;
+    margin: 28px 0;
+    box-shadow: 0 10px 24px -12px rgba(20,40,30,.18);
+    border: 1px solid rgba(20,40,30,.06);
+  }
+  .cs-img img { display: block; width: 100%; }
+
+  /* Research steps */
+  .cs-steps { margin: 32px 0; }
+  .cs-step {
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .cs-step:last-child { border-bottom: 1px solid var(--line); }
+  .cs-step__tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink); opacity: .45;
+    margin-bottom: 10px;
+  }
+  .cs-step__tag-num {
+    width: 20px; height: 20px; border-radius: 6px;
+    background: var(--accent);
+    display: grid; place-items: center;
+    font-size: 10px; font-weight: 700; color: #fff;
+    opacity: 1;
+  }
+  .cs-step h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700; font-size: clamp(20px, 2.2vw, 26px);
+    letter-spacing: -0.02em; margin: 0 0 12px; color: var(--ink);
+  }
+  .cs-step p { font-size: 16px; line-height: 1.65; font-weight: 500; color: var(--ink); opacity: .78; margin: 0; }
+
+  /* Finding cards */
+  .cs-findings { margin: 8px 0; display: flex; flex-direction: column; gap: 14px; }
+  .cs-finding {
+    background: var(--hero-bg);
+    border-radius: 16px;
+    padding: 22px 24px 22px 20px;
+    border: 1px solid rgba(20,40,30,.06);
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+  }
+  .cs-finding__tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+    margin-bottom: 8px;
+    opacity: .9;
+  }
+  .cs-finding__title {
+    font-weight: 700; font-size: 16px; margin: 0 0 10px;
+    color: var(--ink); letter-spacing: -0.01em;
+  }
+  .cs-finding p { font-size: 15px; line-height: 1.62; color: var(--ink); opacity: .75; font-weight: 500; margin: 0 0 14px; }
+  .cs-finding p:last-child { margin-bottom: 0; }
+
+  /* User quote */
+  .cs-quote {
+    margin: 24px 0 8px;
+    padding: 16px 16px 16px 18px;
+    background: rgba(155,141,232,.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+  }
+  .cs-quote__text {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500; font-style: italic;
+    font-size: clamp(15px, 1.3vw, 17px);
+    line-height: 1.48; letter-spacing: -0.01em;
+    color: var(--ink); margin: 0 0 8px;
+  }
+  .cs-quote__attr {
+    font-size: 12px; font-weight: 600;
+    color: var(--ink); opacity: .45;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .02em;
+  }
+
+  /* Also found list */
+  .cs-also {
+    list-style: none; padding: 0; margin: 20px 0;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .cs-also li {
+    display: flex; gap: 12px; align-items: start;
+    font-size: 15px; line-height: 1.55; font-weight: 500;
+    color: var(--ink); opacity: .78;
+  }
+  .cs-also li::before {
+    content: "·";
+    font-size: 20px; line-height: 1; flex-shrink: 0;
+    color: var(--accent); opacity: 1;
+    margin-top: 1px;
+  }
+
+  /* Design bets */
+  .cs-bets { list-style: none; padding: 0; margin: 20px 0; display: flex; flex-direction: column; gap: 0; }
+  .cs-bet {
+    display: grid; grid-template-columns: 28px 1fr;
+    gap: 14px; align-items: start;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+  }
+  .cs-bet:last-child { border-bottom: 1px solid var(--line); }
+  .cs-bet__num {
+    width: 24px; height: 24px; border-radius: 7px;
+    background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .cs-bet__label { font-weight: 700; font-size: 15px; margin: 0 0 3px; color: var(--ink); }
+  .cs-bet__desc { font-size: 14px; opacity: .68; font-weight: 500; margin: 0; line-height: 1.5; }
+
+  /* Result entries (per shipped change) */
+  .cs-result {
+    padding: 40px 0;
+    border-top: 1px solid var(--line);
+  }
+  .cs-result:first-child { border-top: 0; padding-top: 0; }
+  .cs-result__header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap; margin-bottom: 14px;
+  }
+  .cs-result h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700; font-size: clamp(20px, 2.2vw, 26px);
+    letter-spacing: -0.02em; margin: 0;
+    color: var(--ink);
+  }
+  .cs-result__stat {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700; font-size: clamp(22px, 2.4vw, 30px);
+    letter-spacing: -0.02em; color: var(--accent);
+    white-space: nowrap;
+  }
+  .cs-result p { font-size: 16px; line-height: 1.65; font-weight: 500; color: var(--ink); opacity: .78; margin: 0; }
+
+  /* Reflections */
+  .cs-reflections { list-style: none; padding: 0; margin: 8px 0; }
+  .cs-reflection {
+    display: flex; gap: 18px; align-items: start;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+  }
+  .cs-reflection:last-child { border-bottom: 1px solid var(--line); }
+  .cs-reflection__icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--hero-bg);
+    border: 1px solid rgba(20,40,30,.10);
+    display: grid; place-items: center; flex-shrink: 0; margin-top: 2px;
+    color: var(--ink);
+  }
+  .cs-reflection__title { font-weight: 700; font-size: 15px; margin: 0 0 5px; color: var(--ink); }
+  .cs-reflection__text { font-size: 15px; opacity: .72; margin: 0; font-weight: 500; line-height: 1.6; }
+
+  /* Next case */
+  .cs-next {
+    max-width: 1320px; margin: 100px auto 0;
+    padding: 0 clamp(20px, 4vw, 56px) 80px;
+  }
+  .cs-next__inner {
+    background: var(--hero-bg); border-radius: 28px;
+    padding: 48px clamp(28px, 4vw, 56px);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    border: 1px solid rgba(20,40,30,.05);
+    box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+  }
+  .cs-next__eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink); opacity: .45; margin-bottom: 10px;
+  }
+  .cs-next__title {
+    margin: 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700; font-size: clamp(26px, 3vw, 38px);
+    letter-spacing: -0.025em; color: var(--ink);
+  }
+  .cs-next__cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--pill-dark); color: #F4ECDC;
+    text-decoration: none; padding: 14px 22px;
+    border-radius: 6px; font-size: 14px; font-weight: 600;
+    letter-spacing: -0.005em;
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    transition: transform .2s ease, box-shadow .2s ease;
+    white-space: nowrap;
+  }
+  .cs-next__cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .cs-meta { grid-template-columns: repeat(2, 1fr); }
+    .cs-stats { grid-template-columns: 1fr; gap: 10px; }
+    .cs-result__header { flex-direction: column; gap: 4px; }
+  }
+
+  .cs-fade { animation: csFade .7s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes csFade { from { opacity: 0; transform: translateY(8px); } }
+</style>
+</head>
+<body>
+
+<div id="snav-root"></div>
+
+<main class="cs-fade">
+
+  <!-- ── Hero ── -->
+  <section class="cs-hero">
+    <div class="cs-eyebrow">
+      <span class="cs-eyebrow__dot"></span>
+      <span>Notion · Case study · 2023</span>
+    </div>
+    <h1 class="cs-title">Redesigning AI <em>in Databases</em></h1>
+    <p class="cs-deck">Bringing trust, clarity, and control to AI-powered properties — making one of Notion's most powerful features something teams could actually adopt without a learning curve.</p>
+
+    <div class="cs-meta">
+      <div class="cs-meta__cell">
+        <div class="cs-meta__label">My role</div>
+        <div class="cs-meta__val">Product design, UX research, interaction design, design systems</div>
+      </div>
+      <div class="cs-meta__cell">
+        <div class="cs-meta__label">Team</div>
+        <div class="cs-meta__val">1 PM · 1 EM · 2 FE engineers · 1 BE engineer · 1 researcher · 1 analyst</div>
+      </div>
+      <div class="cs-meta__cell">
+        <div class="cs-meta__label">Timeline</div>
+        <div class="cs-meta__val">2023 Q2 – Q4 (~5 months)</div>
+      </div>
+      <div class="cs-meta__cell">
+        <div class="cs-meta__label">Context</div>
+        <div class="cs-meta__val">Embedded designer via agency, owning the AI-in-databases workstream end to end</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Cover ── -->
+  <section class="cs-cover">
+    <div class="cs-cover__frame">
+      <img
+        src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=2400&q=85"
+        alt="Designer workspace with screens showing database UI"
+      />
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <article class="cs-body">
+
+    <!-- Impact strip -->
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat__num">+48<em>%</em></div>
+        <div class="cs-stat__label">Weekly active usage of AI properties after GA rollout</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat__num">2.3<em>×</em></div>
+        <div class="cs-stat__label">Retention at 30 days for users who interacted with AI in first session</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat__num">−41<em>%</em></div>
+        <div class="cs-stat__label">AI-related support tickets in the quarter post-launch</div>
+      </div>
+    </div>
+
+    <!-- Context -->
+    <h2 class="cs-h2">Why we started redesigning AI in databases</h2>
+    <p>By mid-2023, Notion AI had been generally available for a few months. Adoption of the writing assistant inside pages was strong — but the data told a different story for AI inside databases.</p>
+    <p>AI properties (AI Summary, AI Translation, AI Custom Autofill, etc.) had high first-use numbers and a steep drop-off after that. Many users tried it once, got a confusing result or didn't understand what just happened, and never came back.</p>
+    <p>That mattered. AI in databases was the surface where Notion's AI bet really showed its value — turning a workspace into something that could think across hundreds of rows, not just help write one paragraph. If users couldn't get past the first awkward interaction, the broader AI story was in trouble.</p>
+
+    <div class="cs-pull">Internal data showed a 67% drop between first AI property creation and the second use within 14 days.</div>
+
+  </article>
+
+  <!-- Wide: office/workspace image -->
+  <div class="cs-wide">
+    <div class="cs-wide__frame cs-wide__frame--tall">
+      <img
+        src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=2000&q=85"
+        alt="Collaborative workspace overview"
+      />
+    </div>
+    <p class="cs-caption">The workstream kicked off in April 2023. I joined Notion's team as an embedded designer through a partner agency.</p>
+  </div>
+
+  <article class="cs-body">
+
+    <!-- Research -->
+    <h2 class="cs-h2">How I tackled the problem</h2>
+
+    <div class="cs-steps">
+      <div class="cs-step">
+        <div class="cs-step__tag">
+          <span class="cs-step__tag-num">1</span>
+          Dogfooding
+        </div>
+        <h3>Living inside the feature for a week</h3>
+        <p>Before opening Figma, I spent a full week using AI properties for real work. I rebuilt my own task tracker, a content calendar, and a research database — all with AI properties doing real jobs: summarizing meeting notes, translating Arabic content, categorizing tickets.</p>
+        <p>I kept a running log of every moment I got confused, frustrated, or surprised. I shared a Notion page with the Notion design team and asked three other designers to do the same. By the end of the week we'd captured 47 friction points across four designers.</p>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- Dogfooding image -->
+  <div class="cs-wide">
+    <div class="cs-wide__frame cs-wide__frame--medium">
+      <img
+        src="https://images.unsplash.com/photo-1484807352052-23338990c6c6?auto=format&fit=crop&w=2000&q=85"
+        alt="Designer focused on laptop taking notes"
+      />
+    </div>
+    <p class="cs-caption">Dogfooding log — week 1. 47 friction points captured across 4 designers, surfacing problems no analytics dashboard would have caught.</p>
+  </div>
+
+  <article class="cs-body">
+    <div class="cs-steps">
+      <div class="cs-step">
+        <div class="cs-step__tag">
+          <span class="cs-step__tag-num">2</span>
+          Quantitative analysis
+        </div>
+        <h3>Mapping the actual drop-off funnel</h3>
+        <p>Once the PM and Data Analyst joined, we mapped the funnel across five stages: Discovery → Configuration → First fill → Review → Repeat use. The biggest cliffs were between Configuration → First fill (users abandoned mid-setup) and First fill → Repeat use (one-and-done behavior).</p>
+      </div>
+
+      <div class="cs-step">
+        <div class="cs-step__tag">
+          <span class="cs-step__tag-num">3</span>
+          User interviews
+        </div>
+        <h3>22 interviews across three segments</h3>
+        <p>We interviewed existing Notion AI subscribers, Notion users who hadn't bought AI, and prospects evaluating Notion against Coda and ClickUp. I ran the sessions remotely — asking people to set up an AI property in their own workspace while talking through what they expected. The screen-share format surfaced hesitation and confusion in real time.</p>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- Research image -->
+  <div class="cs-wide">
+    <div class="cs-wide__frame cs-wide__frame--medium">
+      <img
+        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=85"
+        alt="Remote user research session — team watching participant screen"
+      />
+    </div>
+    <p class="cs-caption">Remote research sessions — 22 interviews, 3 segments. Watching users set up AI properties in real workspaces surfaced hesitation analytics never would.</p>
+  </div>
+
+  <article class="cs-body">
+
+    <!-- Findings -->
+    <h2 class="cs-h2">What we found — three core frictions</h2>
+
+    <div class="cs-findings">
+      <div class="cs-finding">
+        <div class="cs-finding__tag">Finding 01</div>
+        <div class="cs-finding__title">Invisible state</div>
+        <p>When a user triggered an AI property, the cell showed a small spinner — or sometimes nothing at all if the row was off-screen. Users had no idea whether the AI was running, queued, failed, or done. Several testers refreshed the page mid-generation, killing the request.</p>
+        <div class="cs-quote">
+          <p class="cs-quote__text">"Did it work? I genuinely can't tell. Is it still doing it? I'll just… wait, I guess."</p>
+          <span class="cs-quote__attr">Prospect, 8 minutes into a 12-minute session</span>
+        </div>
+      </div>
+
+      <div class="cs-finding">
+        <div class="cs-finding__tag">Finding 02</div>
+        <div class="cs-finding__title">No mental model for "what is the AI looking at?"</div>
+        <p>AI properties pull from other properties in the same row — but the UI never told users that. When the AI returned something irrelevant or hallucinated, users blamed the AI itself rather than realising the source column was empty or wrong. Once a user got a bad output they couldn't explain, they stopped trusting the feature entirely. This was the trust killer.</p>
+      </div>
+
+      <div class="cs-finding">
+        <div class="cs-finding__tag">Finding 03</div>
+        <div class="cs-finding__title">Destructive-feeling actions with no safety net</div>
+        <p>The "Re-generate" button replaced the existing AI output instantly with no undo affordance. Users hovered, hesitated, and often didn't click — preferring to leave a bad output in place rather than risk losing it. Configuration changes had the same problem: editing the prompt silently invalidated every row in the database.</p>
+      </div>
+    </div>
+
+    <h3 class="cs-h3">And a few more issues we found along the way</h3>
+    <ul class="cs-also">
+      <li>AI properties were buried below 14 other property types in the picker, with no visual distinction.</li>
+      <li>The prompt configuration UI used the same modal as regular property settings — giving no signal that what you type here will run on every row.</li>
+      <li>Error states said "Something went wrong" with no information about what went wrong or whether to retry.</li>
+      <li>Translated outputs didn't indicate source language, so non-English users couldn't verify the AI understood the input.</li>
+    </ul>
+
+    <!-- Solution -->
+    <h2 class="cs-h2">So how did we solve it?</h2>
+
+    <h3 class="cs-h3">Design sprint — prioritising as a team</h3>
+    <p>I facilitated a two-day design sprint with the PM, EM, engineers, researcher, and data analyst. We mapped every friction point onto a 2×2 of user impact vs implementation cost and committed to a shared shortlist. From the workshop, we landed on four design bets.</p>
+
+    <ul class="cs-bets">
+      <li class="cs-bet">
+        <div class="cs-bet__num">1</div>
+        <div>
+          <div class="cs-bet__label">Make AI state legible</div>
+          <div class="cs-bet__desc">Clear, persistent indicators for generating, ready, stale, and failed states — at both the cell and column level.</div>
+        </div>
+      </li>
+      <li class="cs-bet">
+        <div class="cs-bet__num">2</div>
+        <div>
+          <div class="cs-bet__label">Show the AI its homework</div>
+          <div class="cs-bet__desc">Surface which source properties the AI is reading from, inline — as clickable pills that highlight the source columns.</div>
+        </div>
+      </li>
+      <li class="cs-bet">
+        <div class="cs-bet__num">3</div>
+        <div>
+          <div class="cs-bet__label">Protect the user from themselves</div>
+          <div class="cs-bet__desc">Non-destructive re-generation with version history. Previous output preserved as a one-tap undo.</div>
+        </div>
+      </li>
+      <li class="cs-bet">
+        <div class="cs-bet__num">4</div>
+        <div>
+          <div class="cs-bet__label">Differentiate AI properties visually</div>
+          <div class="cs-bet__desc">Give them their own affordance in the property picker and in the column header — distinct from the 14 other types.</div>
+        </div>
+      </li>
+    </ul>
+
+  </article>
+
+  <!-- Sprint image -->
+  <div class="cs-wide">
+    <div class="cs-wide__frame cs-wide__frame--medium">
+      <img
+        src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=2000&q=85"
+        alt="Design sprint whiteboard with sticky notes"
+      />
+    </div>
+    <p class="cs-caption">Two-day design sprint. Seven people, one 2×2, four design bets. The framing question: what does a user need to trust an AI output?</p>
+  </div>
+
+  <article class="cs-body">
+
+    <h3 class="cs-h3">Testing concepts with users</h3>
+    <p>I built four mid-fidelity prototypes — one per bet — and tested them with eight users across two rounds. Key learnings: the source-property pill was the single highest-impact change, immediately showing users why outputs were good or bad. Persistent column-level state indicators helped users see at a glance that "all 47 rows are up to date." And inline re-generate with side-by-side comparison made users willing to actually click the button for the first time.</p>
+
+    <!-- Final designs -->
+    <h2 class="cs-h2">Final designs and what we shipped</h2>
+
+    <div class="cs-result">
+      <div class="cs-result__header">
+        <h3>1. A new AI property picker</h3>
+        <div class="cs-result__stat">+62%</div>
+      </div>
+      <p>We grouped all AI property types into a dedicated section at the top of the picker, with a one-liner describing what each one does and an example output preview on hover. Before: AI Summary buried alphabetically between "Files" and "Last edited time." After: its own section, scannable in two seconds.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+62% increase in successful AI property creation from the picker — fewer users abandoning mid-setup.</p>
+    </div>
+
+  </article>
+
+  <!-- Picker image -->
+  <div class="cs-wide">
+    <div class="cs-wide__frame cs-wide__frame--medium">
+      <img
+        src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2000&q=85"
+        alt="Analytics interface showing property picker redesign context"
+      />
+    </div>
+    <p class="cs-caption">Before/after: the property picker. Moving AI properties to a dedicated section cut time-to-creation by over a third.</p>
+  </div>
+
+  <article class="cs-body">
+
+    <div class="cs-result">
+      <div class="cs-result__header">
+        <h3>2. Source-property pills</h3>
+        <div class="cs-result__stat">+34%</div>
+      </div>
+      <p>Every AI property column now shows, inline, which properties it reads from. Click the pill and the source columns highlight across the entire database. Users could finally understand why an output looked the way it did — and started editing source columns instead of deleting AI outputs.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+34% increase in AI output edit-and-keep rate versus delete-and-retry.</p>
+    </div>
+
+    <div class="cs-result">
+      <div class="cs-result__header">
+        <h3>3. State indicators at column level</h3>
+        <div class="cs-result__stat">−41%</div>
+      </div>
+      <p>A small status pill on the column header tells users: "47 of 47 ready," "12 generating," "3 stale — source changed," or "2 errors." Users no longer had to scroll every row to understand what the AI had done. At a glance: done, in progress, or broken.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">−41% drop in "is the AI broken?" support tickets in the quarter post-launch.</p>
+    </div>
+
+    <div class="cs-result">
+      <div class="cs-result__header">
+        <h3>4. Non-destructive re-generation</h3>
+        <div class="cs-result__stat">+78%</div>
+      </div>
+      <p>Re-generating now shows the new output side-by-side with the previous one. Users pick which to keep. Previous versions are stored for 7 days. The old one-click overwrite that scared users away from ever improving an output was gone — replaced with a simple comparison that felt safe.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+78% increase in re-generation clicks — users finally felt safe trying again.</p>
+    </div>
+
+    <!-- Results summary -->
+    <h2 class="cs-h2">Results</h2>
+    <p>Combining all the changes that shipped to General Availability in Q4 2023:</p>
+  </article>
+
+  <div class="cs-wide">
+    <div class="cs-wide__frame cs-wide__frame--medium">
+      <img
+        src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=2000&q=85"
+        alt="Laptop showing Notion interface in a clean workspace"
+      />
+    </div>
+  </div>
+
+  <article class="cs-body">
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat__num">+48<em>%</em></div>
+        <div class="cs-stat__label">Weekly active usage of AI properties</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat__num">2.3<em>×</em></div>
+        <div class="cs-stat__label">Retention at 30 days for AI-first-session users</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat__num">+62<em>%</em></div>
+        <div class="cs-stat__label">Successful AI property creation from the picker</div>
+      </div>
+    </div>
+    <div class="cs-stats" style="margin-top: 14px;">
+      <div class="cs-stat">
+        <div class="cs-stat__num">−41<em>%</em></div>
+        <div class="cs-stat__label">AI-related support tickets</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat__num">+34<em>%</em></div>
+        <div class="cs-stat__label">Edit-and-keep rate on AI outputs</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat__num">+78<em>%</em></div>
+        <div class="cs-stat__label">Re-generation clicks post-launch</div>
+      </div>
+    </div>
+
+    <!-- Quote -->
+    <div class="cs-pull">"Oh — now I get what it's doing. I was using this wrong the whole time and I didn't know."<br><span style="font-size: .55em; opacity: .55; letter-spacing: 0; font-style: normal;">Notion AI subscriber, 6 months into using the product</span></div>
+
+    <p>That quote, for me, summed up the whole project. The AI was always capable. We just hadn't shown users what it was doing or given them the controls to trust it.</p>
+
+    <!-- Reflections -->
+    <h2 class="cs-h2">Reflections</h2>
+    <p>A few things I took away from this project that I've carried into every AI design problem since:</p>
+
+    <ul class="cs-reflections">
+      <li class="cs-reflection">
+        <div class="cs-reflection__icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 5.5v3l2 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cs-reflection__title">AI usability is mostly about state and provenance</div>
+          <p class="cs-reflection__text">Users don't need to understand the model — they need to understand what it's reading, what it's doing right now, and how to undo it. Once those three things were legible, trust followed almost automatically.</p>
+        </div>
+      </li>
+      <li class="cs-reflection">
+        <div class="cs-reflection__icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2.5" y="4.5" width="11" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5.5 4.5V3a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cs-reflection__title">Dogfooding catches things analytics never will</div>
+          <p class="cs-reflection__text">The "is it broken or just slow?" problem was invisible in the funnel data. It only showed up when I sat with the feature for a week. You can't design for confusion you haven't experienced.</p>
+        </div>
+      </li>
+      <li class="cs-reflection">
+        <div class="cs-reflection__icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2l1.8 3.6L14 6.6l-3 2.9.7 4.1L8 11.5l-3.7 2.1.7-4.1L2 6.6l4.2-.8L8 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cs-reflection__title">Trust is the real metric</div>
+          <p class="cs-reflection__text">Adoption numbers were the headline, but the deeper win was that users started treating AI properties as a dependable part of their workflow — not a magic trick they tried once. Trust, once earned, compounds.</p>
+        </div>
+      </li>
+    </ul>
+
+  </article>
+
+  <!-- Next case -->
+  <section class="cs-next">
+    <div class="cs-next__inner">
+      <div>
+        <div class="cs-next__eyebrow">Next case study · 2023</div>
+        <h3 class="cs-next__title">Composer 2.0</h3>
+      </div>
+      <a class="cs-next__cta" href="case-study.html?slug=composer">
+        Continue
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script type="text/babel" src="navbar.jsx"></script>
+<script type="text/babel">
+/* global React, ReactDOM, Nav */
+const _hrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
+ReactDOM.createRoot(document.getElementById('snav-root')).render(
+  <Nav active="Case Studies" onChange={function(it) { window.location.href = _hrefs[it]; }} />
+);
+</script>
+</body>
+</html>
