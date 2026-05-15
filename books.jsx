@@ -27,7 +27,7 @@ const BOOKS = [
     note: "The six levers of persuasion.",
     tag: "Psychology",
     color: "peach",
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+    image: "images/book-covers/influence.jpg",
   },
   {
     id: "b2",
@@ -37,7 +37,7 @@ const BOOKS = [
     note: "Short, sharp, and genuinely uncomfortable.",
     tag: "Philosophy",
     color: "lilac",
-    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
+    image: "images/book-covers/101essays.jpg",
   },
   {
     id: "b3",
@@ -47,7 +47,7 @@ const BOOKS = [
     note: "The case for undistracted focus.",
     tag: "Productivity",
     color: "sky",
-    image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=800&q=80",
+    image: "images/book-covers/deepwork.jpg",
   },
   {
     id: "b4",
@@ -57,7 +57,7 @@ const BOOKS = [
     note: "How two allies misread each other for decades.",
     tag: "History",
     color: "sun",
-    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
+    image: "images/book-covers/magnificentdelusions.jpg",
   },
   {
     id: "b5",
@@ -67,7 +67,7 @@ const BOOKS = [
     note: "Philosophy with a hammer.",
     tag: "Philosophy",
     color: "sky",
-    image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
+    image: "images/book-covers/twilightoftheidols.jpg",
   },
   {
     id: "b6",
@@ -77,7 +77,7 @@ const BOOKS = [
     note: "Mental models from one of the sharpest minds alive.",
     tag: "Thinking",
     color: "lilac",
-    image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80",
+    image: "images/book-covers/charliesalmanak.jpg",
   },
 ];
 

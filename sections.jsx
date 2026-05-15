@@ -25,16 +25,15 @@ function AboutSection() {
 
         <div className="about-left">
           <h2 className="about-headline">
-            Design is how I think.<br />
-            Building is how I prove it.
+            Designing forward.<br />
+            One disruption at a time.
           </h2>
 
           <div className="about-bio">
-            <p>I grew up in a family where success usually meant becoming an engineer or a doctor. So for a long time, I followed the expected path and studied Computer Science and Data Science.</p>
-            <p>Along the way, I realized I was not only interested in how systems worked. I cared just as much about how people experienced them, where they felt stuck, and what made a product feel intuitive.</p>
-            <p>That curiosity is what pulled me into design. But what kept me going was building things and shipping them into the world.</p>
-            <p>I taught myself at night, freelanced while working part-time, and gradually built my way into product design. Along the way I shipped indie apps, made every kind of mistake — marketing, engineering, positioning — and learned more from those than anything else.</p>
-            <p>Today, I work as a Staff Product Designer at Miro, focused on Growth and AI. Most of my work is about helping powerful products feel easier to understand, easier to adopt, and more meaningful in people's daily workflows.</p>
+            <p>I started in graphic design — spending more hours than I'd like to admit inside Photoshop and Illustrator. Then AI tools showed up and started producing work that honestly looked better than mine. I can't blame the clients who switched. It was impressive. I just had to move on.</p>
+            <p>I moved into web design, spent over a year getting sharp at it, and eventually landed a UX role at a company. There I was mapping user journeys, running research, and somewhere along the way slipped into a product manager role too. I worked with developers, content writers, and designers — mostly figuring out how to make the product less confusing and the process less painful.</p>
+            <p>Then a friend showed me a site that generates UI screens from a single prompt. I still have complicated feelings about that site. But it did what every AI incursion before it did — pushed me to go deeper instead of wider. That's been the pattern: AI narrows the field, so I sharpen the edge I have left.</p>
+            <p>For the past year and a half I've been working at Dal as a product designer. I lead design, run UX research, and build AI chatbots and automated workflows into the product. If AI comes for that stack next, I've already decided: full-time comedian.</p>
           </div>
           <div className="about-actions">
             <a className="about-btn" href="#">
@@ -56,52 +55,44 @@ function AboutSection() {
         </div>
 
         <div className="about-right">
-          {/* Photo with rotation + accent ring */}
-          <div className="about-photo-wrap">
-            <div className="about-photo">
-              <img
-                src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=600&q=80"
-                alt="Ahmad Majid"
-              />
+          <div className="acard acard--photo">
+            <img src="images/heroimage.jpg" alt="Ahmad Majid" className="acard__img" />
+          </div>
+
+          <div className="acard acard--edu">
+            <div className="acard__eyebrow">Education</div>
+            <div className="acard__rows">
+              <div className="acard__row">
+                <span className="acard__name">Queen Mary, London</span>
+                <span className="acard__sub">BSc Computer Science</span>
+              </div>
+              <div className="acard__row">
+                <span className="acard__name">University of Twente</span>
+                <span className="acard__sub">MSc Interactive Technology</span>
+              </div>
+              <div className="acard__row">
+                <span className="acard__name">KTH Royal Institute of Technology</span>
+                <span className="acard__sub">MSc Human Computer Interaction</span>
+              </div>
             </div>
           </div>
 
-          <div className="about-edu">
-            <h3 className="about-edu__label">Education</h3>
-            <ul className="about-edu__list">
-              <li>
-                <div className="about-edu__stripe" style={{ background: 'var(--peach)' }} />
-                <div>
-                  <span className="about-edu__school">Queen Mary University of London</span>
-                  <span className="about-edu__degree">BSc Computer Science</span>
-                </div>
-              </li>
-              <li>
-                <div className="about-edu__stripe" style={{ background: 'var(--lilac)' }} />
-                <div>
-                  <span className="about-edu__school">University of Twente</span>
-                  <span className="about-edu__degree">MSc Interactive Technology</span>
-                </div>
-              </li>
-              <li>
-                <div className="about-edu__stripe" style={{ background: 'var(--sky)' }} />
-                <div>
-                  <span className="about-edu__school">KTH Royal Institute of Technology</span>
-                  <span className="about-edu__degree">MSc Human Computer Interaction</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* Currently */}
-          <div className="about-status">
-            <div className="about-status__label">Currently</div>
-            <ul className="about-status__list">
-              <li><span className="about-status__dot" style={{ background: '#6BD08A' }} />Open to advisory</li>
-              <li><span className="about-status__dot" style={{ background: 'var(--sky)' }} />Brooklyn, NY</li>
-              <li><span className="about-status__dot" style={{ background: 'var(--peach)' }} />Reading: Range</li>
-              <li><span className="about-status__dot" style={{ background: 'var(--lilac)' }} />Listening: HAIM</li>
-            </ul>
+          <div className="acard acard--exp">
+            <div className="acard__eyebrow">Experience</div>
+            <div className="acard__rows">
+              <div className="acard__row">
+                <span className="acard__name">Dal</span>
+                <span className="acard__sub">Product Designer · 2024 – Now</span>
+              </div>
+              <div className="acard__row">
+                <span className="acard__name">Asana</span>
+                <span className="acard__sub">Embedded Product Designer · 2024</span>
+              </div>
+              <div className="acard__row">
+                <span className="acard__name">Notion</span>
+                <span className="acard__sub">Embedded Product Designer · 2023</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -113,6 +104,29 @@ function AboutSection() {
 // ---------- Work section ----------
 const WORK = [
   {
+    slug: "dal-ayn",
+    year: "2024",
+    company: "Dal",
+    role: "Product Designer",
+    title: "Building Ayn — from zero",
+    blurb: "Leading the design on an all-in-one KYC and compliance platform, turning one of the most complex regulatory workflows into something ops teams could handle confidently.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
+    accent: "#4C7CDA",
+    locked: true,
+    href: "dal-ayn.html",
+  },
+  {
+    slug: "asana-timeline",
+    year: "2024",
+    company: "Asana",
+    role: "Embedded Product Designer",
+    title: "Redesigning the Project Timeline",
+    blurb: "Turning Asana's most powerful planning view into something teams actually opened on Monday morning — not just during quarterly planning panics.",
+    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=1400&q=80",
+    accent: "#E8634A",
+    href: "asana-timeline.html",
+  },
+  {
     slug: "notion-ai",
     year: "2023",
     company: "Notion",
@@ -122,57 +136,6 @@ const WORK = [
     image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1400&q=80",
     accent: "#9B8DE8",
     href: "notion-ai.html",
-  },
-  {
-    slug: "miro-ai",
-    year: "2025",
-    company: "Miro",
-    role: "Staff Product Designer",
-    title: "AI-first Miro",
-    blurb: "Redesigned how work begins in Miro, turning the blank-board moment into an AI-guided starting point for faster collaboration with AI.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
-    accent: "#F4D24A",
-    locked: true,
-  },
-  {
-    slug: "miro-templates",
-    year: "2024",
-    company: "Miro",
-    role: "Senior Product Designer",
-    title: "Templates, reborn",
-    blurb: "Rethought the template gallery as a personal recommendation engine — surfaced the right starting point in two clicks instead of twelve.",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1400&q=80",
-    accent: "#9B8DE8",
-  },
-  {
-    slug: "composer",
-    year: "2023",
-    company: "Holloway",
-    role: "Product Design Lead",
-    title: "Composer 2.0",
-    blurb: "Led the redesign of Holloway's writing workspace used by 40k+ teams. Owned the design system, motion language, and onboarding from zero.",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
-    accent: "#F4A26B",
-  },
-  {
-    slug: "logistics",
-    year: "2022",
-    company: "Northwind",
-    role: "Senior Designer",
-    title: "Logistics OS",
-    blurb: "The dispatch console that moves 11M packages a week. Field-shadowed 22 dispatchers across three depots before a pixel was drawn.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1400&q=80",
-    accent: "#5FA8C4",
-  },
-  {
-    slug: "atlas",
-    year: "2021",
-    company: "Holloway",
-    role: "Senior Designer",
-    title: "Atlas, the design system",
-    blurb: "Stood up Holloway's first cross-platform design system. 240 components, two themes, a token pipeline that survived three rebrands.",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1400&q=80",
-    accent: "#86C5A4",
   },
 ];
 
@@ -287,10 +250,16 @@ function LockedGate({ slug, onClose }) {
     el.classList.add('is-wrong');
   }
 
+  const GATE_CONFIG = {
+    'miro-ai':  { password: 'Miroxahmad2025', href: 'case-study.html?slug=miro-ai' },
+    'dal-ayn':  { password: 'dalxahmad2026',  href: 'dal-ayn.html' },
+  };
+
   function tryUnlock() {
-    if (val === 'Miroxahmad2025') {
+    const cfg = GATE_CONFIG[slug];
+    if (cfg && val === cfg.password) {
       setSuccess(true);
-      setTimeout(() => { window.location.href = 'case-study.html?slug=' + slug; }, 560);
+      setTimeout(() => { window.location.href = cfg.href; }, 560);
     } else {
       setErr(true);
       shake();
@@ -365,7 +334,6 @@ function WorkSection() {
           <div className="work-head">
             <div>
               <h2 className="slab__h2">Some recent work</h2>
-              <div className="slab__sub">(from full-time jobs)</div>
             </div>
             <a href="work.html" className="ghost-link">
               See all case studies
@@ -578,56 +546,45 @@ const sectionsCss = `
 }
 .about-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0,0,0,.22); }
 
-/* Photo — tilted with accent ring behind */
-.about-photo-wrap {
-  position: relative;
-  width: 220px; margin-bottom: 32px;
-  transform: rotate(3.5deg);
-  transition: transform .5s cubic-bezier(.2,.8,.2,1);
+/* Playful stacked cards — about right column */
+.acard {
+  border-radius: 22px;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
 }
-.about-photo-wrap:hover { transform: rotate(-1deg) scale(1.04); }
-.about-photo-wrap::before {
-  content: "";
-  position: absolute; inset: -12px; border-radius: 50%;
-  background: var(--peach); opacity: .22;
+.acard:hover {
+  transform: rotate(0deg) translateY(-5px) !important;
+  box-shadow: 0 24px 48px -18px rgba(20,40,30,.22);
 }
-.about-photo {
-  width: 220px; height: 220px; border-radius: 50%; overflow: hidden;
-  box-shadow: 0 16px 32px -12px rgba(20,40,30,.22), 0 0 0 1px rgba(0,0,0,.06);
-  position: relative; z-index: 1;
+.acard--photo {
+  overflow: hidden;
+  transform: rotate(2.5deg);
+  box-shadow: 0 14px 32px -12px rgba(20,40,30,.24);
 }
-.about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Education — stripe indicators */
-.about-edu__label {
-  margin: 0 0 8px; font-size: 15px; font-weight: 700;
-  color: var(--ink); letter-spacing: -0.01em;
+.acard__img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.acard--edu {
+  background: rgba(248,196,149,.32);
+  padding: 24px 26px;
+  transform: rotate(-1.8deg);
 }
-.about-edu__list { list-style: none; padding: 0; margin: 0; }
-.about-edu__list li {
-  display: flex; gap: 14px; align-items: start;
-  padding: 14px 0; border-top: 1px solid rgba(20,40,30,.10);
+.acard--exp {
+  background: rgba(184,219,236,.38);
+  padding: 24px 26px;
+  transform: rotate(1.2deg);
 }
-.about-edu__stripe {
-  width: 3px; flex-shrink: 0; align-self: stretch;
-  min-height: 34px; border-radius: 2px;
-}
-.about-edu__school { display: block; font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -0.005em; }
-.about-edu__degree { display: block; font-size: 13px; font-weight: 500; color: var(--ink); opacity: .6; margin-top: 3px; }
-
-/* Currently status */
-.about-status { margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(20,40,30,.10); }
-.about-status__label {
+.acard__eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: .10em; text-transform: uppercase;
-  color: var(--ink); opacity: .38; margin-bottom: 12px;
+  font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ink); opacity: .4; font-weight: 600;
+  margin-bottom: 14px;
 }
-.about-status__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
-.about-status__list li {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 14px; font-weight: 500; color: var(--ink); opacity: .7;
+.acard__rows { display: flex; flex-direction: column; }
+.acard__row {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 11px 0; border-top: 1px solid rgba(20,40,30,.09);
 }
-.about-status__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.acard__row:first-child { border-top: 0; padding-top: 0; }
+.acard__name { font-weight: 700; font-size: 14px; color: var(--ink); letter-spacing: -0.01em; }
+.acard__sub { font-size: 12.5px; font-weight: 500; color: var(--ink); opacity: .52; }
 
 .dark-cta {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1059,8 +1016,7 @@ const sectionsCss = `
 
 @media (max-width: 880px) {
   .about-layout { grid-template-columns: 1fr; }
-  .about-photo-wrap { width: 180px; }
-  .about-photo { width: 180px; height: 180px; }
+
   .work-card { grid-template-columns: 1fr; gap: 18px; }
   .work-card__visual { aspect-ratio: 16/8; }
   .side-row { grid-template-columns: 24px 1fr 32px; }

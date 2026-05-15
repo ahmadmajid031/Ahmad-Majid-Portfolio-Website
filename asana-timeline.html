@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Redesigning Notion AI in Databases · Ahmad Majid</title>
+<title>Redesigning the Project Timeline · Ahmad Majid</title>
 <link rel="icon" type="image/png" href="Images/favicon.png">
 <style>
   @view-transition { navigation: auto; }
@@ -25,7 +25,7 @@
     --ink:      #163A2E;
     --pill-dark:#15140F;
     --line:     rgba(20,40,30,.12);
-    --accent:   #9B8DE8;
+    --accent:   #E8634A;
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -71,6 +71,8 @@
     font-weight: 500;
     color: var(--ink); opacity: .78;
   }
+
+  /* Meta cards */
   .cs-meta {
     margin: 48px 0 0;
     display: grid;
@@ -84,7 +86,7 @@
     transition: transform .2s ease;
   }
   .cs-meta__cell:hover { transform: translateY(-3px) rotate(.4deg); }
-  .cs-meta__cell:nth-child(1) { background: rgba(248,196,149,.28); }
+  .cs-meta__cell:nth-child(1) { background: rgba(232,99,74,.14); }
   .cs-meta__cell:nth-child(2) { background: rgba(184,219,236,.32); }
   .cs-meta__cell:nth-child(3) { background: rgba(199,194,240,.30); }
   .cs-meta__cell:nth-child(4) { background: rgba(248,228,90,.22); }
@@ -182,7 +184,7 @@
     line-height: 1.4;
   }
 
-  /* Wide image (breaks out) */
+  /* Wide image */
   .cs-wide {
     max-width: 1320px; margin: 56px auto;
     padding: 0 clamp(20px, 4vw, 56px);
@@ -247,7 +249,7 @@
     position: relative;
     overflow: hidden;
   }
-  .cs-finding--01 { background: rgba(248,196,149,.24); }
+  .cs-finding--01 { background: rgba(232,99,74,.14); }
   .cs-finding--02 { background: rgba(184,219,236,.30); }
   .cs-finding--03 { background: rgba(199,194,240,.28); }
   .cs-finding__ghost {
@@ -280,7 +282,7 @@
   .cs-quote {
     margin: 24px 0 8px;
     padding: 16px 16px 16px 18px;
-    background: rgba(155,141,232,.08);
+    background: rgba(232,99,74,.08);
     border-left: 3px solid var(--accent);
     border-radius: 0 10px 10px 0;
   }
@@ -334,7 +336,7 @@
   .cs-bet__label { font-weight: 700; font-size: 15px; margin: 0 0 3px; color: var(--ink); }
   .cs-bet__desc { font-size: 14px; opacity: .68; font-weight: 500; margin: 0; line-height: 1.5; }
 
-  /* Result entries (per shipped change) */
+  /* Result entries */
   .cs-result {
     padding: 40px 0;
     border-top: 1px solid var(--line);
@@ -434,27 +436,27 @@
   <section class="cs-hero">
     <div class="cs-eyebrow">
       <span class="cs-eyebrow__dot"></span>
-      <span>Notion · Case study · 2023</span>
+      <span>Asana · Case study · 2024</span>
     </div>
-    <h1 class="cs-title">Redesigning AI <em>in Databases</em></h1>
-    <p class="cs-deck">Bringing trust, clarity, and control to AI-powered properties — making one of Notion's most powerful features something teams could actually adopt without a learning curve.</p>
+    <h1 class="cs-title">Redesigning the Project <em>Timeline</em></h1>
+    <p class="cs-deck">Turning Asana's most powerful planning view into something teams actually opened on Monday morning — not just during quarterly planning panics.</p>
 
     <div class="cs-meta">
       <div class="cs-meta__cell">
         <div class="cs-meta__label">My role</div>
-        <div class="cs-meta__val">Product design, UX research, interaction design, design systems</div>
+        <div class="cs-meta__val">Product design, UX research, interaction design, prototyping</div>
       </div>
       <div class="cs-meta__cell">
         <div class="cs-meta__label">Team</div>
-        <div class="cs-meta__val">1 PM · 1 EM · 2 FE engineers · 1 BE engineer · 1 researcher · 1 analyst</div>
+        <div class="cs-meta__val">1 PM · 1 EM · 3 FE engineers · 1 BE engineer · 1 researcher</div>
       </div>
       <div class="cs-meta__cell">
         <div class="cs-meta__label">Timeline</div>
-        <div class="cs-meta__val">2023 Q2 – Q4 (~5 months)</div>
+        <div class="cs-meta__val">2024 Q1 – Q2 (~3 months)</div>
       </div>
       <div class="cs-meta__cell">
         <div class="cs-meta__label">Context</div>
-        <div class="cs-meta__val">Embedded designer via agency, owning the AI-in-databases workstream end to end</div>
+        <div class="cs-meta__val">Embedded designer via agency, owning the Timeline view redesign end to end</div>
       </div>
     </div>
   </section>
@@ -463,8 +465,8 @@
   <section class="cs-cover">
     <div class="cs-cover__frame">
       <img
-        src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=2400&q=85"
-        alt="Designer workspace with screens showing database UI"
+        src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=2400&q=85"
+        alt="Project planning workspace with Gantt-style chart on screen"
       />
     </div>
   </section>
@@ -475,38 +477,38 @@
     <!-- Impact strip -->
     <div class="cs-stats">
       <div class="cs-stat">
-        <div class="cs-stat__num">+48<em>%</em></div>
-        <div class="cs-stat__label">Weekly active usage of AI properties after GA rollout</div>
+        <div class="cs-stat__num">+53<em>%</em></div>
+        <div class="cs-stat__label">Weekly active usage of Timeline view after rollout</div>
       </div>
       <div class="cs-stat">
-        <div class="cs-stat__num">2.3<em>×</em></div>
-        <div class="cs-stat__label">Retention at 30 days for users who interacted with AI in first session</div>
+        <div class="cs-stat__num">1.9<em>×</em></div>
+        <div class="cs-stat__label">Retention at 30 days for users who opened Timeline in their first project</div>
       </div>
       <div class="cs-stat">
-        <div class="cs-stat__num">−41<em>%</em></div>
-        <div class="cs-stat__label">AI-related support tickets in the quarter post-launch</div>
+        <div class="cs-stat__num">−37<em>%</em></div>
+        <div class="cs-stat__label">Timeline-related support tickets in the quarter post-launch</div>
       </div>
     </div>
 
     <!-- Context -->
-    <h2 class="cs-h2">Why we started redesigning AI in databases</h2>
-    <p>By mid-2023, Notion AI had been generally available for a few months. Adoption of the writing assistant inside pages was strong — but the data told a different story for AI inside databases.</p>
-    <p>AI properties (AI Summary, AI Translation, AI Custom Autofill, etc.) had high first-use numbers and a steep drop-off after that. Many users tried it once, got a confusing result or didn't understand what just happened, and never came back.</p>
-    <p>That mattered. AI in databases was the surface where Notion's AI bet really showed its value — turning a workspace into something that could think across hundreds of rows, not just help write one paragraph. If users couldn't get past the first awkward interaction, the broader AI story was in trouble.</p>
+    <h2 class="cs-h2">Why we started redesigning the Timeline</h2>
+    <p>By early 2024, Asana's Timeline view had been around for years — a Gantt-style planning surface meant to be the home base for project managers. On paper, it was one of the most differentiated views in the product. In reality, it was one of the least used.</p>
+    <p>List view dominated. Board view came second. Timeline sat in fourth place behind Calendar, despite being the view most aligned with how project managers said they thought about their work. Most teams created a Timeline once during project setup, looked at it for thirty seconds, and never opened it again.</p>
+    <p>That mattered. Timeline was the surface where Asana's promise — "see how the work connects" — was supposed to come alive. If users couldn't get value from it in the first session, the whole story about dependencies, critical paths, and cross-team coordination collapsed back into a flat list of tasks.</p>
 
-    <div class="cs-pull">Internal data showed a 67% drop between first AI property creation and the second use within 14 days.</div>
+    <div class="cs-pull">Internal data showed a 71% drop between first Timeline open and the second open within 14 days.</div>
 
   </article>
 
-  <!-- Wide: office/workspace image -->
+  <!-- Wide: workspace image -->
   <div class="cs-wide">
     <div class="cs-wide__frame cs-wide__frame--tall">
       <img
         src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=2000&q=85"
-        alt="Collaborative workspace overview"
+        alt="Team workspace with multiple screens showing project management tools"
       />
     </div>
-    <p class="cs-caption">The workstream kicked off in April 2023. I joined Notion's team as an embedded designer through a partner agency.</p>
+    <p class="cs-caption">The workstream kicked off in January 2024. I joined Asana's team as an embedded designer through a partner agency.</p>
   </div>
 
   <article class="cs-body">
@@ -521,8 +523,8 @@
           Dogfooding
         </div>
         <h3>Living inside the feature for a week</h3>
-        <p>Before opening Figma, I spent a full week using AI properties for real work. I rebuilt my own task tracker, a content calendar, and a research database — all with AI properties doing real jobs: summarizing meeting notes, translating Arabic content, categorizing tickets.</p>
-        <p>I kept a running log of every moment I got confused, frustrated, or surprised. I shared a Notion page with the Notion design team and asked three other designers to do the same. By the end of the week we'd captured 47 friction points across four designers.</p>
+        <p>Before opening Figma, I spent a full week running real projects in Timeline view. I set up a content production schedule, a hiring pipeline with dependencies, and a marketing launch plan with three workstreams converging on one date. I forced myself to plan, replan, and report from Timeline only — no falling back to List.</p>
+        <p>I kept a running log of every moment I got stuck, lost context, or had to leave Timeline to do something basic. By the end of the week I'd captured 39 friction points. I shared the doc with two other designers on the Asana team and asked them to do the same.</p>
       </div>
     </div>
 
@@ -533,10 +535,10 @@
     <div class="cs-wide__frame cs-wide__frame--medium">
       <img
         src="https://images.unsplash.com/photo-1484807352052-23338990c6c6?auto=format&fit=crop&w=2000&q=85"
-        alt="Designer focused on laptop taking notes"
+        alt="Designer focused on laptop with project timeline on screen"
       />
     </div>
-    <p class="cs-caption">Dogfooding log — week 1. 47 friction points captured across 4 designers, surfacing problems no analytics dashboard would have caught.</p>
+    <p class="cs-caption">Dogfooding log — week 1. 39 friction points captured across 3 designers, including problems no analytics dashboard would have caught: how often you scroll horizontally, how often you lose your place, how often you give up and switch back to List.</p>
   </div>
 
   <article class="cs-body">
@@ -547,7 +549,7 @@
           Quantitative analysis
         </div>
         <h3>Mapping the actual drop-off funnel</h3>
-        <p>Once the PM and Data Analyst joined, we mapped the funnel across five stages: Discovery → Configuration → First fill → Review → Repeat use. The biggest cliffs were between Configuration → First fill (users abandoned mid-setup) and First fill → Repeat use (one-and-done behavior).</p>
+        <p>Working with the PM and researcher, we mapped Timeline usage across five stages: Discovery → First open → First edit → Dependency creation → Repeat use. The biggest cliffs were between First open → First edit (users looked, but didn't touch) and First edit → Dependency creation (users moved bars around but never connected them, missing the whole point of the view).</p>
       </div>
 
       <div class="cs-step">
@@ -555,8 +557,8 @@
           <span class="cs-step__tag-num">3</span>
           User interviews
         </div>
-        <h3>22 interviews across three segments</h3>
-        <p>We interviewed existing Notion AI subscribers, Notion users who hadn't bought AI, and prospects evaluating Notion against Coda and ClickUp. I ran the sessions remotely — asking people to set up an AI property in their own workspace while talking through what they expected. The screen-share format surfaced hesitation and confusion in real time.</p>
+        <h3>18 sessions across three segments</h3>
+        <p>We interviewed active Timeline users, Asana users who stuck with List view, and project managers evaluating Asana against Monday and ClickUp. I ran sessions remotely and asked people to open one of their real projects in Timeline and walk me through what they were looking at. The "walk me through what you see" framing surfaced something important: most users couldn't read their own Timeline. They knew tasks were there, but couldn't tell what was on track, what was at risk, or what was blocking what.</p>
       </div>
     </div>
 
@@ -567,10 +569,10 @@
     <div class="cs-wide__frame cs-wide__frame--medium">
       <img
         src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=85"
-        alt="Remote user research session — team watching participant screen"
+        alt="Remote research session with project manager walking through their timeline"
       />
     </div>
-    <p class="cs-caption">Remote research sessions — 22 interviews, 3 segments. Watching users set up AI properties in real workspaces surfaced hesitation analytics never would.</p>
+    <p class="cs-caption">Remote research sessions — 18 interviews, 3 segments. Watching project managers try to read their own Timelines was the turning point. The problem wasn't features. It was legibility.</p>
   </div>
 
   <article class="cs-body">
@@ -582,70 +584,72 @@
       <div class="cs-finding cs-finding--01">
         <div class="cs-finding__ghost">01</div>
         <div class="cs-finding__tag">Finding 01</div>
-        <div class="cs-finding__title">Invisible state</div>
-        <p>When a user triggered an AI property, the cell showed a small spinner — or sometimes nothing at all if the row was off-screen. Users had no idea whether the AI was running, queued, failed, or done. Several testers refreshed the page mid-generation, killing the request.</p>
+        <div class="cs-finding__title">Visual noise without hierarchy</div>
+        <p>Every task bar looked the same. A two-hour design review and a six-week engineering build had identical visual weight. Color was tied to assignee or custom field — which meant a Timeline with 80 tasks looked like a confetti explosion. Users couldn't scan it. They had to read every bar to understand anything.</p>
         <div class="cs-quote">
-          <p class="cs-quote__text">"Did it work? I genuinely can't tell. Is it still doing it? I'll just… wait, I guess."</p>
-          <span class="cs-quote__attr">Prospect, 8 minutes into a 12-minute session</span>
+          <p class="cs-quote__text">"I open this and my eyes just… slide off. I don't know where to start looking."</p>
+          <span class="cs-quote__attr">Project manager, 4 minutes into a 15-minute session</span>
         </div>
       </div>
 
       <div class="cs-finding cs-finding--02">
         <div class="cs-finding__ghost">02</div>
         <div class="cs-finding__tag">Finding 02</div>
-        <div class="cs-finding__title">No mental model for "what is the AI looking at?"</div>
-        <p>AI properties pull from other properties in the same row — but the UI never told users that. When the AI returned something irrelevant or hallucinated, users blamed the AI itself rather than realising the source column was empty or wrong. Once a user got a bad output they couldn't explain, they stopped trusting the feature entirely. This was the trust killer.</p>
+        <div class="cs-finding__title">Dependencies were invisible until you knew to look for them</div>
+        <p>Dependencies in Timeline showed as thin gray arrows between bars. On a dense project, the arrows disappeared into the background. Worse — there was no way to see just the critical path. Users either saw every dependency as visual clutter, or none at all. The single most valuable thing Timeline could tell you — "if this task slips, here's what else slips" — was buried.</p>
+        <p>This was the trust killer. Once a deadline slipped because a user missed a dependency Timeline technically showed them, they stopped trusting the view to surface what mattered.</p>
       </div>
 
       <div class="cs-finding cs-finding--03">
         <div class="cs-finding__ghost">03</div>
         <div class="cs-finding__tag">Finding 03</div>
-        <div class="cs-finding__title">Destructive-feeling actions with no safety net</div>
-        <p>The "Re-generate" button replaced the existing AI output instantly with no undo affordance. Users hovered, hesitated, and often didn't click — preferring to leave a bad output in place rather than risk losing it. Configuration changes had the same problem: editing the prompt silently invalidated every row in the database.</p>
+        <div class="cs-finding__title">Editing felt destructive</div>
+        <p>Dragging a task bar to extend its duration silently shifted every dependent task downstream. No preview. No "this will affect 8 other tasks" warning. Users dragged once by accident, broke their plan, hit undo, and never dragged again. Most editing happened back in the task detail panel — defeating the purpose of a draggable Timeline.</p>
       </div>
     </div>
 
     <h3 class="cs-h3">And a few more issues we found along the way</h3>
     <ul class="cs-also">
-      <li>AI properties were buried below 14 other property types in the picker, with no visual distinction.</li>
-      <li>The prompt configuration UI used the same modal as regular property settings — giving no signal that what you type here will run on every row.</li>
-      <li>Error states said "Something went wrong" with no information about what went wrong or whether to retry.</li>
-      <li>Translated outputs didn't indicate source language, so non-English users couldn't verify the AI understood the input.</li>
+      <li>Timeline had no concept of "today" beyond a thin vertical line — users lost their place constantly when scrolling.</li>
+      <li>Zoom levels (day/week/month/quarter) reset every time you switched views, forcing users to re-zoom on every visit.</li>
+      <li>Milestones looked almost identical to regular tasks despite being conceptually different.</li>
+      <li>There was no way to collapse a section or workstream — large projects became a wall of bars with no way to focus.</li>
+      <li>Filtering existed but lived three clicks deep in a menu most users never opened.</li>
     </ul>
 
     <!-- Solution -->
     <h2 class="cs-h2">So how did we solve it?</h2>
 
     <h3 class="cs-h3">Design sprint — prioritising as a team</h3>
-    <p>I facilitated a two-day design sprint with the PM, EM, engineers, researcher, and data analyst. We mapped every friction point onto a 2×2 of user impact vs implementation cost and committed to a shared shortlist. From the workshop, we landed on four design bets.</p>
+    <p>I facilitated a two-day design sprint with the PM, EM, engineers, and researcher. We mapped every friction point onto a 2×2 of user impact vs implementation cost and committed to a shared shortlist. From the workshop, we landed on four design bets.</p>
 
     <ul class="cs-bets">
       <li class="cs-bet">
         <div class="cs-bet__num">1</div>
         <div>
-          <div class="cs-bet__label">Make AI state legible</div>
-          <div class="cs-bet__desc">Clear, persistent indicators for generating, ready, stale, and failed states — at both the cell and column level.</div>
+          <div class="cs-bet__label">Build visual hierarchy into the bars themselves</div>
+          <div class="cs-bet__desc">Differentiate task types, milestones, and parent rollups visually. Make status — on track, at risk, blocked, done — the primary signal, not assignee color.</div>
         </div>
       </li>
       <li class="cs-bet">
         <div class="cs-bet__num">2</div>
         <div>
-          <div class="cs-bet__label">Show the AI its homework</div>
-          <div class="cs-bet__desc">Surface which source properties the AI is reading from, inline — as clickable pills that highlight the source columns.</div>
+          <div class="cs-bet__label">Make dependencies and the critical path first-class</div>
+          <div class="cs-bet__desc">Surface the critical path as a togglable layer with strong visual treatment. Let users isolate "what depends on this task" with one click.</div>
         </div>
       </li>
       <li class="cs-bet">
         <div class="cs-bet__num">3</div>
         <div>
           <div class="cs-bet__label">Protect the user from themselves</div>
-          <div class="cs-bet__desc">Non-destructive re-generation with version history. Previous output preserved as a one-tap undo.</div>
+          <div class="cs-bet__desc">Drag-to-reschedule shows a live preview of every affected downstream task before commit. Undo is one keystroke and visible.</div>
         </div>
       </li>
       <li class="cs-bet">
         <div class="cs-bet__num">4</div>
         <div>
-          <div class="cs-bet__label">Differentiate AI properties visually</div>
-          <div class="cs-bet__desc">Give them their own affordance in the property picker and in the column header — distinct from the 14 other types.</div>
+          <div class="cs-bet__label">Give the Timeline a sense of place</div>
+          <div class="cs-bet__desc">Sticky "today" indicator, persistent zoom level per project, collapsible swimlanes, and inline filtering at the top of the view.</div>
         </div>
       </li>
     </ul>
@@ -657,81 +661,81 @@
     <div class="cs-wide__frame cs-wide__frame--medium">
       <img
         src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=2000&q=85"
-        alt="Design sprint whiteboard with sticky notes"
+        alt="Design sprint whiteboard with sticky notes and 2x2 prioritisation grid"
       />
     </div>
-    <p class="cs-caption">Two-day design sprint. Seven people, one 2×2, four design bets. The framing question: what does a user need to trust an AI output?</p>
+    <p class="cs-caption">Two-day design sprint. Six people, one 2×2, four design bets. The framing question: what does a project manager need to read a Timeline in under ten seconds?</p>
   </div>
 
   <article class="cs-body">
 
     <h3 class="cs-h3">Testing concepts with users</h3>
-    <p>I built four mid-fidelity prototypes — one per bet — and tested them with eight users across two rounds. Key learnings: the source-property pill was the single highest-impact change, immediately showing users why outputs were good or bad. Persistent column-level state indicators helped users see at a glance that "all 47 rows are up to date." And inline re-generate with side-by-side comparison made users willing to actually click the button for the first time.</p>
+    <p>I built four mid-fidelity prototypes — one per bet — and tested them with seven users across two rounds. Key learnings: the critical-path toggle was the single highest-impact change, with every tester saying "I would actually use this on Monday." The drag preview made users willing to edit directly on the bars for the first time. The status-driven color system turned 80-task projects from confetti into something readable in seconds.</p>
 
     <!-- Final designs -->
     <h2 class="cs-h2">Final designs and what we shipped</h2>
 
     <div class="cs-result">
       <div class="cs-result__header">
-        <h3>1. A new AI property picker</h3>
-        <div class="cs-result__stat">+62%</div>
+        <h3>1. A new visual language for task bars</h3>
+        <div class="cs-result__stat">+44%</div>
       </div>
-      <p>We grouped all AI property types into a dedicated section at the top of the picker, with a one-liner describing what each one does and an example output preview on hover. Before: AI Summary buried alphabetically between "Files" and "Last edited time." After: its own section, scannable in two seconds.</p>
-      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+62% increase in successful AI property creation from the picker — fewer users abandoning mid-setup.</p>
+      <p>We rebuilt the bar system around status as the primary signal. On track is a calm blue, at risk is amber, blocked is red, done is a muted fill with a checkmark. Milestones became diamond markers anchored to a date rather than spanning bars. Parent tasks rolled up child status visually — a parent bar with three at-risk children shows an amber edge.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+44% increase in users correctly identifying at-risk work within 10 seconds of opening Timeline, measured in usability testing.</p>
     </div>
 
   </article>
 
-  <!-- Picker image -->
+  <!-- Before/after image -->
   <div class="cs-wide">
     <div class="cs-wide__frame cs-wide__frame--medium">
       <img
         src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2000&q=85"
-        alt="Analytics interface showing property picker redesign context"
+        alt="Before and after: project timeline bar system showing status-driven color"
       />
     </div>
-    <p class="cs-caption">Before/after: the property picker. Moving AI properties to a dedicated section cut time-to-creation by over a third.</p>
+    <p class="cs-caption">Before/after: the task bar system. Status-driven color replaced assignee-driven color as the primary visual signal. Project managers could finally scan.</p>
   </div>
 
   <article class="cs-body">
 
     <div class="cs-result">
       <div class="cs-result__header">
-        <h3>2. Source-property pills</h3>
-        <div class="cs-result__stat">+34%</div>
+        <h3>2. Critical path as a first-class layer</h3>
+        <div class="cs-result__stat">+58%</div>
       </div>
-      <p>Every AI property column now shows, inline, which properties it reads from. Click the pill and the source columns highlight across the entire database. Users could finally understand why an output looked the way it did — and started editing source columns instead of deleting AI outputs.</p>
-      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+34% increase in AI output edit-and-keep rate versus delete-and-retry.</p>
+      <p>A toggle in the Timeline header lights up the critical path — every task whose slip would push the project end date. Non-critical tasks fade back. Click any task and "show what depends on this" highlights the downstream chain. Dependencies got thicker, color-coded by status, and routed around bars instead of through them.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+58% increase in dependency creation per project — users started building real dependency networks instead of flat task lists.</p>
     </div>
 
     <div class="cs-result">
       <div class="cs-result__header">
-        <h3>3. State indicators at column level</h3>
-        <div class="cs-result__stat">−41%</div>
+        <h3>3. Drag with preview</h3>
+        <div class="cs-result__stat">+81%</div>
       </div>
-      <p>A small status pill on the column header tells users: "47 of 47 ready," "12 generating," "3 stale — source changed," or "2 errors." Users no longer had to scroll every row to understand what the AI had done. At a glance: done, in progress, or broken.</p>
-      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">−41% drop in "is the AI broken?" support tickets in the quarter post-launch.</p>
+      <p>Dragging a bar now shows a ghosted preview of every downstream task that will move, with a count: "This will reschedule 8 tasks." Users commit or cancel. Undo is one keystroke and a toast confirms what was reverted. The old silent cascade was gone.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+81% increase in direct-on-Timeline edits — users finally trusted the drag handle.</p>
     </div>
 
     <div class="cs-result">
       <div class="cs-result__header">
-        <h3>4. Non-destructive re-generation</h3>
-        <div class="cs-result__stat">+78%</div>
+        <h3>4. A Timeline that remembers where you were</h3>
+        <div class="cs-result__stat">−37%</div>
       </div>
-      <p>Re-generating now shows the new output side-by-side with the previous one. Users pick which to keep. Previous versions are stored for 7 days. The old one-click overwrite that scared users away from ever improving an output was gone — replaced with a simple comparison that felt safe.</p>
-      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">+78% increase in re-generation clicks — users finally felt safe trying again.</p>
+      <p>Sticky "today" marker that follows you as you scroll. Zoom level persists per project. Swimlanes collapse and stay collapsed. Filters moved to a visible bar at the top of the view, with active filters shown as chips.</p>
+      <p style="margin-top: 10px; font-size: 14px; opacity: .55; font-weight: 500;">−37% drop in Timeline-related support tickets in the quarter post-launch.</p>
     </div>
 
     <!-- Results summary -->
     <h2 class="cs-h2">Results</h2>
-    <p>Combining all the changes that shipped to General Availability in Q4 2023:</p>
+    <p>Combining all the changes that shipped in Q2 2024:</p>
   </article>
 
   <div class="cs-wide">
     <div class="cs-wide__frame cs-wide__frame--medium">
       <img
         src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=2000&q=85"
-        alt="Laptop showing Notion interface in a clean workspace"
+        alt="Laptop showing project management interface in a clean workspace"
       />
     </div>
   </div>
@@ -739,62 +743,62 @@
   <article class="cs-body">
     <div class="cs-stats">
       <div class="cs-stat">
-        <div class="cs-stat__num">+48<em>%</em></div>
-        <div class="cs-stat__label">Weekly active usage of AI properties</div>
+        <div class="cs-stat__num">+53<em>%</em></div>
+        <div class="cs-stat__label">Weekly active usage of Timeline view</div>
       </div>
       <div class="cs-stat">
-        <div class="cs-stat__num">2.3<em>×</em></div>
-        <div class="cs-stat__label">Retention at 30 days for AI-first-session users</div>
+        <div class="cs-stat__num">1.9<em>×</em></div>
+        <div class="cs-stat__label">Retention at 30 days for Timeline-first-session users</div>
       </div>
       <div class="cs-stat">
-        <div class="cs-stat__num">+62<em>%</em></div>
-        <div class="cs-stat__label">Successful AI property creation from the picker</div>
+        <div class="cs-stat__num">+44<em>%</em></div>
+        <div class="cs-stat__label">Correct at-risk identification in under 10 seconds</div>
       </div>
     </div>
     <div class="cs-stats" style="margin-top: 14px;">
       <div class="cs-stat">
-        <div class="cs-stat__num">−41<em>%</em></div>
-        <div class="cs-stat__label">AI-related support tickets</div>
+        <div class="cs-stat__num">−37<em>%</em></div>
+        <div class="cs-stat__label">Timeline-related support tickets</div>
       </div>
       <div class="cs-stat">
-        <div class="cs-stat__num">+34<em>%</em></div>
-        <div class="cs-stat__label">Edit-and-keep rate on AI outputs</div>
+        <div class="cs-stat__num">+58<em>%</em></div>
+        <div class="cs-stat__label">Dependency creation per project</div>
       </div>
       <div class="cs-stat">
-        <div class="cs-stat__num">+78<em>%</em></div>
-        <div class="cs-stat__label">Re-generation clicks post-launch</div>
+        <div class="cs-stat__num">+81<em>%</em></div>
+        <div class="cs-stat__label">Direct-on-Timeline edits post-launch</div>
       </div>
     </div>
 
     <!-- Quote -->
-    <div class="cs-pull">"Oh — now I get what it's doing. I was using this wrong the whole time and I didn't know."<br><span style="font-size: .55em; opacity: .55; letter-spacing: 0; font-style: normal;">Notion AI subscriber, 6 months into using the product</span></div>
+    <div class="cs-pull">"I used to plan in Timeline and then live in List. Now I just live in Timeline."<br><span style="font-size: .55em; opacity: .55; letter-spacing: 0; font-style: normal;">Asana customer, 4 months into using the new view</span></div>
 
-    <p>That quote, for me, summed up the whole project. The AI was always capable. We just hadn't shown users what it was doing or given them the controls to trust it.</p>
+    <p>That quote, for me, summed up the whole project. Timeline was always powerful. We just hadn't made it readable, safe to edit, or worth coming back to on a normal Tuesday.</p>
 
     <!-- Reflections -->
     <h2 class="cs-h2">Reflections</h2>
-    <p>A few things I took away from this project that I've carried into every AI design problem since:</p>
+    <p>A few things I took away from this project that I've carried into every planning-tool problem since:</p>
 
     <ul class="cs-reflections">
       <li class="cs-reflection">
         <div class="cs-reflection__num">01</div>
         <div>
-          <div class="cs-reflection__title">AI usability is mostly about state and provenance</div>
-          <p class="cs-reflection__text">Users don't need to understand the model — they need to understand what it's reading, what it's doing right now, and how to undo it. Once those three things were legible, trust followed almost automatically.</p>
+          <div class="cs-reflection__title">Power features fail on legibility, not capability</div>
+          <p class="cs-reflection__text">Timeline had every feature a project manager could ask for. It failed because users couldn't read it in ten seconds. Once status became the primary visual signal, every other feature in the view got more valuable.</p>
         </div>
       </li>
       <li class="cs-reflection">
         <div class="cs-reflection__num">02</div>
         <div>
           <div class="cs-reflection__title">Dogfooding catches things analytics never will</div>
-          <p class="cs-reflection__text">The "is it broken or just slow?" problem was invisible in the funnel data. It only showed up when I sat with the feature for a week. You can't design for confusion you haven't experienced.</p>
+          <p class="cs-reflection__text">The "I lose my place when I scroll" problem was invisible in the funnel data. It only showed up when I tried to use Timeline for a week of real work. You can't design for friction you haven't felt.</p>
         </div>
       </li>
       <li class="cs-reflection">
         <div class="cs-reflection__num">03</div>
         <div>
           <div class="cs-reflection__title">Trust is the real metric</div>
-          <p class="cs-reflection__text">Adoption numbers were the headline, but the deeper win was that users started treating AI properties as a dependable part of their workflow — not a magic trick they tried once. Trust, once earned, compounds.</p>
+          <p class="cs-reflection__text">Adoption numbers were the headline, but the deeper win was that project managers started treating Timeline as their home view — not a meeting-time artifact. A planning tool that you don't trust to edit isn't a planning tool. It's a screenshot.</p>
         </div>
       </li>
     </ul>
@@ -806,9 +810,9 @@
     <div class="cs-next__inner">
       <div>
         <div class="cs-next__eyebrow">Next case study · 2023</div>
-        <h3 class="cs-next__title">Composer 2.0</h3>
+        <h3 class="cs-next__title">Redesigning AI in Databases</h3>
       </div>
-      <a class="cs-next__cta" href="case-study.html?slug=composer">
+      <a class="cs-next__cta" href="notion-ai.html">
         Continue
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -822,10 +826,11 @@
 <script type="text/babel" src="navbar.jsx"></script>
 <script type="text/babel">
 /* global React, ReactDOM, Nav */
-const _hrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
+const _aHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
-  <Nav active="Case Studies" onChange={function(it) { window.location.href = _hrefs[it]; }} />
+  <Nav active="Case Studies" onChange={function(it) { window.location.href = _aHrefs[it]; }} />
 );
 </script>
+
 </body>
 </html>

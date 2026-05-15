@@ -88,9 +88,9 @@ const CARDS = [
   {
     id: "talks",
     color: "sky",
-    label: "Current work",
+    label: null,
     title: "Ayn by Dal",
-    body: "I'm currently a product designer at Dal, where we're building Ayn — an all-in-one KYC and compliance platform. Lucky to be working alongside some of the sharpest people in the industry.",
+    body: "I'm currently a product designer at Dal, where we're building Ayn — an all-in-one KYC and compliance platform.",
     cta: "Visit Dal's website",
     rotate: 9,
     z: 4,
@@ -127,27 +127,12 @@ function Card({ data, hovered, anyHovered, onHover, onLeave, animateOnLoad }) {
       {data.color === "photo" ? (
         <div className="card__photo">
           <div className="card__photo-img" aria-label="Photo of Ahmad Majid">
-            <svg viewBox="0 0 200 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-              <defs>
-                <linearGradient id="ph" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#3D3329"/>
-                  <stop offset="1" stopColor="#1A1612"/>
-                </linearGradient>
-                <pattern id="stripes" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
-                  <rect width="6" height="6" fill="transparent"/>
-                  <rect width="1" height="6" fill="rgba(255,255,255,.05)"/>
-                </pattern>
-              </defs>
-              <rect width="200" height="240" fill="url(#ph)"/>
-              <rect width="200" height="240" fill="url(#stripes)"/>
-              <text x="100" y="124" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="rgba(255,255,255,.55)" letterSpacing="1.5">PORTRAIT</text>
-              <text x="100" y="138" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="rgba(255,255,255,.35)" letterSpacing="1">drop your photo</text>
-            </svg>
+            <img src="images/heroimage.jpg" alt="Ahmad Majid" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} />
           </div>
         </div>
       ) : (
         <>
-          {data.label && <span className="card__label">{data.label}</span>}
+          {data.label !== null && data.label && <span className="card__label">{data.label}</span>}
           <h3 className="card__title">{data.title}</h3>
           <p className="card__body">{data.body}</p>
           <button className="card__cta">
@@ -231,7 +216,7 @@ function Hero() {
           <br />
           Shipping product features with{" "}
           <HoverPeek
-            imageSrc="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop&auto=format"
+            imageSrc="images/hero-pills/Dal.png"
             width={200}
             height={125}
           >
@@ -241,7 +226,7 @@ function Hero() {
           </HoverPeek>
           {" "}by day, building{" "}
           <HoverPeek
-            imageSrc="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop&auto=format"
+            imageSrc="images/hero-pills/Omnia.png"
             width={200}
             height={125}
           >
