@@ -205,41 +205,46 @@ function CardDeck({ animateOnLoad }) {
   if (isMobile) {
     return (
       <div className="deck-mobile-wrap">
-        <div
-          className="deck-mobile-stage"
-          onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
-          onTouchEnd={e => {
-            if (touchStartX.current === null) return;
-            const delta = e.changedTouches[0].clientX - touchStartX.current;
-            touchStartX.current = null;
-            if (delta < -44) goTo(activeIdx + 1);
-            if (delta > 44)  goTo(activeIdx - 1);
-          }}
-        >
-          {CARDS.map((c, i) => {
-            let offset = i - activeIdx;
-            // Wrap offset to [-N/2, N/2]
-            if (offset > N / 2) offset -= N;
-            if (offset < -N / 2) offset += N;
-            const isActive = offset === 0;
-            const isAdj = Math.abs(offset) === 1;
-            return (
-              <div
-                key={c.id}
-                className="deck-mobile-card"
-                style={{
-                  left: '50%',
-                  transform: `translateX(calc(-50% + ${offset * 256}px)) scale(${isActive ? 1 : 0.84})`,
-                  opacity: isActive ? 1 : isAdj ? 0.28 : 0,
-                  zIndex: isActive ? 3 : isAdj ? 2 : 0,
-                  transition: 'transform .42s cubic-bezier(.4,.1,.2,1), opacity .35s ease',
-                  pointerEvents: isActive ? 'auto' : 'none',
-                }}
-              >
-                <Card data={c} hovered={null} anyHovered={false} onHover={() => {}} onLeave={() => {}} animateOnLoad={false} mobile={true} />
-              </div>
-            );
-          })}
+        {/* Overflow container clips left/right; stage itself is overflow:visible for shadow */}
+        <div className="deck-mobile-clip">
+          <div
+            className="deck-mobile-stage"
+            onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+            onTouchEnd={e => {
+              if (touchStartX.current === null) return;
+              const delta = e.changedTouches[0].clientX - touchStartX.current;
+              touchStartX.current = null;
+              if (delta < -44) goTo(activeIdx + 1);
+              if (delta > 44)  goTo(activeIdx - 1);
+            }}
+          >
+            {CARDS.map((c, i) => {
+              let offset = i - activeIdx;
+              if (offset > N / 2) offset -= N;
+              if (offset < -N / 2) offset += N;
+              const isActive = offset === 0;
+              const isAdj = Math.abs(offset) === 1;
+              return (
+                <div
+                  key={c.id}
+                  className="deck-mobile-card"
+                  style={{
+                    left: '50%',
+                    transform: `translateX(calc(-50% + ${offset * 256}px)) scale(${isActive ? 1 : 0.88})`,
+                    opacity: isActive ? 1 : isAdj ? 0.42 : 0,
+                    zIndex: isActive ? 3 : isAdj ? 2 : 0,
+                    transition: 'transform .42s cubic-bezier(.4,.1,.2,1), opacity .35s ease',
+                    pointerEvents: isActive ? 'auto' : 'none',
+                  }}
+                >
+                  <Card data={c} hovered={null} anyHovered={false} onHover={() => {}} onLeave={() => {}} animateOnLoad={false} mobile={true} />
+                </div>
+              );
+            })}
+          </div>
+          {/* Blurred edge faders — sit above cards */}
+          <div className="deck-mobile-edge deck-mobile-edge--l" aria-hidden="true" />
+          <div className="deck-mobile-edge deck-mobile-edge--r" aria-hidden="true" />
         </div>
 
         {/* Progress bar */}
@@ -614,20 +619,50 @@ const css = `
   margin-top: 40px;
   display: flex; flex-direction: column; align-items: center;
 }
+/* clips left/right but lets shadow breathe at the bottom */
+.deck-mobile-clip {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 20px; /* room for drop shadow */
+  margin-bottom: -20px; /* cancel layout shift from padding */
+}
 .deck-mobile-stage {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 310px;
   display: flex; align-items: flex-end; justify-content: center;
   touch-action: pan-y;
-  /* fade adjacent cards into edges */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
+  overflow: visible; /* don't clip shadows */
 }
 .deck-mobile-card {
   position: absolute;
-  bottom: 0;
+  bottom: 20px; /* lifts card so shadow shows in padding area */
   width: 240px; height: 290px;
+}
+/* Blurred gradient overlays at left/right edges */
+.deck-mobile-edge {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 64px;
+  z-index: 10;
+  pointer-events: none;
+}
+.deck-mobile-edge--l {
+  left: 0;
+  background: linear-gradient(to right, var(--hero-bg) 0%, transparent 100%);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);
+  mask-image: linear-gradient(to right, black 30%, transparent 100%);
+}
+.deck-mobile-edge--r {
+  right: 0;
+  background: linear-gradient(to left, var(--hero-bg) 0%, transparent 100%);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 100%);
+  mask-image: linear-gradient(to left, black 30%, transparent 100%);
 }
 /* Progress bar */
 .deck-mobile-progress {

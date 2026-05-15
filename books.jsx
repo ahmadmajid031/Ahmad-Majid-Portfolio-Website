@@ -390,20 +390,14 @@ const booksCss = `
 .book-row__note { font-style: italic; opacity: .75; }
 
 @media (max-width: 880px) {
-  .books { grid-template-columns: 1fr; }
-  .books__grid { overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
-  .books__col--2 { margin-top: 44px; }
-  .books__col--3 { margin-top: 22px; }
-  .book-cover--sm { width: 108px; }
-  .book-cover--md { width: 116px; }
-  .book-cover--lg { width: 124px; }
-  .book-cover--sm .book-cover__frame { height: 136px; }
-  .book-cover--md .book-cover__frame { height: 148px; }
-  .book-cover--lg .book-cover__frame { height: 158px; }
+  .books { display: block; } /* single column, no grid */
+  .books__grid { display: none; } /* hide covers entirely */
+  .books__list { margin-top: 28px; gap: 0; }
   .book-row__chip { display: none; }
   .book-row__meta { margin-left: 0; }
   .book-row__note { display: none; }
-  .book-row__title { font-size: clamp(18px, 4.5vw, 24px); }
+  .book-row__title { font-size: clamp(20px, 5vw, 28px); }
+  .book-row__top { gap: 10px; }
 }
 `;
 const booksStyleEl = document.createElement('style');
