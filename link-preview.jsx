@@ -7,6 +7,11 @@ const {
 } = React;
 
 function HoverPeek({ children, imageSrc, width = 200, height = 125 }) {
+  const isTouch = typeof window !== 'undefined' &&
+    ('ontouchstart' in window || window.matchMedia('(hover: none)').matches);
+
+  if (isTouch) return <>{children}</>;
+
   const [visible, setVisible] = usePeekState(false);
   const [pos, setPos] = usePeekState({ x: 0, y: 0 });
   const triggerRef = usePeekRef(null);

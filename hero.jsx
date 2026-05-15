@@ -1,5 +1,5 @@
 /* global React, ReactDOM, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakToggle, HoverPeek */
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "palette": "warm",
@@ -102,28 +102,30 @@ const CARDS = [
   },
 ];
 
-function Card({ data, hovered, anyHovered, onHover, onLeave, animateOnLoad }) {
+function Card({ data, hovered, anyHovered, onHover, onLeave, animateOnLoad, mobile }) {
   const isMe = hovered === data.id;
   const dim  = anyHovered && !isMe;
-  // yOffset = how far above the deck baseline this card sits (positive = up)
   const baseTransform  = `translateY(${-data.yOffset}px) rotate(${data.rotate}deg)`;
   const hoverTransform = `translateY(${-data.yOffset - 22}px) rotate(${data.rotate * 0.35}deg) scale(1.04)`;
   const dimTransform   = `translateY(${-data.yOffset + 6}px) rotate(${data.rotate}deg) scale(0.985)`;
+
+  const mobileStyle = { position: 'relative', bottom: 'auto', left: 'auto', width: '100%', height: '100%', transform: 'none', zIndex: 1 };
+  const desktopStyle = {
+    zIndex: isMe ? 99 : data.z,
+    left: `calc(${data.leftPct * 100}% - 115px)`,
+    transform: isMe ? hoverTransform : (dim ? dimTransform : baseTransform),
+    animationDelay: animateOnLoad ? (data.z * 80 + 100) + "ms" : "0ms",
+  };
 
   return (
     <div
       className={
         "card card--" + data.color +
-        (animateOnLoad ? " card--enter" : "") +
+        (!mobile && animateOnLoad ? " card--enter" : "") +
         (isMe ? " is-hovered" : "") +
         (dim ? " is-dim" : "")
       }
-      style={{
-        zIndex: isMe ? 99 : data.z,
-        left: `calc(${data.leftPct * 100}% - 115px)`,
-        transform: isMe ? hoverTransform : (dim ? dimTransform : baseTransform),
-        animationDelay: animateOnLoad ? (data.z * 80 + 100) + "ms" : "0ms",
-      }}
+      style={mobile ? mobileStyle : desktopStyle}
       onMouseEnter={() => onHover(data.id)}
       onMouseLeave={onLeave}
     >
@@ -159,9 +161,94 @@ function Card({ data, hovered, anyHovered, onHover, onLeave, animateOnLoad }) {
   );
 }
 
+const CARD_DURATION = 3400; // ms each card stays
+const TICK_MS = 40;
+
 function CardDeck({ animateOnLoad }) {
   const [hovered, setHovered] = useState(null);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 640);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const touchStartX = useRef(null);
+  const intervalRef = useRef(null);
   const anyHovered = !!hovered;
+  const N = CARDS.length;
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 640);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Timer: resets every time activeIdx or isMobile changes
+  useEffect(() => {
+    if (!isMobile) return;
+    let elapsed = 0;
+    setProgress(0);
+    clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      elapsed += TICK_MS;
+      setProgress(Math.min(elapsed / CARD_DURATION, 1));
+      if (elapsed >= CARD_DURATION) {
+        clearInterval(intervalRef.current);
+        setActiveIdx(i => (i + 1) % N);
+      }
+    }, TICK_MS);
+    return () => clearInterval(intervalRef.current);
+  }, [isMobile, activeIdx]);
+
+  function goTo(idx) {
+    setActiveIdx(((idx % N) + N) % N);
+    // Effect dependency on activeIdx restarts timer automatically
+  }
+
+  if (isMobile) {
+    return (
+      <div className="deck-mobile-wrap">
+        <div
+          className="deck-mobile-stage"
+          onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={e => {
+            if (touchStartX.current === null) return;
+            const delta = e.changedTouches[0].clientX - touchStartX.current;
+            touchStartX.current = null;
+            if (delta < -44) goTo(activeIdx + 1);
+            if (delta > 44)  goTo(activeIdx - 1);
+          }}
+        >
+          {CARDS.map((c, i) => {
+            let offset = i - activeIdx;
+            // Wrap offset to [-N/2, N/2]
+            if (offset > N / 2) offset -= N;
+            if (offset < -N / 2) offset += N;
+            const isActive = offset === 0;
+            const isAdj = Math.abs(offset) === 1;
+            return (
+              <div
+                key={c.id}
+                className="deck-mobile-card"
+                style={{
+                  left: '50%',
+                  transform: `translateX(calc(-50% + ${offset * 256}px)) scale(${isActive ? 1 : 0.84})`,
+                  opacity: isActive ? 1 : isAdj ? 0.28 : 0,
+                  zIndex: isActive ? 3 : isAdj ? 2 : 0,
+                  transition: 'transform .42s cubic-bezier(.4,.1,.2,1), opacity .35s ease',
+                  pointerEvents: isActive ? 'auto' : 'none',
+                }}
+              >
+                <Card data={c} hovered={null} anyHovered={false} onHover={() => {}} onLeave={() => {}} animateOnLoad={false} mobile={true} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress bar */}
+        <div className="deck-mobile-progress">
+          <div className="deck-mobile-progress-fill" style={{ transform: `scaleX(${progress})` }} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="deck-wrap">
@@ -522,12 +609,49 @@ const css = `
 .bold-mode .hero__headline,
 .bold-mode .hero__sub { color: var(--ink); }
 
+/* ── Mobile card carousel ── */
+.deck-mobile-wrap {
+  margin-top: 40px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.deck-mobile-stage {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  display: flex; align-items: flex-end; justify-content: center;
+  touch-action: pan-y;
+  /* fade adjacent cards into edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%);
+}
+.deck-mobile-card {
+  position: absolute;
+  bottom: 0;
+  width: 240px; height: 290px;
+}
+/* Progress bar */
+.deck-mobile-progress {
+  width: 56px; height: 3px;
+  background: rgba(20,40,30,.14);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 22px;
+}
+.deck-mobile-progress-fill {
+  height: 100%; width: 100%;
+  background: var(--ink);
+  transform-origin: left;
+  border-radius: 999px;
+  transition: transform .04s linear;
+}
+
 @media (max-width: 920px) {
   .deck { transform: scale(.78); transform-origin: 50% 0%; }
+  .badge { display: none; }
 }
 @media (max-width: 640px) {
-  .deck { transform: scale(.55); }
-  .hero { padding-bottom: 40px; }
+  .hero { padding-bottom: 48px; }
+  .badge { display: none; }
 }
 `;
 

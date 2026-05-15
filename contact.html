@@ -63,10 +63,17 @@ body {
 .cslab__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
-  gap: clamp(48px, 7vw, 96px);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "info  form"
+    "cards form";
+  gap: clamp(32px, 5vw, 72px) clamp(48px, 7vw, 96px);
   align-items: start;
   position: relative; z-index: 1;
 }
+.cinfo     { grid-area: info; }
+.cright    { grid-area: form; }
+.ccontacts { grid-area: cards; }
 
 /* ─────────── LEFT ─────────── */
 .cinfo { position: relative; }
@@ -359,14 +366,29 @@ body {
 
 /* ── Responsive ── */
 @media (max-width: 860px) {
-  .cslab__grid   { grid-template-columns: 1fr; }
-  .cinfo__desc   { max-width: 100%; }
-  .cform__row    { grid-template-columns: 1fr; }
+  /* Stack: headline → form+book → email+phone */
+  .cslab__grid {
+    display: flex; flex-direction: column;
+    gap: 36px;
+  }
+  .cinfo__desc { max-width: 100%; }
+  .cform__row  { grid-template-columns: 1fr; }
+
+  /* Form breathing room */
+  .cform-panel  { padding: clamp(22px, 5vw, 36px); }
+  .cform        { gap: 20px; }
+  .cform__field { padding-top: 22px; }
+  .cform__input { padding: 13px 14px; font-size: 16px; }
+  .cform__input--ta { min-height: 110px; }
+  .cform__submit { width: 100%; justify-content: center; }
+  .cform__actions { flex-direction: column; align-items: stretch; }
+  .cform__note  { text-align: center; }
 }
 @media (max-width: 520px) {
-  .cinfo__cards  { flex-direction: column; }
-  .ccard--email  { transform: rotate(-4deg); }
-  .ccard--phone  { transform: rotate(3deg); }
+  .cinfo__cards { flex-direction: column; }
+  .ccard--email { transform: rotate(-3deg); }
+  .ccard--phone { transform: rotate(2.5deg); }
+  .cslab { padding-left: 20px; padding-right: 20px; }
 }
 </style>
 </head>
@@ -379,7 +401,7 @@ body {
     <section class="cslab" id="cslab">
       <div class="cslab__grid">
 
-        <!-- ── LEFT: info + tilted contact cards ── -->
+        <!-- ── TOP LEFT: headline + desc ── -->
         <div class="cinfo">
           <div class="cinfo__eyebrow">
             <span class="cinfo__eyebrow-dot"></span>
@@ -392,35 +414,6 @@ body {
             Have a project, an idea that won't quit, or just want to say hello?
             Drop a note — I read every message and reply within a day or two.
           </p>
-
-          <div class="cinfo__cards">
-            <!-- Peach: email — tilted -5.5° -->
-            <a href="mailto:ahmadmajid031@gmail.com" class="ccard ccard--peach ccard--contact ccard--email">
-              <div class="ccard__icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <rect x="1.5" y="3.5" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M1.5 5.5L8 9.5l6.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="ccard__contact-body">
-                <span class="ccard__contact-label">Email</span>
-                <span class="ccard__contact-value">ahmadmajid031@gmail.com</span>
-              </div>
-            </a>
-
-            <!-- Sky: phone — tilted +4.5° -->
-            <a href="tel:+923023330272" class="ccard ccard--sky ccard--contact ccard--phone">
-              <div class="ccard__icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M5.2 2H3a1 1 0 0 0-1 1v.5a10.5 10.5 0 0 0 10.5 10.5H13a1 1 0 0 0 1-1v-2.2l-3-1.3-1.2 1.8C8 10.7 6.3 9 5.7 7.2l1.8-1.2L6.2 3l-1-.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="ccard__contact-body">
-                <span class="ccard__contact-label">Phone</span>
-                <span class="ccard__contact-value">+92 302 333 0272</span>
-              </div>
-            </a>
-          </div>
         </div>
 
         <!-- ── RIGHT: form + book card ── -->
@@ -499,6 +492,36 @@ body {
           </div>
 
         </div>
+
+        <!-- ── BOTTOM LEFT: email + phone cards ── -->
+        <div class="ccontacts">
+          <div class="cinfo__cards">
+            <a href="mailto:ahmadmajid031@gmail.com" class="ccard ccard--peach ccard--contact ccard--email">
+              <div class="ccard__icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect x="1.5" y="3.5" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M1.5 5.5L8 9.5l6.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="ccard__contact-body">
+                <span class="ccard__contact-label">Email</span>
+                <span class="ccard__contact-value">ahmadmajid031@gmail.com</span>
+              </div>
+            </a>
+            <a href="tel:+923023330272" class="ccard ccard--sky ccard--contact ccard--phone">
+              <div class="ccard__icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M5.2 2H3a1 1 0 0 0-1 1v.5a10.5 10.5 0 0 0 10.5 10.5H13a1 1 0 0 0 1-1v-2.2l-3-1.3-1.2 1.8C8 10.7 6.3 9 5.7 7.2l1.8-1.2L6.2 3l-1-.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="ccard__contact-body">
+                <span class="ccard__contact-label">Phone</span>
+                <span class="ccard__contact-value">+92 302 333 0272</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
   </div>

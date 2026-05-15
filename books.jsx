@@ -391,13 +391,19 @@ const booksCss = `
 
 @media (max-width: 880px) {
   .books { grid-template-columns: 1fr; }
-  .books__grid { overflow-x: auto; padding-bottom: 4px; }
-  .book-cover--sm { width: 116px; }
-  .book-cover--md { width: 124px; }
-  .book-cover--lg { width: 132px; }
-  .book-cover--sm .book-cover__frame { height: 144px; }
-  .book-cover--md .book-cover__frame { height: 156px; }
-  .book-cover--lg .book-cover__frame { height: 166px; }
+  .books__grid { overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+  .books__col--2 { margin-top: 44px; }
+  .books__col--3 { margin-top: 22px; }
+  .book-cover--sm { width: 108px; }
+  .book-cover--md { width: 116px; }
+  .book-cover--lg { width: 124px; }
+  .book-cover--sm .book-cover__frame { height: 136px; }
+  .book-cover--md .book-cover__frame { height: 148px; }
+  .book-cover--lg .book-cover__frame { height: 158px; }
+  .book-row__chip { display: none; }
+  .book-row__meta { margin-left: 0; }
+  .book-row__note { display: none; }
+  .book-row__title { font-size: clamp(18px, 4.5vw, 24px); }
 }
 `;
 const booksStyleEl = document.createElement('style');

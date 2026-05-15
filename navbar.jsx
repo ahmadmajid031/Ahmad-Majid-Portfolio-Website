@@ -1,10 +1,11 @@
-/* global React */
-const { useEffect: useNavEffect, useRef: useNavRef } = React;
+/* global React, ReactDOM */
+const { useEffect: useNavEffect, useRef: useNavRef, useState: useNavState } = React;
 
 function Nav({ active, onChange }) {
   const items = ["Home", "Case Studies", "About"];
   const navRef = useNavRef(null);
   const pillRef = useNavRef(null);
+  const [menuOpen, setMenuOpen] = useNavState(false);
 
   useNavEffect(() => {
     const container = navRef.current;
@@ -55,6 +56,7 @@ function Nav({ active, onChange }) {
 
   function handleClick(item) {
     sessionStorage.setItem('nav_from', active);
+    setMenuOpen(false);
     onChange(item);
   }
 
@@ -78,11 +80,39 @@ function Nav({ active, onChange }) {
           ))}
         </nav>
 
-        <a href="contact.html" className="nav__cta">
+        <a href="contact.html" className="nav__cta nav__cta--desktop">
           <span className="nav__cta-dot" />
           Say hello
         </a>
+
+        <button
+          className={"nav__burger " + (menuOpen ? "is-open" : "")}
+          onClick={() => setMenuOpen(v => !v)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+        >
+          <span /><span /><span />
+        </button>
       </div>
+
+      {menuOpen && ReactDOM.createPortal(
+        <div className="nav__mobile-menu">
+          <nav className="nav__mobile-links">
+            {items.map((it, i) => (
+              <button
+                key={it}
+                className={"nav__mobile-item " + (active === it ? "is-active" : "")}
+                style={{ animationDelay: (i * 55) + "ms" }}
+                onClick={() => handleClick(it)}
+              >{it}</button>
+            ))}
+          </nav>
+          <a href="contact.html" className="nav__mobile-cta" onClick={() => setMenuOpen(false)}>
+            <span className="nav__cta-dot" />
+            Say hello
+          </a>
+        </div>,
+        document.body
+      )}
     </header>
   );
 }
@@ -162,8 +192,79 @@ const navCss = `
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.55} }
 
+/* ── Hamburger ── */
+.nav__burger {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 10px; border-radius: 10px; margin: -10px;
+  z-index: 210; position: relative;
+}
+.nav__burger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--ink); border-radius: 2px;
+  transform-origin: center;
+  transition: transform .35s cubic-bezier(.4,1.1,.4,1), opacity .22s ease;
+}
+.nav__burger.is-open span { background: var(--ink); }
+.nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__burger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile full-screen menu overlay ── */
+.nav__mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 8vw, 64px);
+  z-index: 200;
+  animation: mobileMenuIn .25s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes mobileMenuIn {
+  from { opacity: 0; transform: scale(.97); }
+}
+.nav__mobile-links {
+  display: flex; flex-direction: column;
+  border-top: 1px solid rgba(20,40,30,.10);
+  margin-bottom: 36px;
+}
+.nav__mobile-item {
+  background: none; border: none; cursor: pointer;
+  font: inherit; text-align: left;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(20,40,30,.10);
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 700; font-style: italic;
+  font-size: clamp(38px, 11vw, 62px);
+  letter-spacing: -0.03em; line-height: 1;
+  color: var(--ink); opacity: .22;
+  transition: opacity .15s ease;
+  animation: mobileItemIn .35s ease both;
+}
+@keyframes mobileItemIn {
+  from { opacity: 0; transform: translateY(10px); }
+}
+.nav__mobile-item.is-active { opacity: 1; }
+.nav__mobile-item:not(.is-active):hover { opacity: .5; }
+
+.nav__mobile-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--pill-dark); color: #F4ECDC;
+  text-decoration: none;
+  padding: 15px 22px; border-radius: 6px;
+  font-size: 16px; font-weight: 600; letter-spacing: -0.01em;
+  align-self: flex-start;
+  box-shadow: 0 6px 20px rgba(0,0,0,.24);
+  animation: mobileItemIn .35s .2s ease both;
+}
+
 @media (max-width: 920px) {
   .nav__pill { display: none; }
+  .nav__cta--desktop { display: none; }
+  .nav__burger { display: flex; }
+  .nav { z-index: 205; } /* nav bar sits above its own menu overlay */
 }
 `;
 
