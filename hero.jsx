@@ -15,7 +15,7 @@ const PALETTES = {
 };
 
 /* global Nav */
-const NAV_HREFS = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
+const NAV_HREFS = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 function navChange(item) { if (item !== "Home") window.location.href = NAV_HREFS[item]; }
 
 // ---------- Sticker Badge ----------

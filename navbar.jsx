@@ -1,50 +1,88 @@
 /* global React */
-const { useState: useNavState, useEffect: useNavEffect, useRef: useNavRef } = React;
+const { useEffect: useNavEffect, useRef: useNavRef } = React;
 
 function Nav({ active, onChange }) {
-  const items = ["Home", "Case Studies", "About Me"];
+  const items = ["Home", "Case Studies", "About"];
   const navRef = useNavRef(null);
-  const [pill, setPill] = useNavState({ left: 0, width: 0, ready: false });
+  const pillRef = useNavRef(null);
 
   useNavEffect(() => {
-    if (!navRef.current) return;
-    const el = navRef.current.querySelector(`[data-nav="${active}"]`);
-    if (!el) return;
-    const parent = navRef.current.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    setPill({ left: r.left - parent.left, width: r.width, ready: true });
+    const container = navRef.current;
+    const pill = pillRef.current;
+    if (!container || !pill) return;
+
+    const toEl = container.querySelector(`[data-nav="${active}"]`);
+    if (!toEl) return;
+
+    const parent = container.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+    const toLeft = toRect.left - parent.left;
+    const toWidth = toRect.width;
+
+    const fromTab = sessionStorage.getItem('nav_from');
+    sessionStorage.removeItem('nav_from');
+
+    if (fromTab && fromTab !== active) {
+      const fromEl = container.querySelector(`[data-nav="${fromTab}"]`);
+      if (fromEl) {
+        const fromRect = fromEl.getBoundingClientRect();
+        const fromLeft = fromRect.left - parent.left;
+        const fromWidth = fromRect.width;
+
+        // Teleport to the "from" position with no transition, then slide to "to"
+        pill.style.transition = 'none';
+        pill.style.transform = `translateX(${fromLeft}px)`;
+        pill.style.width = `${fromWidth}px`;
+        pill.style.opacity = '1';
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            pill.style.transition = '';
+            pill.style.transform = `translateX(${toLeft}px)`;
+            pill.style.width = `${toWidth}px`;
+          });
+        });
+        return;
+      }
+    }
+
+    // No "from" context — just appear in place
+    pill.style.transition = 'none';
+    pill.style.transform = `translateX(${toLeft}px)`;
+    pill.style.width = `${toWidth}px`;
+    pill.style.opacity = '1';
   }, [active]);
+
+  function handleClick(item) {
+    sessionStorage.setItem('nav_from', active);
+    onChange(item);
+  }
 
   return (
     <header className="nav">
-      <div className="nav__brand">
-        <img src="Images/navbar-logo.png" alt="Ahmad Majid" className="nav__logo" />
-        <span className="nav__name">Ahmad Majid</span>
+      <div className="nav__inner">
+        <div className="nav__brand">
+          <img src="Images/navbar-logo.png" alt="Ahmad Majid" className="nav__logo" />
+          <span className="nav__name">Ahmad Majid</span>
+        </div>
+
+        <nav className="nav__pill" ref={navRef}>
+          <span ref={pillRef} className="nav__pill-active" style={{ opacity: 0 }} />
+          {items.map(it => (
+            <button
+              key={it}
+              data-nav={it}
+              className={"nav__item " + (active === it ? "is-active" : "")}
+              onClick={() => handleClick(it)}
+            >{it}</button>
+          ))}
+        </nav>
+
+        <a href="contact.html" className="nav__cta">
+          <span className="nav__cta-dot" />
+          Say hello
+        </a>
       </div>
-
-      <nav className="nav__pill" ref={navRef}>
-        <span
-          className="nav__pill-active"
-          style={{
-            transform: `translateX(${pill.left}px)`,
-            width: pill.width,
-            opacity: pill.ready ? 1 : 0,
-          }}
-        />
-        {items.map(it => (
-          <button
-            key={it}
-            data-nav={it}
-            className={"nav__item " + (active === it ? "is-active" : "")}
-            onClick={() => onChange(it)}
-          >{it}</button>
-        ))}
-      </nav>
-
-      <button className="nav__cta">
-        <span className="nav__cta-dot" />
-        Say hello
-      </button>
     </header>
   );
 }
@@ -57,9 +95,14 @@ const navCss = `
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(20,40,30,.08);
+  padding: 12px clamp(20px, 4vw, 56px);
+}
+.nav__inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  width: 100%;
   display: flex; align-items: center; justify-content: space-between;
   gap: 24px;
-  padding: 12px clamp(20px, 4vw, 56px);
 }
 .nav__brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .nav__logo { height: 36px; width: auto; display: block; }
@@ -103,7 +146,7 @@ const navCss = `
 .nav__cta {
   display: inline-flex; align-items: center; gap: 9px;
   background: var(--pill-dark); color: #F4ECDC;
-  border: 0; cursor: pointer;
+  border: 0; cursor: pointer; text-decoration: none;
   padding: 11px 18px; border-radius: 4px;
   font-size: 14px; font-weight: 500; font-family: inherit;
   letter-spacing: -0.01em;

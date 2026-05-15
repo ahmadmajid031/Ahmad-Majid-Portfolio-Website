@@ -97,7 +97,7 @@
 <script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
 /* global React, ReactDOM, Nav, WorkSection, FooterSection */
-const _wHrefs = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
+const _wHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="Case Studies" onChange={function(it) { window.location.href = _wHrefs[it]; }} />
 );

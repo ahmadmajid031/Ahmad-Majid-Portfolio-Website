@@ -107,9 +107,9 @@
 <script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
 /* global React, ReactDOM, Nav, AboutSection */
-const _aHrefs = { "Home": "index.html", "Case Studies": "work.html", "About Me": "about.html" };
+const _aHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
-  <Nav active="About Me" onChange={function(it) { window.location.href = _aHrefs[it]; }} />
+  <Nav active="About" onChange={function(it) { window.location.href = _aHrefs[it]; }} />
 );
 ReactDOM.createRoot(document.getElementById('about-section-root')).render(<AboutSection />);
 </script>
