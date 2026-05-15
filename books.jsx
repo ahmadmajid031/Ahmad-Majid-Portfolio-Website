@@ -28,6 +28,7 @@ const BOOKS = [
     tag: "Psychology",
     color: "peach",
     image: "images/book-covers/influence.jpg",
+    goodreads: "https://www.goodreads.com/book/show/28815.Influence",
   },
   {
     id: "b2",
@@ -38,6 +39,7 @@ const BOOKS = [
     tag: "Philosophy",
     color: "lilac",
     image: "images/book-covers/101essays.jpg",
+    goodreads: "https://www.goodreads.com/book/show/29782854",
   },
   {
     id: "b3",
@@ -48,6 +50,7 @@ const BOOKS = [
     tag: "Productivity",
     color: "sky",
     image: "images/book-covers/deepwork.jpg",
+    goodreads: "https://www.goodreads.com/book/show/25744928-deep-work",
   },
   {
     id: "b4",
@@ -58,6 +61,7 @@ const BOOKS = [
     tag: "History",
     color: "sun",
     image: "images/book-covers/magnificentdelusions.jpg",
+    goodreads: "https://www.goodreads.com/book/show/18047951",
   },
   {
     id: "b5",
@@ -68,6 +72,7 @@ const BOOKS = [
     tag: "Philosophy",
     color: "sky",
     image: "images/book-covers/twilightoftheidols.jpg",
+    goodreads: "https://www.goodreads.com/book/show/18632",
   },
   {
     id: "b6",
@@ -78,6 +83,7 @@ const BOOKS = [
     tag: "Thinking",
     color: "lilac",
     image: "images/book-covers/charliesalmanak.jpg",
+    goodreads: "https://www.goodreads.com/book/show/944652",
   },
 ];
 
@@ -127,13 +133,17 @@ function BookCover({ book, size, hoverId, onHover }) {
   const active = hoverId === book.id;
   const dimmed = hoverId !== null && !active;
   return (
-    <div
+    <a
+      href={book.goodreads || "#books"}
+      target="_blank"
+      rel="noopener"
       className={
         "book-cover book-cover--" + size +
         " book-cover--" + book.color +
         (dimmed ? " is-dim" : "") +
         (active ? " is-active" : "")
       }
+      style={{ display: 'block', textDecoration: 'none' }}
       onMouseEnter={() => onHover(book.id)}
       onMouseLeave={() => onHover(null)}
     >
@@ -141,7 +151,7 @@ function BookCover({ book, size, hoverId, onHover }) {
         <img src={book.image} alt={book.title} />
       </div>
       <span className={"book-cover__tag book-cover__tag--" + book.color}>{book.tag}</span>
-    </div>
+    </a>
   );
 }
 
@@ -157,11 +167,13 @@ function BookRow({ book, index, hoverId, onHover }) {
       <div className="book-row__top">
         <span className="book-row__num">{String(index).padStart(2, "0")}</span>
         <span className={"book-row__chip book-row__chip--" + book.color}>{book.tag}</span>
-        <span className="book-row__title">{book.title}</span>
+        <a className="book-row__title" href={book.goodreads || "#books"} target="_blank" rel="noopener" style={{textDecoration:'none',color:'inherit'}}>{book.title}</a>
         <a
           className="book-row__arrow"
-          href="#books"
-          aria-label={"Open " + book.title}
+          href={book.goodreads || "#books"}
+          target="_blank"
+          rel="noopener"
+          aria-label={"View " + book.title + " on Goodreads"}
           onClick={(e) => e.stopPropagation()}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

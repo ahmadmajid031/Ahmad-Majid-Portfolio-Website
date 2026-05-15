@@ -103,15 +103,17 @@
   </section>
 </main>
 
+<div id="afooter-root"></div>
 <script type="text/babel" src="navbar.jsx"></script>
 <script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Nav, AboutSection */
+/* global React, ReactDOM, Nav, AboutSection, FooterSection */
 const _aHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="About" onChange={function(it) { window.location.href = _aHrefs[it]; }} />
 );
 ReactDOM.createRoot(document.getElementById('about-section-root')).render(<AboutSection />);
+ReactDOM.createRoot(document.getElementById('afooter-root')).render(<FooterSection />);
 </script>
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");

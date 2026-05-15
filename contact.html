@@ -301,6 +301,51 @@ body {
   transition: opacity .3s;
 }
 
+/* Field-level error */
+.cform__field.has-error .cform__input {
+  border-color: rgba(20,40,30,.28);
+  background: rgba(248,196,149,.18);
+  box-shadow: 0 0 0 3px rgba(248,196,149,.28);
+}
+.cform__field-err {
+  display: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: .01em;
+  color: var(--ink); opacity: .55; margin: 5px 0 0;
+}
+.cform__field.has-error .cform__field-err { display: block; }
+@keyframes cShake {
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-7px)}
+  40%{transform:translateX(7px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+.cform__field.do-shake { animation: cShake .38s ease; }
+
+/* Success overlay */
+.cform-success {
+  display: none; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 52px 28px; gap: 14px;
+}
+.cform-success.is-visible { display: flex; }
+.cform-success__star {
+  font-size: 44px; line-height: 1;
+  animation: cStarPop .55s cubic-bezier(.4,1.6,.4,1) both;
+  color: var(--ink);
+}
+@keyframes cStarPop { from { transform: scale(0) rotate(-30deg); opacity: 0; } }
+.cform-success__title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 800; font-size: clamp(26px, 3vw, 36px);
+  letter-spacing: -0.03em; color: var(--ink); margin: 0;
+}
+.cform-success__sub {
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  opacity: .5; max-width: 28ch; line-height: 1.55; margin: 0;
+}
+
 /* Confetti burst dot */
 .c-dot {
   position: fixed; pointer-events: none; z-index: 9999;
@@ -350,7 +395,7 @@ body {
 
           <div class="cinfo__cards">
             <!-- Peach: email — tilted -5.5° -->
-            <a href="mailto:hi@ahmadmajid.com" class="ccard ccard--peach ccard--contact ccard--email">
+            <a href="mailto:ahmadmajid031@gmail.com" class="ccard ccard--peach ccard--contact ccard--email">
               <div class="ccard__icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <rect x="1.5" y="3.5" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
@@ -359,12 +404,12 @@ body {
               </div>
               <div class="ccard__contact-body">
                 <span class="ccard__contact-label">Email</span>
-                <span class="ccard__contact-value">hi@ahmadmajid.com</span>
+                <span class="ccard__contact-value">ahmadmajid031@gmail.com</span>
               </div>
             </a>
 
             <!-- Sky: phone — tilted +4.5° -->
-            <a href="tel:+12125550191" class="ccard ccard--sky ccard--contact ccard--phone">
+            <a href="tel:+923023330272" class="ccard ccard--sky ccard--contact ccard--phone">
               <div class="ccard__icon">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M5.2 2H3a1 1 0 0 0-1 1v.5a10.5 10.5 0 0 0 10.5 10.5H13a1 1 0 0 0 1-1v-2.2l-3-1.3-1.2 1.8C8 10.7 6.3 9 5.7 7.2l1.8-1.2L6.2 3l-1-.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -372,7 +417,7 @@ body {
               </div>
               <div class="ccard__contact-body">
                 <span class="ccard__contact-label">Phone</span>
-                <span class="ccard__contact-value">+1 (212) 555-0191</span>
+                <span class="ccard__contact-value">+92 302 333 0272</span>
               </div>
             </a>
           </div>
@@ -388,29 +433,37 @@ body {
 
             <form class="cform" id="cform" novalidate>
               <div class="cform__row">
-                <!-- label AFTER input for CSS ~ sibling selector -->
-                <div class="cform__field">
+                <div class="cform__field" id="field-fname">
                   <input class="cform__input" type="text" id="fname" name="fname"
                     placeholder=" " autocomplete="given-name">
                   <label class="cform__label" for="fname">First name</label>
+                  <p class="cform__field-err">Name please — I like knowing who I'm talking to.</p>
                 </div>
-                <div class="cform__field">
+                <div class="cform__field" id="field-lname">
                   <input class="cform__input" type="text" id="lname" name="lname"
                     placeholder=" " autocomplete="family-name">
                   <label class="cform__label" for="lname">Last name</label>
+                  <p class="cform__field-err">Last name too, if you don't mind.</p>
                 </div>
               </div>
 
-              <div class="cform__field">
+              <div class="cform__field" id="field-email">
+                <input class="cform__input" type="email" id="email" name="email"
+                  placeholder=" " autocomplete="email">
+                <label class="cform__label" for="email">Email address</label>
+                <p class="cform__field-err">Need somewhere to reply to you!</p>
+              </div>
+
+              <div class="cform__field" id="field-msg">
                 <textarea class="cform__input cform__input--ta" id="msg" name="msg"
                   placeholder=" "></textarea>
                 <label class="cform__label" for="msg">What's on your mind?</label>
+                <p class="cform__field-err">Don't be shy — say something!</p>
               </div>
 
               <div class="cform__actions">
                 <button type="submit" class="cform__submit" id="csub">
                   <span id="csub-text">Send message</span>
-                  <!-- paper plane -->
                   <svg id="csub-plane" width="15" height="15" viewBox="0 0 15 15" fill="none">
                     <path d="M13 1L1 6l5 2.5L13 1zm0 0L7.5 14 6 8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -418,6 +471,12 @@ body {
                 <span class="cform__note" id="cform-note">Usually replies within 24 h</span>
               </div>
             </form>
+
+            <div class="cform-success" id="cform-success">
+              <div class="cform-success__star">✦</div>
+              <p class="cform-success__title">Message sent!</p>
+              <p class="cform-success__sub">I'll get back to you soon — usually within 24 hours.</p>
+            </div>
           </div>
 
           <!-- Lilac: book a call — slightly tilted, hero-card style -->
@@ -448,75 +507,141 @@ body {
 <script>
 (function () {
 
-  /* ── Confetti burst on submit ── */
+  /* ── Confetti burst ── */
   var COLORS = ['#F8C495','#C7C2F0','#B8DBEC','#F8E45A','#6BD08A','#F4A26B','#163A2E'];
-
   function burst(cx, cy) {
-    for (var i = 0; i < 22; i++) {
-      var dot   = document.createElement('div');
+    for (var i = 0; i < 28; i++) {
+      var dot = document.createElement('div');
       dot.className = 'c-dot';
-      var angle = (i / 22) * Math.PI * 2;
-      var dist  = 55 + Math.random() * 90;
-      var dx    = Math.cos(angle) * dist;
-      var dy    = Math.sin(angle) * dist - 35;
+      var angle = (i / 28) * Math.PI * 2;
+      var dist = 60 + Math.random() * 100;
       dot.style.cssText =
         'left:' + cx + 'px;top:' + cy + 'px;' +
         'background:' + COLORS[i % COLORS.length] + ';' +
-        '--dx:' + dx + 'px;--dy:' + dy + 'px;' +
-        'animation-delay:' + (i * 18) + 'ms;';
+        '--dx:' + (Math.cos(angle) * dist) + 'px;' +
+        '--dy:' + (Math.sin(angle) * dist - 40) + 'px;' +
+        'animation-delay:' + (i * 14) + 'ms;';
       document.body.appendChild(dot);
-      setTimeout(function (d) { d.remove(); }, 950, dot);
+      setTimeout(function (d) { d.remove(); }, 1000, dot);
     }
   }
 
-  var form  = document.getElementById('cform');
-  var btn   = document.getElementById('csub');
-  var label = document.getElementById('csub-text');
-  var plane = document.getElementById('csub-plane');
-  var note  = document.getElementById('cform-note');
+  /* ── Validation helpers ── */
+  function getField(id) { return document.getElementById('field-' + id); }
+  function getVal(id)   { return (document.getElementById(id) || {}).value || ''; }
+
+  function markError(fieldId) {
+    var el = getField(fieldId);
+    if (!el) return;
+    el.classList.remove('do-shake');
+    void el.offsetWidth;
+    el.classList.add('has-error', 'do-shake');
+    el.addEventListener('animationend', function () { el.classList.remove('do-shake'); }, { once: true });
+  }
+  function clearError(fieldId) {
+    var el = getField(fieldId);
+    if (el) el.classList.remove('has-error');
+  }
+
+  /* ── Live clear errors on typing ── */
+  ['fname','lname','email','msg'].forEach(function (id) {
+    var inp = document.getElementById(id);
+    if (inp) inp.addEventListener('input', function () { clearError(id); });
+  });
+
+  /* ── Email regex ── */
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+
+  /* ── Form submit ── */
+  var form    = document.getElementById('cform');
+  var btn     = document.getElementById('csub');
+  var label   = document.getElementById('csub-text');
+  var plane   = document.getElementById('csub-plane');
+  var note    = document.getElementById('cform-note');
+  var success = document.getElementById('cform-success');
 
   if (form && btn) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (btn.disabled) return;
 
-      /* confetti origin = centre of button */
-      var r = btn.getBoundingClientRect();
-      burst(r.left + r.width / 2, r.top + r.height / 2);
+      /* — Validate — */
+      var errors = [];
+      if (!getVal('fname').trim()) { markError('fname'); errors.push('fname'); }
+      if (!getVal('lname').trim()) { markError('lname'); errors.push('lname'); }
+      if (!validEmail(getVal('email'))) { markError('email'); errors.push('email'); }
+      if (!getVal('msg').trim())   { markError('msg');   errors.push('msg'); }
 
-      /* paper plane flies off */
+      if (errors.length) return;
+
+      /* — Animate button — */
+      btn.disabled = true;
+      label.textContent = 'Sending…';
       plane.style.transition = 'transform .35s ease, opacity .35s ease';
       plane.style.transform  = 'translate(32px,-24px) rotate(20deg)';
       plane.style.opacity    = '0';
 
-      label.textContent = 'Sent!';
-      btn.classList.add('is-sent');
-      btn.disabled = true;
-      note.style.opacity = '0';
+      /* ── Submit to Formspree ──
+         1. Sign up free at formspree.io
+         2. Create a new form → copy the endpoint ID (e.g. "xbzwkyyy")
+         3. Replace YOUR_FORMSPREE_ID below with that ID
+         ───────────────────────────── */
+      var ENDPOINT = 'https://formspree.io/f/xykorpqy';
 
-      /* after a beat: swap icon to a check */
-      setTimeout(function () {
-        plane.style.transition = 'none';
-        plane.style.transform  = 'none';
-        plane.style.opacity    = '1';
-        plane.innerHTML =
-          '<path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
-        note.style.opacity = '1';
-        note.textContent   = "I'll be in touch soon.";
-      }, 500);
+      var data = new FormData(form);
+
+      fetch(ENDPOINT, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
+        .then(function (res) {
+          if (res.ok) {
+            showSuccess();
+          } else {
+            res.json().then(function (j) { showNetworkError(j.error || 'Something went wrong.'); });
+          }
+        })
+        .catch(function () { showNetworkError('Network issue — please email me directly.'); });
     });
+  }
+
+  function showSuccess() {
+    var r = btn.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2);
+    setTimeout(function () {
+      form.style.transition = 'opacity .3s ease';
+      form.style.opacity = '0';
+      setTimeout(function () {
+        form.style.display = 'none';
+        if (note) note.style.display = 'none';
+        success.classList.add('is-visible');
+        burst(
+          success.getBoundingClientRect().left + success.offsetWidth / 2,
+          success.getBoundingClientRect().top + 80
+        );
+      }, 320);
+    }, 200);
+  }
+
+  function showNetworkError(msg) {
+    btn.disabled = false;
+    label.textContent = 'Send message';
+    plane.style.transition = 'none';
+    plane.style.transform = '';
+    plane.style.opacity = '1';
+    if (note) { note.textContent = msg; note.style.color = '#E8634A'; note.style.opacity = '1'; }
   }
 
 }());
 </script>
 
 <script type="text/babel" src="navbar.jsx"></script>
+<div id="cfooter-root"></div>
+<script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Nav */
+/* global React, ReactDOM, Nav, FooterSection */
 const _cHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="" onChange={function(it) { window.location.href = _cHrefs[it] || '#'; }} />
 );
+ReactDOM.createRoot(document.getElementById('cfooter-root')).render(<FooterSection />);
 </script>
 
 <script type="text/javascript">

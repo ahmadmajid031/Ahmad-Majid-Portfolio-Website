@@ -58,6 +58,7 @@ const CARDS = [
     title: "Use Cases",
     body: "See how I solve problems for the companies I work with. Fair warning: the case studies run long. There's a TL;DR at the end.",
     cta: "View Use Cases",
+    ctaHref: "work.html",
     rotate: -8,
     z: 1,
     leftPct: 0.18,
@@ -80,6 +81,7 @@ const CARDS = [
     title: "Creating Content",
     body: "This year I set a resolution to make educational reels about the small things we never stop to notice. Two million views later, it seems to be working.",
     cta: "View page",
+    ctaHref: "https://www.instagram.com/omniahmadmajid/",
     rotate: 4,
     z: 3,
     leftPct: 0.60,
@@ -92,6 +94,7 @@ const CARDS = [
     title: "Ayn by Dal",
     body: "I'm currently a product designer at Dal, where we're building Ayn — an all-in-one KYC and compliance platform.",
     cta: "Visit Dal's website",
+    ctaHref: "https://getdal.sa",
     rotate: 9,
     z: 4,
     leftPct: 0.82,
@@ -135,12 +138,21 @@ function Card({ data, hovered, anyHovered, onHover, onLeave, animateOnLoad }) {
           {data.label !== null && data.label && <span className="card__label">{data.label}</span>}
           <h3 className="card__title">{data.title}</h3>
           <p className="card__body">{data.body}</p>
-          <button className="card__cta">
-            {data.cta}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          {data.ctaHref ? (
+            <a href={data.ctaHref} className="card__cta" target={data.ctaHref.startsWith('http') ? '_blank' : '_self'} rel="noopener">
+              {data.cta}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          ) : (
+            <button className="card__cta">
+              {data.cta}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
         </>
       )}
     </div>
@@ -220,7 +232,7 @@ function Hero() {
             width={200}
             height={125}
           >
-            <InlinePill tone="dark" href="https://dal.ai" icon={
+            <InlinePill tone="dark" href="https://getdal.sa" icon={
               <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" fill="#F4A26B"/></svg>
             }>Dal</InlinePill>
           </HoverPeek>
@@ -230,7 +242,7 @@ function Hero() {
             width={200}
             height={125}
           >
-            <InlinePill tone="dark" href="#" icon={
+            <InlinePill tone="dark" href="https://www.instagram.com/omniahmadmajid/" icon={
               <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" rx="1.6" fill="#C7C2F0"/></svg>
             }>Omnia</InlinePill>
           </HoverPeek>
@@ -466,7 +478,7 @@ const css = `
   align-self: flex-start;
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--pill-dark); color: #F4ECDC;
-  border: 0; cursor: pointer;
+  border: 0; cursor: pointer; text-decoration: none;
   padding: 9px 14px;
   border-radius: 999px;
   font: inherit; font-size: 13px; font-weight: 600;

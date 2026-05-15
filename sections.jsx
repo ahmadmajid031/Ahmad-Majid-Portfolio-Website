@@ -42,7 +42,7 @@ function AboutSection() {
               </svg>
               Download resume
             </a>
-            <a className="about-btn" href="#">
+            <a className="about-btn" href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" strokeWidth="1.5"/>
                 <path d="M5.5 11.5v-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -63,16 +63,8 @@ function AboutSection() {
             <div className="acard__eyebrow">Education</div>
             <div className="acard__rows">
               <div className="acard__row">
-                <span className="acard__name">Queen Mary, London</span>
-                <span className="acard__sub">BSc Computer Science</span>
-              </div>
-              <div className="acard__row">
-                <span className="acard__name">University of Twente</span>
-                <span className="acard__sub">MSc Interactive Technology</span>
-              </div>
-              <div className="acard__row">
-                <span className="acard__name">KTH Royal Institute of Technology</span>
-                <span className="acard__sub">MSc Human Computer Interaction</span>
+                <span className="acard__name">Lahore University of Management Sciences</span>
+                <span className="acard__sub">BS Management Science</span>
               </div>
             </div>
           </div>
@@ -82,15 +74,15 @@ function AboutSection() {
             <div className="acard__rows">
               <div className="acard__row">
                 <span className="acard__name">Dal</span>
-                <span className="acard__sub">Product Designer · 2024 – Now</span>
+                <span className="acard__sub">Product Designer · 2025 – Now</span>
               </div>
               <div className="acard__row">
-                <span className="acard__name">Asana</span>
-                <span className="acard__sub">Embedded Product Designer · 2024</span>
+                <span className="acard__name">Freelance</span>
+                <span className="acard__sub">Product Designer · 2024 – 2025</span>
               </div>
               <div className="acard__row">
-                <span className="acard__name">Notion</span>
-                <span className="acard__sub">Embedded Product Designer · 2023</span>
+                <span className="acard__name">Mountainise</span>
+                <span className="acard__sub">Product Designer · 2023 – 2024</span>
               </div>
             </div>
           </div>
@@ -105,7 +97,7 @@ function AboutSection() {
 const WORK = [
   {
     slug: "dal-ayn",
-    year: "2024",
+    year: "2025",
     company: "Dal",
     role: "Product Designer",
     title: "Building Ayn — from zero",
@@ -130,7 +122,7 @@ const WORK = [
     slug: "notion-ai",
     year: "2023",
     company: "Notion",
-    role: "Staff Product Designer",
+    role: "Product Designer",
     title: "Redesigning AI in Databases",
     blurb: "Bringing trust, clarity, and control to Notion's AI properties — turning a feature with 67% drop-off into one teams could actually adopt.",
     image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1400&q=80",
@@ -186,19 +178,16 @@ function WorkCard({ item, onLock }) {
           )}
         </div>
 
-        <h3 className="wcard__title">{item.title}</h3>
+        {item.locked
+          ? <h3 className="wcard__title wcard__title--link" onClick={() => onLock && onLock(item.slug)} style={{cursor:'pointer'}}>{item.title}</h3>
+          : <a href={dest} className="wcard__title wcard__title--link">{item.title}</a>}
         <p className="wcard__blurb">{item.blurb}</p>
 
         {/* Image */}
-        <div className="wcard__media">
-          <img
-            src={item.image}
-            alt={item.title}
-            loading="lazy"
-            style={{ viewTransitionName: "case-img-" + item.slug }}
-          />
-          <div className="wcard__tint" style={{ background: `radial-gradient(120% 80% at 80% 0%, ${item.accent}44, transparent 60%)` }} />
-          {item.locked && (
+        {item.locked ? (
+          <div className="wcard__media" onClick={() => onLock && onLock(item.slug)} style={{cursor:'pointer'}}>
+            <img src={item.image} alt={item.title} loading="lazy" style={{ viewTransitionName: "case-img-" + item.slug }} />
+            <div className="wcard__tint" style={{ background: `radial-gradient(120% 80% at 80% 0%, ${item.accent}44, transparent 60%)` }} />
             <div className="wcard__lock-veil">
               <div className="wcard__lock-chip">
                 <svg width="13" height="14" viewBox="0 0 13 14" fill="none">
@@ -208,8 +197,13 @@ function WorkCard({ item, onLock }) {
                 Password protected
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <a href={dest} className="wcard__media">
+            <img src={item.image} alt={item.title} loading="lazy" style={{ viewTransitionName: "case-img-" + item.slug }} />
+            <div className="wcard__tint" style={{ background: `radial-gradient(120% 80% at 80% 0%, ${item.accent}44, transparent 60%)` }} />
+          </a>
+        )}
 
         {/* Footer */}
         <div className="wcard__foot">
@@ -335,12 +329,6 @@ function WorkSection() {
             <div>
               <h2 className="slab__h2">Some recent work</h2>
             </div>
-            <a href="work.html" className="ghost-link">
-              See all case studies
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M3 7h7M7 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
           </div>
 
           <div className="wlist">
@@ -421,12 +409,9 @@ function FooterSection() {
 
         <a
           className="foot__email"
-          href="#"
-          data-cal-link="ahmad-majid-7sgoyt/30min"
-          data-cal-namespace="30min"
-          data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+          href="contact.html"
         >
-          <span>hi@ahmadmajid.com</span>
+          <span>Say Hello</span>
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
             <path d="M4 11h14M11 5l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -437,19 +422,18 @@ function FooterSection() {
             <div>
               <div className="foot__label">Elsewhere</div>
               <ul>
-                <li><a href="#">Are.na</a></li>
-                <li><a href="#">Read.cv</a></li>
-                <li><a href="#">GitHub</a></li>
-                <li><a href="#">LinkedIn</a></li>
+                <li><a href="https://github.com/ahmadmajid031" target="_blank" rel="noopener">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://read.cv/ahmadmajid" target="_blank" rel="noopener">Read.cv</a></li>
               </ul>
             </div>
             <div>
               <div className="foot__label">Now</div>
               <ul>
-                <li>Brooklyn, NY</li>
+                <li>Lahore, PK</li>
                 <li>Open to advisory</li>
-                <li>Reading: Range</li>
-                <li>Listening: HAIM</li>
+                <li>Reading: Art of Propaganda</li>
+                <li>Listening: Madan Mohan</li>
               </ul>
             </div>
           </div>
@@ -697,13 +681,16 @@ const sectionsCss = `
   background: rgba(20,40,30,.07); padding: 5px 10px 5px 8px; border-radius: 999px; flex-shrink: 0;
 }
 .wcard__title {
+  display: block;
   margin: 14px 24px 0;
   font-family: 'Newsreader', Georgia, serif;
   font-weight: 700; font-size: clamp(28px, 3.2vw, 46px);
   letter-spacing: -0.025em; line-height: 1.0; color: var(--ink);
   transition: color .35s ease;
 }
+.wcard__title--link { text-decoration: none; cursor: pointer; }
 .wrow:hover .wcard__title { color: var(--row-accent); }
+a.wcard__media { display: block; cursor: pointer; }
 .wcard__blurb {
   margin: 12px 24px 0;
   font-size: clamp(14px, 1.1vw, 16px); line-height: 1.55; font-weight: 500;
@@ -1000,10 +987,10 @@ const sectionsCss = `
 .foot__cols ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
 .foot__cols a {
   color: #F4ECDC; text-decoration: none;
-  font-size: 15px; font-weight: 500; opacity: .6;
+  font-size: 15px; font-weight: 500; opacity: 1;
   transition: opacity .2s;
 }
-.foot__cols a:hover { opacity: 1; }
+.foot__cols a:hover { opacity: .7; }
 .foot__cols li { color: #F4ECDC; font-size: 15px; font-weight: 500; opacity: .42; }
 
 .foot__bottom {

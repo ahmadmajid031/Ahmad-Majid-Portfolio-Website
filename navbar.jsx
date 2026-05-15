@@ -61,10 +61,10 @@ function Nav({ active, onChange }) {
   return (
     <header className="nav">
       <div className="nav__inner">
-        <div className="nav__brand">
+        <a className="nav__brand" href="index.html">
           <img src="Images/navbar-logo.png" alt="Ahmad Majid" className="nav__logo" />
           <span className="nav__name">Ahmad Majid</span>
-        </div>
+        </a>
 
         <nav className="nav__pill" ref={navRef}>
           <span ref={pillRef} className="nav__pill-active" style={{ opacity: 0 }} />
