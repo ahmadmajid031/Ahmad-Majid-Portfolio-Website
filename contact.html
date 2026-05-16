@@ -384,10 +384,12 @@ body {
   .cform__actions { flex-direction: column; align-items: stretch; }
   .cform__note  { text-align: center; }
 }
+@media (max-width: 860px) {
+  .ccontacts { width: 100%; }
+  .cinfo__cards { flex-direction: column; width: 100%; }
+  .ccard--contact { width: 100%; transform: none !important; box-sizing: border-box; }
+}
 @media (max-width: 520px) {
-  .cinfo__cards { flex-direction: column; }
-  .ccard--email { transform: rotate(-3deg); }
-  .ccard--phone { transform: rotate(2.5deg); }
   .cslab { padding-left: 20px; padding-right: 20px; }
 }
 </style>

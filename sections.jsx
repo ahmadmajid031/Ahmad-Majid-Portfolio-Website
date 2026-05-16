@@ -529,6 +529,10 @@ const sectionsCss = `
   transition: transform .2s ease, box-shadow .2s ease;
 }
 .about-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0,0,0,.22); }
+@media (max-width: 640px) {
+  .about-actions { flex-direction: column; }
+  .about-btn { width: 100%; justify-content: center; }
+}
 
 /* Playful stacked cards — about right column */
 .acard {
