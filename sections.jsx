@@ -425,6 +425,7 @@ function FooterSection() {
                 <li><a href="https://github.com/ahmadmajid031" target="_blank" rel="noopener">GitHub</a></li>
                 <li><a href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">LinkedIn</a></li>
                 <li><a href="Resume/Resume-Ahmad Majid- Product Designer.pdf" download>Resume</a></li>
+                <li><a href="https://medium.com/@ahmadmajid031" target="_blank" rel="noopener">Medium</a></li>
               </ul>
             </div>
             <div>
