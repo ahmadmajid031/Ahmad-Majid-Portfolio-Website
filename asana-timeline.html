@@ -823,13 +823,16 @@
 
 </main>
 
+<div id="afooter-root"></div>
 <script type="text/babel" src="navbar.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Nav */
+/* global React, ReactDOM, Nav, FooterSection */
 const _aHrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="Case Studies" onChange={function(it) { window.location.href = _aHrefs[it]; }} />
 );
+ReactDOM.createRoot(document.getElementById('afooter-root')).render(<FooterSection />);
 </script>
 
 </body>

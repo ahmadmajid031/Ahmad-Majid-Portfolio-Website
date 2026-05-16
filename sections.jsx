@@ -36,7 +36,7 @@ function AboutSection() {
             <p>For the past year and a half I've been working at Dal as a product designer. I lead design, run UX research, and build AI chatbots and automated workflows into the product. If AI comes for that stack next, I've already decided: full-time comedian.</p>
           </div>
           <div className="about-actions">
-            <a className="about-btn" href="#">
+            <a className="about-btn" href="Resume/Resume-Ahmad Majid- Product Designer.pdf" download>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2v8M5 8l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -424,7 +424,7 @@ function FooterSection() {
               <ul>
                 <li><a href="https://github.com/ahmadmajid031" target="_blank" rel="noopener">GitHub</a></li>
                 <li><a href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">LinkedIn</a></li>
-                <li><a href="https://read.cv/ahmadmajid" target="_blank" rel="noopener">Read.cv</a></li>
+                <li><a href="Resume/Resume-Ahmad Majid- Product Designer.pdf" download>Resume</a></li>
               </ul>
             </div>
             <div>
@@ -743,8 +743,7 @@ a.wcard__media { display: block; cursor: pointer; }
 @media (max-width: 760px) {
   .wlist::before { display: none; }
   .wrow { grid-template-columns: 1fr; }
-  .wrow__timeline { flex-direction: row; padding-top: 0; gap: 10px; align-items: center; }
-  .wrow__node { width: 10px; height: 10px; }
+  .wrow__timeline { display: none; }
 }
 .ghost-link {
   display: inline-flex; align-items: center; gap: 8px;

@@ -819,13 +819,16 @@
 
 </main>
 
+<div id="nfooter-root"></div>
 <script type="text/babel" src="navbar.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Nav */
+/* global React, ReactDOM, Nav, FooterSection */
 const _hrefs = { "Home": "index.html", "Case Studies": "work.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="Case Studies" onChange={function(it) { window.location.href = _hrefs[it]; }} />
 );
+ReactDOM.createRoot(document.getElementById('nfooter-root')).render(<FooterSection />);
 </script>
 </body>
 </html>

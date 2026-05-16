@@ -390,14 +390,31 @@ const booksCss = `
 .book-row__note { font-style: italic; opacity: .75; }
 
 @media (max-width: 880px) {
-  .books { display: block; } /* single column, no grid */
-  .books__grid { display: none; } /* hide covers entirely */
-  .books__list { margin-top: 28px; gap: 0; }
-  .book-row__chip { display: none; }
-  .book-row__meta { margin-left: 0; }
+  .books { display: block; }
+  .books__grid { display: none; }
+  .books__list { margin-top: 20px; gap: 0; }
+
+  /* Clear card-like rows with borders */
+  .book-row { padding: 18px 0; border-bottom: 1px solid rgba(20,40,30,.09); }
+  .book-row:first-child { border-top: 1px solid rgba(20,40,30,.09); }
+  .book-row.is-active { transform: none; }
+
+  /* Line 1: num + chip */
+  .book-row__top {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px 8px;
+    margin-bottom: 4px;
+  }
+  .book-row__num   { order: 1; }
+  .book-row__chip  { order: 2; display: inline-flex; }
+  /* Title takes full width below num+chip */
+  .book-row__title { order: 3; flex: 0 0 100%; font-size: clamp(24px, 6vw, 32px); line-height: 1.1; }
+  .book-row__arrow { display: none; }
+
+  /* Author · year sits tight below the title */
+  .book-row__meta { margin: 3px 0 0; font-size: 13px; }
   .book-row__note { display: none; }
-  .book-row__title { font-size: clamp(20px, 5vw, 28px); }
-  .book-row__top { gap: 10px; }
 }
 `;
 const booksStyleEl = document.createElement('style');
