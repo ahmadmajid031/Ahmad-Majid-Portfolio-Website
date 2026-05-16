@@ -348,18 +348,8 @@ function Hero() {
       <TestsSection />
       <FooterSection />
 
-      <div className="floater" aria-hidden="true">
-        <div className="floater__bubble">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <path d="M3 12c0-4.4 3.6-8 8-8s8 3.6 8 8c0 1.7-.5 3.2-1.4 4.5L18 19l-3-1.4C13.7 18.5 12.4 19 11 19c-4.4 0-8-3.1-8-7z" stroke="#F4ECDC" strokeWidth="1.6"/>
-            <circle cx="8" cy="11.5" r="1" fill="#F4ECDC"/>
-            <circle cx="11" cy="11.5" r="1" fill="#F4ECDC"/>
-            <circle cx="14" cy="11.5" r="1" fill="#F4ECDC"/>
-          </svg>
-        </div>
-      </div>
 
-      <TweaksPanel title="Tweaks">
+<TweaksPanel title="Tweaks">
         <TweakSection title="Look">
           <TweakRadio
             label="Palette"
