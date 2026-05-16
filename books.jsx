@@ -39,7 +39,7 @@ const BOOKS = [
     tag: "Philosophy",
     color: "lilac",
     image: "images/book-covers/101essays.jpg",
-    goodreads: "https://www.goodreads.com/book/show/29782854",
+    goodreads: "https://www.goodreads.com/book/show/32998876-101-essays-that-will-change-the-way-you-think",
   },
   {
     id: "b3",
