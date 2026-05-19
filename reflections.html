@@ -278,6 +278,18 @@ const TAG_DEFAULT = { bg: "#EFE6D6", rot: "-1.8deg" };
 /* ─── Data: add new entries at the top, sorted newest-first automatically ─── */
 const REFLECTIONS = [
   {
+    id: "you-learn-best-from-yourself",
+    date: "2026-05-19",
+    tag: "Reflection",
+    title: "You learn best from yourself.",
+    paragraphs: [
+      { type: "text", text: "I got into creating educational reels on social media in December 2025. I took a leap of faith and created the worst possible reel. It hardly got any views, and barely a couple of people watched it to the end." },
+      { type: "text", text: "So, I studied a lot about creating good content. I sifted through hundreds of news headlines, trying to uncover the best way to write titles. Later, I analyzed big content creators and the first five seconds of their videos." },
+      { type: "text", text: "The results were amazing. I can confidently say that I write much better headlines than I have in the past (I wouldn't go so far as to say that I write titles comparable to the BBC, but there is still a massive improvement). Additionally, some of my videos exploded after I learned to write better titles and hooks." },
+      { type: "text", text: "Needless to say, we now have over 2 million views on Instagram—and we were at zero just this past December. The learning, however, is much greater than the numbers." },
+    ],
+  },
+  {
     id: "deep-work-formula",
     date: "2026-05-19",
     tag: "Reflection",
@@ -317,13 +329,25 @@ function ReflectionCard({ item, batchIndex }) {
   const [copied, setCopied] = useRS(false);
 
   const tagStyle = TAG_MAP[item.tag] || TAG_DEFAULT;
-  const shareUrl = window.location.href.split("?")[0].split("#")[0] + "reflections.html#" + item.id;
+  const shareUrl = window.location.href.split("?")[0].split("#")[0] + "#" + item.id;
 
   function copyLink() {
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2400);
-    });
+    const url = shareUrl;
+    const apply = () => { setCopied(true); setTimeout(() => setCopied(false), 2400); };
+    const fallback = () => {
+      const el = document.createElement('textarea');
+      el.value = url;
+      el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+      document.body.appendChild(el);
+      el.select();
+      try { document.execCommand('copy'); apply(); } catch(e) {}
+      document.body.removeChild(el);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(apply).catch(fallback);
+    } else {
+      fallback();
+    }
   }
 
   const tweetHref = "https://x.com/intent/tweet?text=" + encodeURIComponent('"' + item.title + '"') + "&url=" + encodeURIComponent(shareUrl);
