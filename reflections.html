@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-41KDM0XZL0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-41KDM0XZL0");
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reflections · Ahmad Majid</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700;6..72,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: .55s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+  ::view-transition-group(*) { animation-duration: .65s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+
+  :root {
+    --bg: #EFE6D6;
+    --hero-bg: #F6EFE0;
+    --ink: #163A2E;
+    --pill-dark: #15140F;
+    --peach: #F8C495;
+    --lilac: #C7C2F0;
+    --sky:   #B8DBEC;
+    --sun:   #F8E45A;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero (matches work page style exactly) ── */
+  .rpage-hero {
+    max-width: 1320px; margin: 0 auto;
+    padding: clamp(48px, 6vw, 80px) clamp(28px, 5vw, 72px) clamp(32px, 4vw, 52px);
+    animation: rFadeUp .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes rFadeUp { from { opacity: 0; transform: translateY(10px); } }
+
+  .rpage-title {
+    margin: 0;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    font-size: clamp(52px, 8.5vw, 128px);
+    color: var(--ink);
+  }
+  .rpage-sub {
+    margin: 10px 0 0;
+    font-size: clamp(16px, 1.3vw, 19px);
+    font-weight: 500; line-height: 1.5;
+    color: var(--ink); opacity: .7;
+    max-width: 56ch;
+  }
+
+  /* ── List ── */
+  .rlist {
+    max-width: 1320px; margin: 0 auto;
+    padding: 0 clamp(28px, 5vw, 72px) 40px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  /* ── Infinite scroll sentinel + loader ── */
+  .rlist__sentinel {
+    height: 64px; display: flex; align-items: center; justify-content: center;
+  }
+  .rlist__loader { display: flex; gap: 6px; align-items: center; }
+  .rlist__loader span {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--ink); opacity: .2;
+    animation: rBounce 1.2s ease-in-out infinite;
+  }
+  .rlist__loader span:nth-child(2) { animation-delay: .16s; }
+  .rlist__loader span:nth-child(3) { animation-delay: .32s; }
+  @keyframes rBounce {
+    0%,80%,100% { transform: scale(.7); opacity: .18; }
+    40% { transform: scale(1.3); opacity: .6; }
+  }
+
+  /* ── Card reveal wrapper ── */
+  .rcard-wrap {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .rcard-wrap.is-in { opacity: 1; transform: none; }
+
+  /* ── Card ── */
+  .rcard {
+    background: var(--hero-bg);
+    border-radius: 28px;
+    border: 1.5px solid rgba(0,0,0,.05);
+    box-shadow: 0 1px 0 rgba(255,255,255,.65) inset, 0 10px 32px -18px rgba(20,40,30,.14);
+    overflow: hidden;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease, border-color .4s ease;
+  }
+  .rcard-wrap.is-in:hover .rcard {
+    transform: translateY(-6px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.65) inset, 0 32px 56px -22px rgba(20,40,30,.22);
+    border-color: rgba(0,0,0,.09);
+  }
+
+  /* ── Card header: tag + date ── */
+  .rcard__header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding: clamp(28px, 3.5vw, 44px) clamp(28px, 3.5vw, 44px) 0;
+  }
+
+  /* Tilted tag sticker */
+  .rcard__tag {
+    display: inline-block;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700; font-style: italic;
+    font-size: clamp(14px, 1.1vw, 16px);
+    padding: 6px 16px;
+    border-radius: 5px;
+    color: var(--ink);
+    box-shadow: 0 2px 8px rgba(20,40,30,.13), 0 1px 0 rgba(255,255,255,.55) inset;
+    cursor: default;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+    will-change: transform;
+  }
+  .rcard-wrap:hover .rcard__tag {
+    transform: rotate(0deg) scale(1.06) !important;
+    box-shadow: 0 5px 14px rgba(20,40,30,.18), 0 1px 0 rgba(255,255,255,.55) inset;
+  }
+
+  /* Tag pop animation on reveal */
+  .rcard-wrap.is-in .rcard__tag {
+    animation: tagPop .55s .15s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes tagPop {
+    from { opacity: 0; transform: scale(.65) !important; }
+    60%  { transform: scale(1.1) !important; }
+  }
+
+  /* Date */
+  .rcard__date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: .04em;
+    color: var(--ink); opacity: .55;
+    padding-top: 8px;
+    white-space: nowrap;
+  }
+
+  /* ── Card body ── */
+  .rcard__body {
+    padding: clamp(18px, 2vw, 26px) clamp(28px, 3.5vw, 44px) clamp(22px, 2.5vw, 32px);
+  }
+
+  .rcard__title {
+    margin: 0 0 20px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    font-size: clamp(32px, 4.5vw, 68px);
+    color: var(--ink);
+  }
+
+  .rcard__content { max-width: 72ch; }
+  .rcard__content p {
+    margin: 0 0 16px;
+    font-size: clamp(15px, 1.1vw, 17px);
+    line-height: 1.75; font-weight: 500;
+    color: var(--ink); opacity: .75;
+  }
+  .rcard__content p:last-child { margin-bottom: 0; }
+
+  /* Neutral blockquote — no color theming, works for any content */
+  .rcard__content blockquote {
+    margin: 20px 0;
+    padding: 14px 20px;
+    border-left: 3px solid rgba(22,58,46,.22);
+    border-radius: 0 10px 10px 0;
+    background: rgba(22,58,46,.04);
+  }
+  .rcard__content blockquote p {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 700; font-style: italic;
+    font-size: clamp(18px, 1.8vw, 26px);
+    letter-spacing: -0.02em; line-height: 1.3;
+    opacity: .85;
+    margin: 0;
+  }
+
+  /* ── Share row ── */
+  .rcard__share {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: clamp(14px, 1.8vw, 20px) clamp(28px, 3.5vw, 44px) clamp(22px, 2.5vw, 30px);
+    border-top: 1px solid rgba(20,40,30,.07);
+  }
+
+  .rcard__share-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 18px; border-radius: 999px;
+    background: var(--pill-dark); color: #F4ECDC;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: -.01em;
+    border: 0; cursor: pointer; text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 4px 12px rgba(0,0,0,.22);
+    transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease, background .18s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .rcard__share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 9px 22px rgba(0,0,0,.3);
+  }
+  .rcard__share-btn:active {
+    transform: scale(.94);
+    box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 2px 6px rgba(0,0,0,.2);
+  }
+  .rcard__share-btn--copied {
+    background: #1E5E38 !important;
+  }
+  .rcard__share-btn--copied:hover {
+    background: #256b41 !important;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .rcard__title { font-size: clamp(28px, 7.5vw, 44px); }
+    .rcard__share { gap: 8px; }
+    .rcard__share-btn { padding: 9px 14px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="rnav-root"></div>
+
+<!-- Hero matches work.html style -->
+<div class="rpage-hero">
+  <h1 class="rpage-title">Reflections</h1>
+  <p class="rpage-sub">Notes from books, conversations, and rabbit holes I didn't plan to fall into.</p>
+</div>
+
+<div id="rlist-root"></div>
+<div id="rfooter-root"></div>
+
+<script type="text/babel" src="navbar.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
+<script type="text/babel">
+/* global React, ReactDOM, Nav, FooterSection */
+const { useState: useRS, useEffect: useRE, useRef: useRR } = React;
+
+/* ─── Tag presets: add new tags here, they auto-style ─── */
+const TAG_MAP = {
+  "Reflection":  { bg: "#C7C2F0", rot: "-2.5deg" },
+  "Philosophy":  { bg: "#F8E45A", rot: "2deg"    },
+  "History":     { bg: "#F8C495", rot: "-1.8deg"  },
+  "Learning":    { bg: "#B8DBEC", rot: "1.5deg"   },
+  "Observation": { bg: "#F8E45A", rot: "-2.2deg"  },
+  "Design":      { bg: "#F8C495", rot: "1.8deg"   },
+  "Question":    { bg: "#B8DBEC", rot: "-1.5deg"  },
+};
+const TAG_DEFAULT = { bg: "#EFE6D6", rot: "-1.8deg" };
+
+/* ─── Data: add new entries at the top, sorted newest-first automatically ─── */
+const REFLECTIONS = [
+  {
+    id: "deep-work-formula",
+    date: "2026-05-19",
+    tag: "Reflection",
+    title: "The formula for greatness in any field",
+    paragraphs: [
+      { type: "text", text: "One of the key takeaways I took from Cal Newport's Deep Work is the fact that there is a very simple formula that works every time for someone reaching for greatness. It is intuitive, but it helped me put things into perspective and view them through a lens I had never considered before." },
+      { type: "text", text: "The formula is very simple:" },
+      { type: "quote", text: "Intensity of Focus × Number of Hours Put In." },
+      { type: "text", text: "Such a simple formula, yet so powerful." },
+    ],
+  },
+];
+
+/* ─── Helpers ─── */
+function formatDate(iso) {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+
+function useReveal() {
+  const ref = useRR(null);
+  const [on, setOn] = useRS(false);
+  useRE(() => {
+    if (!ref.current) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setOn(true); io.disconnect(); }
+    }, { threshold: 0, rootMargin: "0px 0px -60px 0px" });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  return [ref, on];
+}
+
+/* ─── Card ─── */
+function ReflectionCard({ item, batchIndex }) {
+  const [wrapRef, inView] = useReveal();
+  const [copied, setCopied] = useRS(false);
+
+  const tagStyle = TAG_MAP[item.tag] || TAG_DEFAULT;
+  const shareUrl = window.location.href.split("?")[0].split("#")[0] + "reflections.html#" + item.id;
+
+  function copyLink() {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2400);
+    });
+  }
+
+  const tweetHref = "https://x.com/intent/tweet?text=" + encodeURIComponent('"' + item.title + '"') + "&url=" + encodeURIComponent(shareUrl);
+  const liHref    = "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(shareUrl);
+
+  return (
+    <div
+      ref={wrapRef}
+      className={"rcard-wrap" + (inView ? " is-in" : "")}
+      style={{ transitionDelay: inView ? (batchIndex * 70) + "ms" : "0ms" }}
+    >
+      <article id={item.id} className="rcard">
+
+        {/* Header: tag sticker + date */}
+        <div className="rcard__header">
+          <span
+            className="rcard__tag"
+            style={{
+              background: tagStyle.bg,
+              transform: "rotate(" + tagStyle.rot + ")",
+            }}
+          >
+            {item.tag}
+          </span>
+          <time className="rcard__date" dateTime={item.date}>{formatDate(item.date)}</time>
+        </div>
+
+        {/* Body: title + content */}
+        <div className="rcard__body">
+          <h2 className="rcard__title">{item.title}</h2>
+          <div className="rcard__content">
+            {item.paragraphs.map((p, i) => {
+              if (p.type === "quote") {
+                return (
+                  <blockquote key={i}>
+                    <p>{p.text}</p>
+                  </blockquote>
+                );
+              }
+              return <p key={i}>{p.text}</p>;
+            })}
+          </div>
+        </div>
+
+        {/* Share */}
+        <div className="rcard__share">
+          <a href={tweetHref} target="_blank" rel="noopener noreferrer" className="rcard__share-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.732-8.885L1.254 2.25H8.08l4.252 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+            </svg>
+            Post on X
+          </a>
+
+          <a href={liHref} target="_blank" rel="noopener noreferrer" className="rcard__share-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            Share on LinkedIn
+          </a>
+
+          <button
+            onClick={copyLink}
+            className={"rcard__share-btn" + (copied ? " rcard__share-btn--copied" : "")}
+          >
+            {copied ? (
+              <>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Copied!
+              </>
+            ) : (
+              <>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Copy link
+              </>
+            )}
+          </button>
+        </div>
+
+      </article>
+    </div>
+  );
+}
+
+/* ─── List with infinite scroll ─── */
+const BATCH = 5;
+
+function ReflectionsList() {
+  const sorted  = [...REFLECTIONS].sort((a, b) => b.date.localeCompare(a.date));
+  const [visible, setVisible] = useRS(Math.min(BATCH, sorted.length));
+  const [loading, setLoading] = useRS(false);
+  const sentRef  = useRR(null);
+
+  useRE(() => {
+    if (visible >= sorted.length || !sentRef.current) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !loading) {
+        setLoading(true);
+        setTimeout(() => {
+          setVisible(v => Math.min(v + BATCH, sorted.length));
+          setLoading(false);
+        }, 380);
+      }
+    }, { threshold: 0.1 });
+    io.observe(sentRef.current);
+    return () => io.disconnect();
+  }, [visible, sorted.length, loading]);
+
+  return (
+    <div className="rlist">
+      {sorted.slice(0, visible).map((r, i) => (
+        <ReflectionCard key={r.id} item={r} batchIndex={i % BATCH} />
+      ))}
+      {visible < sorted.length && (
+        <div ref={sentRef} className="rlist__sentinel">
+          {loading && <div className="rlist__loader"><span /><span /><span /></div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Mount ─── */
+const _rHrefs = {
+  "Home": "index.html",
+  "Case Studies": "work.html",
+  "Reflections": "reflections.html",
+  "About": "about.html",
+};
+
+ReactDOM.createRoot(document.getElementById('rnav-root')).render(
+  <Nav active="Reflections" onChange={function(it) { window.location.href = _rHrefs[it]; }} />
+);
+ReactDOM.createRoot(document.getElementById('rlist-root')).render(<ReflectionsList />);
+ReactDOM.createRoot(document.getElementById('rfooter-root')).render(<FooterSection />);
+</script>
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "30min", {origin:"https://app.cal.com"});
+  Cal.ns["30min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
+</body>
+</html>

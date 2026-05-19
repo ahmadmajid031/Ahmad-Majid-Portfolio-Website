@@ -2,7 +2,7 @@
 const { useEffect: useNavEffect, useRef: useNavRef, useState: useNavState } = React;
 
 function Nav({ active, onChange }) {
-  const items = ["Home", "Case Studies", "About"];
+  const items = ["Home", "Case Studies", "Reflections", "About"];
   const navRef = useNavRef(null);
   const pillRef = useNavRef(null);
   const [menuOpen, setMenuOpen] = useNavState(false);
