@@ -185,6 +185,20 @@
   }
   .rcard__content p:last-child { margin-bottom: 0; }
 
+  /* Inline links — playful wavy underline */
+  .rcard__content a {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--peach);
+    text-underline-offset: 4px;
+    transition: text-decoration-color .25s ease;
+  }
+  .rcard__content a:hover {
+    text-decoration-color: var(--lilac);
+  }
+
   /* Neutral blockquote — no color theming, works for any content */
   .rcard__content blockquote {
     margin: 20px 0;
@@ -277,6 +291,22 @@ const TAG_DEFAULT = { bg: "#EFE6D6", rot: "-1.8deg" };
 
 /* ─── Data: add new entries at the top, sorted newest-first automatically ─── */
 const REFLECTIONS = [
+  {
+    id: "understanding-the-users",
+    date: "2026-05-24",
+    tag: "Design",
+    title: "Understanding the users",
+    paragraphs: [
+      { type: "text", text: "We needed to create a user interface for an AML case against clients. The user should be able to see all the cases of a client and their associations at a glance." },
+      { type: "rich", segments: [
+        "We created all sorts of cards and what not. Beautiful interactions and animations. Kept the cards in the closed state so it is not a cognitive load in the beginning. And guess what? All went to hell. The user was confused. Analytics told us that this was probably a worse design than the ",
+        { text: "Norman Door", href: "https://ixdf.org/literature/article/your-gateway-to-ux-design-norman-doors" },
+        ".",
+      ]},
+      { type: "text", text: "Then we studied the users—they were compliance officers. They previously sifted through spreadsheets before getting our product and automating their processes. So... we designed a spreadsheet-like table for them for the screening results." },
+      { type: "text", text: "The outcome: it was a hit, everyone loved it. The most crappy looking UI of our product was the most loved one." },
+    ],
+  },
   {
     id: "full-time-devils-advocate",
     date: "2026-05-23",
@@ -443,6 +473,17 @@ function ReflectionCard({ item, batchIndex }) {
                   <blockquote key={i}>
                     <p>{p.text}</p>
                   </blockquote>
+                );
+              }
+              if (p.type === "rich") {
+                return (
+                  <p key={i}>
+                    {p.segments.map((seg, j) =>
+                      typeof seg === "string"
+                        ? seg
+                        : <a key={j} href={seg.href} target="_blank" rel="noopener noreferrer">{seg.text}</a>
+                    )}
+                  </p>
                 );
               }
               return <p key={i}>{p.text}</p>;
