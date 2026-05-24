@@ -347,6 +347,7 @@ function Hero() {
       <BooksSection />
       <TestsSection />
       <FooterSection />
+      <LeadMagnetPopup />
 
 
 <TweaksPanel title="Tweaks">
