@@ -1036,6 +1036,10 @@ const featuresCss = `
 }
 
 /* Bottom sheet on phones */
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
 @media (max-width: 600px) {
   .modal {
     padding: 0;
@@ -1044,28 +1048,28 @@ const featuresCss = `
   }
   .modal__panel {
     width: 100%;
-    max-height: 90vh; max-height: 90dvh;
+    /* fixed height so the body flex-child can expand and scroll inside */
+    height: 88vh; height: 88dvh;
+    max-height: 92vh; max-height: 92dvh;
     border-radius: 22px 22px 0 0;
-    /* pull-handle hint */
-    padding-top: 6px;
-    animation: sheetUp .42s cubic-bezier(.2,.9,.25,1);
+    animation: sheetUp .4s cubic-bezier(.2,.9,.25,1);
   }
+  /* pull-handle pill */
   .modal__panel::before {
-    content: "";
-    display: block; flex-shrink: 0;
+    content: ""; display: block; flex-shrink: 0;
     width: 36px; height: 4px; border-radius: 999px;
-    background: rgba(21,20,15,.14);
-    margin: 0 auto 6px;
+    background: rgba(21,20,15,.16);
+    margin: 10px auto 2px;
   }
-  @keyframes sheetUp {
-    from { transform: translateY(100%); opacity: .7; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  .step__title { font-size: clamp(22px, 6vw, 32px); }
-  .modal__body { padding: 12px 16px 20px; }
-  .modal__head { padding: 10px 16px; }
-  .modal__foot { padding: 12px 16px; }
-  .opt-card { padding: 14px 14px 12px; }
+  .modal__head { padding: 8px 16px 10px; }
+  .modal__body { padding: 10px 14px 16px; }
+  .modal__foot { padding: 10px 14px 12px; }
+  .step__title { font-size: clamp(20px, 5.5vw, 28px); }
+  .step__sub   { margin-bottom: 16px; font-size: 14px; }
+  .opt-card    { padding: 12px 12px 10px; gap: 6px; }
+  .opt-card__icon { width: 32px; height: 32px; }
+  /* hide "Step X of Y" text — only track shows on narrow screens */
+  .modal__progress-label { display: none; }
 }
 `;
 
