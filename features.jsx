@@ -822,7 +822,7 @@ const featuresCss = `
 }
 .modal__close:hover { background: var(--pill-dark); color: #F4ECDC; transform: rotate(90deg); }
 
-.modal__body { position: relative; z-index: 2; flex: 1 1 0; padding: clamp(16px,4vw,42px); overflow-y: auto; min-height: 0; -webkit-overflow-scrolling: touch; }
+.modal__body { position: relative; z-index: 2; flex: 1; padding: clamp(16px,4vw,42px); overflow-y: auto; min-height: 0; -webkit-overflow-scrolling: touch; }
 
 /* Steps */
 .step          { position: relative; }
