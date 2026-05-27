@@ -407,20 +407,35 @@ const testsCss = `
   .tests-deck { transform: scale(.78); transform-origin: 50% 0%; height: 300px; }
 }
 @media (max-width: 820px) {
-  .tests-deck { transform: none; height: auto; display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+  .tests-deck {
+    transform: none;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  /* Reset all desktop positioning/rotation so cards stack flat */
   .test-card {
     position: relative !important;
     left: 0 !important;
     bottom: auto !important;
-    transform: rotate(0) !important;
+    transform: none !important;   /* no rotation, no translateY */
     width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
     margin-left: 0 !important;
+    /* min-height + transition from base CSS still apply — card grows downward on expand */
   }
+
+  /* Expanded card on mobile — full width, bigger shadow, no side offset */
   .test-card.is-expanded {
     width: 100% !important;
-    height: auto !important;
+    margin-left: 0 !important;
+    transform: none !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.7) inset,
+      0 28px 44px -16px rgba(20,30,20,.36),
+      0 6px 14px rgba(20,30,20,.12);
   }
 }
 `;
