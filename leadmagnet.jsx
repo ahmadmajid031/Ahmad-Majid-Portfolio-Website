@@ -5,13 +5,14 @@ const LM_KEY   = 'lm_seen';
 const TRIGGER_MS = 10000; // 10 seconds
 
 function LeadMagnetPopup() {
-  const [open,    setOpen]    = useLMSt(false);
-  const [closing, setClosing] = useLMSt(false);
-  const [name,    setName]    = useLMSt('');
-  const [email,   setEmail]   = useLMSt('');
-  const [errors,  setErrors]  = useLMSt({});
-  const [done,    setDone]    = useLMSt(false);
-  const [shaking, setShaking] = useLMSt(false);
+  const [open,       setOpen]       = useLMSt(false);
+  const [closing,    setClosing]    = useLMSt(false);
+  const [name,       setName]       = useLMSt('');
+  const [email,      setEmail]      = useLMSt('');
+  const [errors,     setErrors]     = useLMSt({});
+  const [done,       setDone]       = useLMSt(false);
+  const [shaking,    setShaking]    = useLMSt(false);
+  const [submitting, setSubmitting] = useLMSt(false);
 
   // ── Trigger ────────────────────────────────────────────────────────────────
   useLMEf(() => {
@@ -36,15 +37,32 @@ function LeadMagnetPopup() {
   }
 
   // ── Form submit ────────────────────────────────────────────────────────────
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = {};
-    if (!name.trim())                                   errs.name  = 'What should I call you?';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = 'Need a real email address';
+    if (!name.trim())                                        errs.name  = 'What should I call you?';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))  errs.email = 'Need a real email address';
     if (Object.keys(errs).length) { setErrors(errs); shake(); return; }
     setErrors({});
+    setSubmitting(true);
 
-    // Trigger download
+    // ── Submit lead to Formspree ───────────────────────────────────────────
+    try {
+      await fetch('https://formspree.io/f/meedpwyg', {
+        method:  'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          name,
+          email,
+          _subject: 'UX Audit Workbook Download — ' + name,
+        }),
+      });
+    } catch (_) {
+      /* silent fail — download still proceeds */
+    }
+    setSubmitting(false);
+
+    // ── Trigger download ───────────────────────────────────────────────────
     const a = document.createElement('a');
     a.href     = 'documents/heuristic-audit-workbook.docx';
     a.download = 'UX-Heuristic-Audit-Workbook.docx';
@@ -144,8 +162,8 @@ function LeadMagnetPopup() {
                 {errors.email && <span className="lm-field-err">{errors.email}</span>}
               </div>
 
-              <button type="submit" className="lm-btn">
-                Download free copy
+              <button type="submit" className="lm-btn" disabled={submitting}>
+                {submitting ? 'Sending…' : 'Download free copy'}
                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
                   <path d="M7.5 2v8M4.5 8l3 3 3-3M2.5 13h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>

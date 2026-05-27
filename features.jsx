@@ -269,6 +269,7 @@ function InquiryModal({ service, originRect, onClose }) {
   const [idx, setIdx]           = useFState(0);
   const [answers, setAnswers]   = useFState({});
   const [submitted, setSubmitted] = useFState(false);
+  const [submitting, setSubmitting] = useFState(false);
   const [confetti, setConfetti] = useFState([]);
   const [direction, setDirection] = useFState(1);
   const overlayRef = useFRef(null);
@@ -326,13 +327,12 @@ function InquiryModal({ service, originRect, onClose }) {
     return !!answers[step.field];
   })();
 
-  const next = () => {
-    if (!isStepValid) return;
+  const next = async () => {
+    if (!isStepValid || submitting) return;
     if (idx < total - 1) {
       setDirection(1);
       setIdx(i => i + 1);
     } else {
-      setSubmitted(true);
       const colors = ["#F8C495","#C7C2F0","#B8DBEC","#F8E45A","#6BD08A","#F4A26B"];
       const pieces = Array.from({ length: 60 }, (_, i) => ({
         id: i,
@@ -345,6 +345,49 @@ function InquiryModal({ service, originRect, onClose }) {
         c:  colors[i % colors.length],
         sh: Math.random() > 0.5 ? "sq" : "ci",
       }));
+
+      /* ── Submit to Formspree ── */
+      const ENDPOINTS = {
+        web:     'https://formspree.io/f/xbdbpeeb',
+        product: 'https://formspree.io/f/mzdwkqne',
+      };
+      const endpoint = ENDPOINTS[service.id];
+
+      if (endpoint) {
+        setSubmitting(true);
+        try {
+          const payload = {
+            name:         answers.name        || '',
+            email:        answers.email       || '',
+            notes:        answers.notes       || '',
+            project_type: answers.kind        || '',
+            /* web-specific */
+            budget:       answers.budget      || '',
+            deliverable:  answers.deliverable || '',
+            platform:     answers.platform    || '',
+            pages:        answers.pages       || '',
+            extras:       Array.isArray(answers.extras)
+                            ? answers.extras.join(', ')
+                            : (answers.extras || ''),
+            /* product-specific */
+            team:         answers.team        || '',
+            months:       answers.months      || '',
+            hours:        answers.hours       || '',
+            _subject:     (service.id === 'web' ? 'New Web Design' : 'New Product Design')
+                            + ' Inquiry — ' + (answers.name || 'Website visitor'),
+          };
+          await fetch(endpoint, {
+            method:  'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload),
+          });
+        } catch (_) {
+          /* silent fail — success UI still shown */
+        }
+        setSubmitting(false);
+      }
+
+      setSubmitted(true);
       setConfetti(pieces);
     }
   };
@@ -537,9 +580,9 @@ function InquiryModal({ service, originRect, onClose }) {
             <button
               className="modal__cta"
               onClick={next}
-              disabled={!isStepValid}
+              disabled={!isStepValid || submitting}
             >
-              {idx === total - 1 ? "Send it" : "Next"}
+              {submitting ? 'Sending…' : (idx === total - 1 ? 'Send it' : 'Next')}
               <Icon name="arrow" size={16}/>
             </button>
           </footer>
