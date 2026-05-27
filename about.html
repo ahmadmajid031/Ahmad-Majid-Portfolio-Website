@@ -117,7 +117,7 @@
 <script type="text/babel" src="sections.jsx"></script>
 <script type="text/babel">
 /* global React, ReactDOM, Nav, AboutSection, FooterSection */
-const _aHrefs = { "Home": "index.html", "Case Studies": "work.html", "Reflections": "reflections.html", "About": "about.html" };
+const _aHrefs = { "Home": "index.html", "Services": "services.html", "Case Studies": "work.html", "Reflections": "reflections.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
   <Nav active="About" onChange={function(it) { window.location.href = _aHrefs[it]; }} />
 );

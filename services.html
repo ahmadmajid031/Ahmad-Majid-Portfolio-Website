@@ -11,7 +11,7 @@
   gtag("config", "G-41KDM0XZL0");
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Case Studies · Ahmad Majid</title>
+<title>Services · Ahmad Majid</title>
 <link rel="icon" type="image/png" href="images/favicon.png">
 <style>
   @view-transition { navigation: auto; }
@@ -51,39 +51,6 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-
-  /* Page hero */
-  .wpage-hero {
-    max-width: 1320px; margin: 0 auto;
-    padding: clamp(48px, 6vw, 80px) clamp(28px, 5vw, 72px) clamp(32px, 4vw, 52px);
-  }
-  .wpage-eyebrow {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--ink); opacity: .55;
-  }
-  .wpage-eyebrow__dot {
-    width: 8px; height: 8px; border-radius: 999px;
-    background: var(--peach);
-  }
-  .wpage-title {
-    margin: 20px 0 0;
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 0.96;
-    font-size: clamp(52px, 8.5vw, 128px);
-    color: var(--ink);
-  }
-  .wpage-sub {
-    margin: 24px 0 0;
-    font-size: clamp(16px, 1.3vw, 19px);
-    font-weight: 500;
-    line-height: 1.5;
-    color: var(--ink); opacity: .7;
-    max-width: 56ch;
-  }
 </style>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -93,32 +60,27 @@
 <script src="loader.js"></script>
 
 <div id="snav-root"></div>
-
-<div class="wpage-hero">
-  <h1 class="wpage-title">Case<br>Studies</h1>
-  <p class="wpage-sub">Selected works — Shipped in production, measured on real users.</p>
-</div>
-
 <div id="root"></div>
 
 <script type="text/babel" src="navbar.jsx"></script>
 <script type="text/babel" src="sections.jsx"></script>
+<script type="text/babel" src="features.jsx"></script>
 <script type="text/babel">
-/* global React, ReactDOM, Nav, WorkSection, FooterSection */
-const _wHrefs = { "Home": "index.html", "Services": "services.html", "Case Studies": "work.html", "Reflections": "reflections.html", "About": "about.html" };
+/* global React, ReactDOM, Nav, ServicesSection, FooterSection */
+const _sHrefs = { "Home": "index.html", "Services": "services.html", "Case Studies": "work.html", "Reflections": "reflections.html", "About": "about.html" };
 ReactDOM.createRoot(document.getElementById('snav-root')).render(
-  <Nav active="Case Studies" onChange={function(it) { window.location.href = _wHrefs[it]; }} />
+  <Nav active="Services" onChange={function(it) { window.location.href = _sHrefs[it]; }} />
 );
 
-function WorkPage() {
+function ServicesPage() {
   return (
     <React.Fragment>
-      <WorkSection />
+      <ServicesSection />
       <FooterSection />
     </React.Fragment>
   );
 }
-ReactDOM.createRoot(document.getElementById('root')).render(<WorkPage />);
+ReactDOM.createRoot(document.getElementById('root')).render(<ServicesPage />);
 </script>
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
