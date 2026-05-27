@@ -270,14 +270,7 @@ function LockedGate({ slug, onClose }) {
         </button>
 
         <div className={"gate-icon" + (success ? " is-open" : "")}>
-          <svg width="28" height="30" viewBox="0 0 28 30" fill="none">
-            <rect x="3" y="14" width="22" height="15" rx="3.5" fill="#15140F" opacity=".88"/>
-            <path
-              d={success ? "M9 14V10a5 5 0 0 1 10 0V7" : "M9 14V10a5 5 0 0 1 10 0v4"}
-              stroke="#15140F" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" opacity=".88"
-            />
-            <circle cx="14" cy="21.5" r="2.2" fill="rgba(255,255,255,.38)"/>
-          </svg>
+          <img src="images/lock.png" width="38" height="38" alt="Lock" style={{ display: 'block' }} />
         </div>
 
         <h2 className="gate-title">Protected work</h2>

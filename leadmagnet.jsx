@@ -114,12 +114,7 @@ function LeadMagnetPopup() {
               <path d="M5.5 15l7 7 12-12" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           ) : (
-            <svg width="30" height="36" viewBox="0 0 30 36" fill="none">
-              <rect x="1" y="1" width="22" height="30" rx="3.5" fill="rgba(22,58,46,.1)" stroke="rgba(22,58,46,.22)" strokeWidth="1.4"/>
-              <path d="M23 1l6 6h-6V1z" fill="rgba(22,58,46,.15)"/>
-              <path d="M23 1v6h6" stroke="rgba(22,58,46,.22)" strokeWidth="1.4" strokeLinejoin="round" fill="none"/>
-              <path d="M6 12h12M6 17h12M6 22h8" stroke="rgba(22,58,46,.28)" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
+            <img src="images/document.png" width="38" height="38" alt="Document" style={{ display: 'block' }} />
           )}
         </div>
 
