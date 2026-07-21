@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ahmad Majid</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #111111;
+    --muted: #86868a;
+    --line: #ececec;
+    --bg: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 15.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: var(--line);
+  }
+  a:hover { text-decoration-color: var(--ink); }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 96px 24px 120px;
+  }
+
+  /* Header */
+  .name {
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0;
+  }
+  .updated {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 4px 0 0;
+  }
+
+  /* Bio */
+  .bio { margin-top: 40px; }
+  .bio p { margin: 0 0 20px; }
+  .bio p:last-child { margin-bottom: 0; }
+
+  /* Section label */
+  .label {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 56px 0 0;
+  }
+
+  /* Table-style lists */
+  .list { margin-top: 16px; border-top: 1px solid var(--line); }
+  .row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .row__year {
+    flex: 0 0 44px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .row__title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .row__title a {
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .row__title a:hover { color: var(--muted); }
+  .row__meta {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .row__date {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 64px 20px 96px; }
+    .row__meta { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="name">Ahmad Majid</h1>
+  <p class="updated">Updated Jul 22, 2026</p>
+
+  <div class="bio">
+    <p>I'm a product designer at <a href="dal-ayn.html">Dal</a>, where I lead design on Ayn — an all&#8209;in&#8209;one KYC and compliance platform — and build AI chatbots and automated workflows into the product.</p>
+
+    <p>Before that I worked freelance, embedded with teams at <a href="asana-timeline.html">Asana</a> and <a href="notion-ai.html">Notion</a>, and before that I was at Mountainise.</p>
+
+    <p>I started in graphic design, moved into web and UX, and have kept sharpening the same edge ever since — each time a new AI tool made the old way of working obsolete.</p>
+
+    <p>I studied Management Science at Lahore University of Management Sciences.</p>
+
+    <p>You can find me on <a href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">LinkedIn</a>, <a href="https://github.com/ahmadmajid031" target="_blank" rel="noopener">GitHub</a>, or reach me via <a href="mailto:ahmadmajid031@gmail.com">email</a>.</p>
+  </div>
+
+  <p class="label">Projects</p>
+  <div class="list">
+    <div class="row">
+      <span class="row__year">2025</span>
+      <span class="row__title"><a href="dal-ayn.html">Building Ayn — from zero</a></span>
+      <span class="row__meta">Dal</span>
+    </div>
+    <div class="row">
+      <span class="row__year">2024</span>
+      <span class="row__title"><a href="asana-timeline.html">Redesigning the Project Timeline</a></span>
+      <span class="row__meta">Asana</span>
+    </div>
+    <div class="row">
+      <span class="row__year">2023</span>
+      <span class="row__title"><a href="notion-ai.html">Redesigning AI in Databases</a></span>
+      <span class="row__meta">Notion</span>
+    </div>
+  </div>
+
+  <p class="label">Reflections</p>
+  <div class="list" id="reflections-list"></div>
+
+  <script>
+    var REFLECTIONS = [
+      ["2026-06-14", "Strike your chances"],
+      ["2026-06-13", "Principle of universality"],
+      ["2026-06-12", "Weekend Maxing"],
+      ["2026-06-11", "The customer is a genius"],
+      ["2026-06-10", "Two types of mindsets"],
+      ["2026-06-09", "When the work goes in vain"],
+      ["2026-06-08", "“Great Man” Theory"],
+      ["2026-06-07", "Think Week"],
+      ["2026-06-05", "One cannot have an easy life and a great character"],
+      ["2026-06-04", "The rule of thirds"],
+      ["2026-06-03", "Work faster"],
+      ["2026-06-02", "Smartest person in the room"],
+      ["2026-06-01", "I have multitudes"],
+      ["2026-05-30", "Inspiration is overrated"],
+      ["2026-05-29", "Hook"],
+      ["2026-05-28", "Commit and stick"],
+      ["2026-05-27", "3 pieces of advice in career"],
+      ["2026-05-26", "You don't know what you don't know"],
+      ["2026-05-25", "The magical power of copying"],
+      ["2026-05-24", "Understanding the users"],
+      ["2026-05-23", "Full-Time Devil's Advocate"],
+      ["2026-05-22", "On work-life balance"],
+      ["2026-05-21", "To a man with a hammer, the world looks like a nail."],
+      ["2026-05-20", "The impediment to action advances action. What stands in the way becomes the way."],
+      ["2026-05-20", "It takes 21 days to build a habit..."],
+      ["2026-05-19", "You learn best from yourself."],
+      ["2026-05-19", "The formula for greatness in any field"]
+    ];
+
+    var byYear = {};
+    var order = [];
+    REFLECTIONS.forEach(function (r) {
+      var year = r[0].slice(0, 4);
+      if (!byYear[year]) { byYear[year] = []; order.push(year); }
+      byYear[year].push(r);
+    });
+
+    var html = "";
+    order.forEach(function (year) {
+      byYear[year].forEach(function (r, i) {
+        var parts = r[0].split("-");
+        var dm = parts[2] + "/" + parts[1];
+        html += '<div class="row">'
+          + '<span class="row__year">' + (i === 0 ? year : "") + '</span>'
+          + '<span class="row__title"><a href="reflections.html">' + r[1] + '</a></span>'
+          + '<span class="row__date">' + dm + '</span>'
+          + '</div>';
+      });
+    });
+    document.getElementById("reflections-list").innerHTML = html;
+  </script>
+
+</div>
+</body>
+</html>
