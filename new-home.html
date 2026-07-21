@@ -4,16 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ahmad Majid</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%236976D9'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    var stored = localStorage.getItem("theme");
+    var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", stored || (prefersDark ? "dark" : "light"));
+  })();
+</script>
 <style>
   :root {
     --ink: #111111;
     --muted: #86868a;
     --line: #ececec;
     --bg: #ffffff;
+    --dot: #6976D9;
+    --glass: rgba(255,255,255,.1);
+  }
+  :root[data-theme="dark"] {
+    --ink: #f2f2f2;
+    --muted: #8d8d92;
+    --line: #262626;
+    --bg: #111111;
+    --glass: rgba(17,17,17,.1);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -25,6 +41,7 @@
     font-size: 15.5px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    transition: background-color .3s ease, color .3s ease;
   }
   a {
     color: var(--ink);
@@ -41,10 +58,46 @@
   }
 
   /* Header */
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .name-group {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--dot);
+    flex: 0 0 auto;
+  }
   .name {
     font-size: 17px;
     font-weight: 500;
     margin: 0;
+  }
+  .theme-toggle {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color .2s ease, background-color .2s ease, transform .45s cubic-bezier(.34,1.56,.64,1);
+  }
+  .theme-toggle:hover { border-color: var(--line); background: var(--line); }
+  .theme-toggle:active {
+    transform: scale(.82);
+    transition: transform .12s ease-in;
   }
   .updated {
     color: var(--muted);
@@ -73,8 +126,8 @@
     padding: 14px 0;
     border-bottom: 1px solid var(--line);
   }
-  .row__year {
-    flex: 0 0 44px;
+  .row__years {
+    flex: 0 0 120px;
     color: var(--muted);
     font-size: 14px;
   }
@@ -98,51 +151,106 @@
     font-size: 14px;
   }
 
+  /* Experience list — spotlight hover: hovered row stays full, others dim */
+  .list--experience .row__title { color: var(--ink); font-weight: 500; }
+  .list--experience .row {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 180ms ease-in;
+    transition-delay: 70ms;
+  }
+  .list--experience:hover .row { opacity: .35; }
+  .list--experience:hover .row:hover { opacity: 1; transition-delay: 0ms; }
+
+  /* Reflections — scroll-in reveal (entrance timing kept slow/springy) */
+  .list--reflections .row {
+    opacity: 0;
+    transform: translateY(18px) scale(.97);
+    transition: opacity .45s ease-out, transform .7s cubic-bezier(.34,1.56,.64,1);
+    cursor: pointer;
+  }
+  .list--reflections .row.is-in { opacity: 1; transform: translateY(0) scale(1); }
+  /* Once revealed, hover uses the fast spotlight timing instead of the entrance timing */
+  .list--reflections:hover .row.is-in { transition: opacity 180ms ease-in; transition-delay: 70ms; opacity: .35; }
+  .list--reflections:hover .row.is-in:hover { opacity: 1; transition-delay: 0ms; }
+
+  /* Page-load reveal for header / bio / experience */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .9s ease, transform 1s ease;
+  }
+  .reveal.is-in { opacity: 1; transform: translateY(0); }
+
+  /* Fixed glass panel at the bottom edge of the viewport: one div, a
+     faint 10% tint (white on light bg, black on dark), and a backdrop
+     blur that runs from 0 at the top edge to 50px at the bottom edge —
+     a gradient mask is what makes the blur strength itself progressive
+     (CSS has no other way to vary blur radius across one element). */
+  .edge-fade {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 220px;
+    pointer-events: none;
+    z-index: 5;
+    background: var(--glass);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    mask-image: linear-gradient(to top, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  }
+
   @media (max-width: 480px) {
     .wrap { padding: 64px 20px 96px; }
-    .row__meta { display: none; }
   }
 </style>
 </head>
 <body>
+<div class="edge-fade" aria-hidden="true"></div>
 <div class="wrap">
 
-  <h1 class="name">Ahmad Majid</h1>
-  <p class="updated">Updated Jul 22, 2026</p>
+  <div class="header-row reveal" style="transition-delay:0ms">
+    <div class="name-group">
+      <span class="dot" aria-hidden="true"></span>
+      <h1 class="name">Ahmad Majid</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode"></button>
+  </div>
+  <p class="updated reveal" style="transition-delay:100ms">Updated Jul 22, 2026</p>
 
   <div class="bio">
-    <p>I'm a product designer at <a href="dal-ayn.html">Dal</a>, where I lead design on Ayn — an all&#8209;in&#8209;one KYC and compliance platform — and build AI chatbots and automated workflows into the product.</p>
+    <p class="reveal" style="transition-delay:200ms">I'm a product designer at <a href="dal-ayn.html">Dal</a>, where I lead design on Ayn — an all&#8209;in&#8209;one KYC and compliance platform — and build AI chatbots and automated workflows into the product.</p>
 
-    <p>Before that I worked freelance, embedded with teams at <a href="asana-timeline.html">Asana</a> and <a href="notion-ai.html">Notion</a>, and before that I was at Mountainise.</p>
+    <p class="reveal" style="transition-delay:300ms">Before that I worked freelance as a product design consultant at Duality, embedded with teams at <a href="asana-timeline.html">Asana</a> and <a href="notion-ai.html">Notion</a>, and before that I was a product designer at Mountainise.</p>
 
-    <p>I started in graphic design, moved into web and UX, and have kept sharpening the same edge ever since — each time a new AI tool made the old way of working obsolete.</p>
+    <p class="reveal" style="transition-delay:400ms">I started in graphic design, moved into web and UX, and have kept sharpening the same edge ever since — each time a new AI tool made the old way of working obsolete.</p>
 
-    <p>I studied Management Science at Lahore University of Management Sciences.</p>
+    <p class="reveal" style="transition-delay:500ms">I studied Management Science at Lahore University of Management Sciences.</p>
 
-    <p>You can find me on <a href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">LinkedIn</a>, <a href="https://github.com/ahmadmajid031" target="_blank" rel="noopener">GitHub</a>, or reach me via <a href="mailto:ahmadmajid031@gmail.com">email</a>.</p>
+    <p class="reveal" style="transition-delay:600ms">You can find me on <a href="https://www.linkedin.com/in/ahmadalimajid/" target="_blank" rel="noopener">LinkedIn</a>, <a href="https://github.com/ahmadmajid031" target="_blank" rel="noopener">GitHub</a>, or reach me via <a href="mailto:ahmadmajid031@gmail.com">email</a>.</p>
   </div>
 
-  <p class="label">Projects</p>
-  <div class="list">
+  <p class="label reveal" style="transition-delay:700ms">Experience</p>
+  <div class="list list--experience reveal" style="transition-delay:780ms">
     <div class="row">
-      <span class="row__year">2025</span>
-      <span class="row__title"><a href="dal-ayn.html">Building Ayn — from zero</a></span>
-      <span class="row__meta">Dal</span>
+      <span class="row__years">2025 — Present</span>
+      <span class="row__title">Dal</span>
+      <span class="row__meta">Founding Product Designer</span>
     </div>
     <div class="row">
-      <span class="row__year">2024</span>
-      <span class="row__title"><a href="asana-timeline.html">Redesigning the Project Timeline</a></span>
-      <span class="row__meta">Asana</span>
+      <span class="row__years">2024 — 2025</span>
+      <span class="row__title">Duality</span>
+      <span class="row__meta">Product Design Consultant</span>
     </div>
     <div class="row">
-      <span class="row__year">2023</span>
-      <span class="row__title"><a href="notion-ai.html">Redesigning AI in Databases</a></span>
-      <span class="row__meta">Notion</span>
+      <span class="row__years">2023 — 2024</span>
+      <span class="row__title">Mountainise</span>
+      <span class="row__meta">Product Designer</span>
     </div>
   </div>
 
-  <p class="label">Reflections</p>
-  <div class="list" id="reflections-list"></div>
+  <p class="label reveal" style="transition-delay:860ms">Reflections</p>
+  <div class="list list--reflections" id="reflections-list"></div>
 
   <script>
     var REFLECTIONS = [
@@ -175,27 +283,65 @@
       ["2026-05-19", "The formula for greatness in any field"]
     ];
 
-    var byYear = {};
-    var order = [];
-    REFLECTIONS.forEach(function (r) {
-      var year = r[0].slice(0, 4);
-      if (!byYear[year]) { byYear[year] = []; order.push(year); }
-      byYear[year].push(r);
-    });
-
     var html = "";
-    order.forEach(function (year) {
-      byYear[year].forEach(function (r, i) {
-        var parts = r[0].split("-");
-        var dm = parts[2] + "/" + parts[1];
-        html += '<div class="row">'
-          + '<span class="row__year">' + (i === 0 ? year : "") + '</span>'
-          + '<span class="row__title"><a href="reflections.html">' + r[1] + '</a></span>'
-          + '<span class="row__date">' + dm + '</span>'
-          + '</div>';
-      });
+    REFLECTIONS.forEach(function (r, idx) {
+      var parts = r[0].split("-");
+      var dmy = parts[2] + "/" + parts[1] + "/" + parts[0].slice(2);
+      html += '<div class="row" data-idx="' + idx + '">'
+        + '<span class="row__title"><a href="reflections.html">' + r[1] + '</a></span>'
+        + '<span class="row__date">' + dmy + '</span>'
+        + '</div>';
     });
     document.getElementById("reflections-list").innerHTML = html;
+
+    // Reveal rows in strict top-to-bottom order, even when several
+    // cross the viewport threshold in the same scroll frame — sorting
+    // each intersecting batch by DOM order and staggering it keeps the
+    // cascade seamless instead of popping in out of sequence.
+    var reflectionRows = document.querySelectorAll("#reflections-list .row");
+    var io = new IntersectionObserver(function (entries) {
+      var visible = entries.filter(function (e) { return e.isIntersecting; });
+      visible.sort(function (a, b) {
+        return Number(a.target.dataset.idx) - Number(b.target.dataset.idx);
+      });
+      visible.forEach(function (entry, j) {
+        var el = entry.target;
+        el.style.transitionDelay = (j * 70) + "ms";
+        el.classList.add("is-in");
+        io.unobserve(el);
+        // Clear the inline stagger delay once the entrance finishes so the
+        // stylesheet's fast hover-dim delay takes over for later hovers.
+        el.addEventListener("transitionend", function clear() {
+          el.style.transitionDelay = "";
+          el.removeEventListener("transitionend", clear);
+        }, { once: true });
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -60px 0px" });
+    reflectionRows.forEach(function (row) { io.observe(row); });
+
+    window.addEventListener("load", function () {
+      requestAnimationFrame(function () {
+        document.querySelectorAll(".reveal").forEach(function (el) {
+          el.classList.add("is-in");
+        });
+      });
+    });
+
+    // Theme toggle
+    var SUN_ICON = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="3.1" stroke="currentColor" stroke-width="1.3"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M7.5 1v1.7M7.5 12.3V14M14 7.5h-1.7M2.7 7.5H1M12.15 2.85l-1.2 1.2M4.05 10.95l-1.2 1.2M12.15 12.15l-1.2-1.2M4.05 4.05L2.85 2.85"/></g></svg>';
+    var MOON_ICON = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M12.8 9.4A5.6 5.6 0 1 1 5.6 2.2a4.6 4.6 0 0 0 7.2 7.2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+
+    var toggleBtn = document.getElementById("themeToggle");
+    function paintToggle(theme) {
+      toggleBtn.innerHTML = theme === "dark" ? SUN_ICON : MOON_ICON;
+    }
+    paintToggle(document.documentElement.getAttribute("data-theme"));
+    toggleBtn.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      paintToggle(next);
+    });
   </script>
 
 </div>
